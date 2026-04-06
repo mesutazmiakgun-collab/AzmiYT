@@ -10,10 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            font-family: 'Finger Paint', cursive !important;
-            box-sizing: border-box;
-        }
+        * { font-family: 'Finger Paint', cursive !important; box-sizing: border-box; }
 
         body { 
             background-color: #000; 
@@ -22,118 +19,120 @@
             display: flex; 
             height: 100vh; 
             overflow: hidden;
-            /* Suble red glow in the background like Version 1 */
-            background: radial-gradient(circle at 20% 50%, #1a0000 0%, #000 100%);
+            background: radial-gradient(circle at 10% 50%, #200 0%, #000 100%);
         }
 
-        /* Sidebar Styles */
+        /* Sidebar - Evolution from Screenshot */
         .sidebar { 
-            width: 240px; 
-            background: #050505; 
+            width: 260px; 
+            background: rgba(5, 5, 5, 0.95); 
             padding: 40px 20px; 
             display: flex; 
             flex-direction: column; 
-            border-right: 2px solid #FF0000; /* Red Border instead of Grey */
-            box-shadow: 5px 0 15px rgba(255, 0, 0, 0.1);
+            border-right: 3px solid #FF0000;
+            box-shadow: 10px 0 20px rgba(255, 0, 0, 0.1);
+            z-index: 10;
         }
 
         .sidebar-title { 
-            font-size: 1.6rem; 
+            font-size: 1.8rem; 
             margin-bottom: 50px; 
-            line-height: 1.1;
             color: #FF0000; 
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
             text-transform: uppercase;
+            letter-spacing: -1px;
         }
 
         .nav-btn { 
             background: #000; 
             border: 1px solid #444; 
             color: #fff; 
-            padding: 15px; 
+            padding: 18px 15px; 
             text-align: left; 
             cursor: pointer; 
             margin-bottom: 15px;
             font-size: 1.1rem;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
 
-        /* The JJS Blue Glow + Red Hover */
         .nav-btn.active { 
             border: 2px solid #5ab9ff !important; 
-            box-shadow: 0 0 15px rgba(90, 185, 255, 0.6);
+            box-shadow: 0 0 20px rgba(90, 185, 255, 0.6);
             transform: translateX(10px);
+            background: #001;
         }
 
-        .nav-btn:hover:not(.active) {
-            border-color: #FF0000;
-            background: #110000;
-        }
+        .nav-btn:hover:not(.active) { border-color: #FF0000; background: #100; }
 
-        /* Main Content Styling */
-        .main-content { 
-            flex-grow: 1; 
-            padding: 60px; 
-            overflow-y: auto; 
-        }
+        /* Main Content */
+        .main-content { flex-grow: 1; padding: 60px; overflow-y: auto; position: relative; }
+        
+        h1 { font-size: 4.5rem; margin: 0 0 20px 0; color: #FF0000; text-shadow: 4px 4px 0px #fff; letter-spacing: -3px; }
+        .welcome-text { font-size: 1.4rem; line-height: 1.5; max-width: 900px; color: #fff; margin-bottom: 30px; }
 
-        h1 { 
-            font-size: 4.5rem; 
-            margin: 0 0 10px 0; 
-            color: #FF0000; 
-            text-shadow: 3px 3px 0px #fff; 
-            letter-spacing: -3px;
-        }
-
-        p { 
-            font-size: 1.4rem; 
-            line-height: 1.4; 
-            max-width: 900px; 
-            color: #fff; 
-            margin-bottom: 25px;
-        }
-
-        /* YouTube Video - First Version's Heavy Red Frame */
-        .video-frame { 
+        /* Video Area */
+        .video-container { 
             max-width: 850px; 
             aspect-ratio: 16/9; 
-            border: 5px solid #FF0000;
-            background: #000;
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.3);
-            margin-top: 20px;
+            border: 6px solid #FF0000;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.4);
         }
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* The guns.lol Button */
-        .guns-button {
+        /* Codes Page Styling */
+        .code-card {
+            background: #0a0a0a;
+            border: 2px solid #333;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+        }
+        .code-card:hover { border-color: #FF0000; background: #111; }
+        .code-name { font-size: 1.8rem; color: #fff; }
+        
+        .view-btn {
+            background: #FF0000;
+            color: white;
+            border: 3px solid #fff;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* Specific Code Page (Hidden by default) */
+        .code-detail-page {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: none;
+            padding: 60px;
+            z-index: 20;
+        }
+
+        .copy-box {
+            background: #111;
+            padding: 40px;
+            border: 4px dashed #FF0000;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-btn { color: #5ab9ff; cursor: pointer; text-decoration: underline; margin-bottom: 20px; display: inline-block; }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .guns-link {
             display: inline-block;
-            margin-top: 30px;
             padding: 20px 50px;
             background: #FF0000;
             color: #fff;
             text-decoration: none;
             font-size: 2rem;
             border: 4px solid #fff;
-            transition: 0.3s;
-        }
-        .guns-button:hover {
-            background: #fff;
-            color: #FF0000;
-            transform: scale(1.05);
-        }
-
-        .page { display: none; }
-        .page.active { display: block; }
-
-        /* Code Row Styling */
-        .code-row {
-            background: #111;
-            padding: 30px;
-            border: 2px solid #FF0000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
         }
     </style>
 </head>
@@ -151,35 +150,70 @@
     <div class="main-content">
         <div id="home" class="page active">
             <h1>Home</h1>
-            <p>Thanks for using the site. Check out the other tabs.</p>
-            <p>To use these moves for content, please credit me. For personal use, no credit is needed.</p>
-            
-            <div class="video-frame">
+            <div class="welcome-text">
+                Welcome to THE HONOURED INVENTORY. Suit yourself with any animation or moveset or codes for movesets. 
+                <br><br>
+                Using my stuff for your own content requires credits and ONLY if it's for learning or personal use then credits is appreciated, which DOES NOT mean you can use it in ur vids—i mean like dont call it urs.
+            </div>
+            <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/DUqZNqbLF5g" allowfullscreen></iframe>
             </div>
         </div>
 
         <div id="codes" class="page">
-            <h1>Codes</h1>
-            <div class="code-row">
-                <span style="font-size: 2rem;">JJS_SHENANIGANS</span>
-                <button class="nav-btn" style="margin:0; padding: 10px 30px; border-color: #FF0000;" onclick="alert('Copied!')">COPY</button>
+            <h1>Moveset Codes</h1>
+            <p>Select a moveset to view the code:</p>
+            
+            <div class="code-card">
+                <span class="code-name">Gojo V2 Moveset</span>
+                <button class="view-btn" onclick="openCode('Gojo V2', '7732-9910-AURA')">VIEW CODE</button>
+            </div>
+
+            <div class="code-card">
+                <span class="code-name">Sukuna World Slash</span>
+                <button class="view-btn" onclick="openCode('Sukuna World Slash', '1102-4456-CUT')">VIEW CODE</button>
             </div>
         </div>
 
         <div id="contact" class="page">
             <h1>Contact</h1>
-            <p>Direct access to all my links:</p>
-            <a href="https://guns.lol/azmi" target="_blank" class="guns-button">guns.lol/azmi</a>
+            <a href="https://guns.lol/azmi" target="_blank" class="guns-link">guns.lol/azmi</a>
+        </div>
+
+        <div id="codeViewPage" class="code-detail-page">
+            <span class="back-btn" onclick="closeCode()">← Back to Codes</span>
+            <h1 id="selectedMovesetName">Moveset Name</h1>
+            <div class="copy-box">
+                <p>Click the code below to copy it:</p>
+                <h2 id="actualCodeText" style="font-size: 3rem; color: #5ab9ff; cursor: pointer;" onclick="copyFinalCode()">CODE_HERE</h2>
+                <p style="margin-top: 20px; color: #888;">(After copying, paste this into the game menu)</p>
+            </div>
         </div>
     </div>
 
     <script>
         function showPage(pageId, btn) {
+            closeCode(); // Ensure code detail is closed when switching tabs
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             btn.classList.add('active');
+        }
+
+        function openCode(name, code) {
+            document.getElementById('selectedMovesetName').innerText = name;
+            document.getElementById('actualCodeText').innerText = code;
+            document.getElementById('codeViewPage').style.display = 'block';
+        }
+
+        function closeCode() {
+            document.getElementById('codeViewPage').style.display = 'none';
+        }
+
+        function copyFinalCode() {
+            const code = document.getElementById('actualCodeText').innerText;
+            navigator.clipboard.writeText(code);
+            alert("Moveset Code Copied: " + code);
         }
     </script>
 </body>
