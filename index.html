@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Honoured Inventory</title>
+    <title>Honoured Inventory | The Complete Arsenal</title>
     <link href="https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -17,7 +17,7 @@
             cursor: none; 
             scrollbar-width: none; 
         }
-        *::-webkit-scrollbar { display: none !important; width: 0 !important; }
+        *::-webkit-scrollbar { display: none !important; }
 
         body { 
             background: #000; color: #fff; margin: 0; display: flex; height: 100vh; overflow: hidden; 
@@ -25,13 +25,14 @@
         }
         
         /* CURSOR TRAIL */
-        .tr { width: 12px; height: 12px; background: var(--c-color); position: fixed; border-radius: 50%; pointer-events: none; z-index: 100000; transform: translate(-50%, -50%); left: -100px; top: -100px; box-shadow: 0 0 10px var(--c-color); transition: background 0.3s; }
+        .tr { width: 12px; height: 12px; background: var(--c-color); position: fixed; border-radius: 50%; pointer-events: none; z-index: 100000; transform: translate(-50%, -50%); left: -100px; top: -100px; box-shadow: 0 0 10px var(--c-color); }
         #c { width: 14px; height: 14px; box-shadow: 0 0 20px var(--c-color); z-index: 100001; }
         
-        /* SIDEBAR */
-        .sd { width: 280px; min-width: 280px; background: rgba(5,5,5,.98); padding: 30px 20px; display: flex; flex-direction: column; border-right: 3px solid var(--p); z-index: 100; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow-y: auto; }
+        /* SIDEBAR (ALL BUTTONS RESTORED) */
+        .sd { width: 280px; min-width: 280px; background: rgba(5,5,5,.98); padding: 30px 20px; display: flex; flex-direction: column; border-right: 3px solid var(--p); z-index: 100; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; }
         .sd.hidden { margin-left: -280px; }
-        #m-tog { position: fixed; top: 20px; left: 245px; background: var(--p); color: #fff; border: none; width: 35px; height: 35px; border-radius: 0 5px 5px 0; z-index: 1001; box-shadow: 0 0 10px var(--p); display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.5s; }
+        
+        #m-tog { position: fixed; top: 20px; left: 245px; background: var(--p); color: #fff; border: none; width: 35px; height: 35px; border-radius: 0 5px 5px 0; z-index: 1001; box-shadow: 0 0 10px var(--p); }
         .sd.hidden #m-tog { left: 0px; }
         
         .st { font-size: 1.8rem; color: var(--p); text-transform: uppercase; text-shadow: 0 0 10px var(--p); margin-bottom: 5px; }
@@ -43,33 +44,32 @@
 
         /* MAIN CONTENT */
         .mc { flex: 1; padding: 50px 60px; overflow-y: auto; display: flex; flex-direction: column; transition: 0.5s; }
-        .page { display: none; width: 100%; flex-direction: column; align-items: center; text-align: center; }
+        .page { display: none; width: 100%; flex-direction: column; align-items: center; }
         .page.active { display: flex; }
 
-        /* REVAMPED HOME ELEMENTS */
-        .hero-title { font-size: 5rem; color: var(--p); text-shadow: 5px 5px 0 #fff; margin: 0; animation: gl 3s infinite; }
-        .hero-box { border: 2px solid #222; background: rgba(255,0,0,0.05); padding: 30px; max-width: 850px; margin-top: 30px; border-radius: 10px; line-height: 1.8; }
+        /* REVAMPED HOME */
+        h1 { font-size: 4.5rem; margin: 0; color: var(--p); text-shadow: 4px 4px 0 #fff; animation: gl 3s infinite; }
+        .hero-box { border: 2px solid #222; background: rgba(255,0,0,0.05); padding: 30px; max-width: 850px; margin-top: 30px; border-radius: 10px; text-align: center; }
 
-        /* CODE CARDS */
+        /* ARSENAL CARDS (CODES TAB) */
         .u-card { background: #000; border: 2px solid var(--p); box-shadow: 0 0 15px var(--p); padding: 25px; width: 100%; max-width: 800px; margin-bottom: 20px; position: relative; text-align: left; }
         .u-title { color: var(--s); text-transform: uppercase; font-size: 1.6rem; margin: 0; }
-        .u-desc { color: #888; font-size: 1rem; margin-top: 5px; }
-        .u-btn { position: absolute; top: 25px; right: 25px; background: transparent; border: 1px solid #444; color: #fff; padding: 10px 20px; text-transform: uppercase; }
+        .u-btn { position: absolute; top: 25px; right: 25px; background: transparent; border: 1px solid #444; color: #fff; padding: 10px 20px; }
         .u-btn:hover { background: #fff; color: #000; }
 
-        /* SETTINGS MODAL & TOGGLE */
+        /* SETTINGS MODAL (PROPER DESIGN) */
         .mo { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.95); z-index: 1000; justify-content: center; align-items: center; }
         .sc { background: #0a0a0a; border: 4px solid var(--p); width: 450px; padding: 30px; box-shadow: 0 0 30px var(--p); }
-        .tgl-bg { width: 50px; height: 25px; background: #444; border-radius: 15px; position: relative; }
-        .tgl-kn { width: 20px; height: 20px; background: #fff; border-radius: 50%; position: absolute; top: 2.5px; left: 2.5px; transition: 0.3s; }
+        .row { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; }
+        .tgl { width: 50px; height: 25px; background: #444; border-radius: 15px; position: relative; transition: 0.3s; }
+        .knob { width: 20px; height: 20px; background: #fff; border-radius: 50%; position: absolute; top: 2.5px; left: 2.5px; transition: 0.3s; }
 
         @keyframes gl { 0%, 6% { transform: translate(0); } 2% { transform: translate(-2px,2px); text-shadow: 4px 4px 0 #fff,-2px 0 var(--p); } 4% { transform: translate(2px,-2px); text-shadow: 4px 4px 0 #fff,2px 0 var(--s); } }
     </style>
 </head>
 <body>
     <div id="c" class="tr"></div>
-    <div class="tr" style="opacity: 0.6;"></div><div class="tr" style="opacity: 0.4;"></div>
-    <div class="tr" style="opacity: 0.2;"></div>
+    <div class="tr" style="opacity: 0.6;"></div><div class="tr" style="opacity: 0.3;"></div>
 
     <audio id="m" loop><source src="Let It Ride - Anno Domini Beats.mp3"></audio>
     <button id="m-tog" onclick="tgs()">«</button>
@@ -81,56 +81,52 @@
         <div class="cat-title">Navigation</div>
         <button class="nb active" onclick="pg('home',this)">Home</button>
         <button class="nb" onclick="pg('codes',this)">Codes</button>
+        <button class="nb" onclick="pg('movesets',this)">Movesets</button>
+        <button class="nb" onclick="pg('animations',this)">Animations</button>
         <button class="nb" onclick="pg('suggest',this)">Suggestions</button>
         <button class="nb" onclick="pg('contact',this)">Contact</button>
         
-        <div class="cat-title">Management</div>
+        <div class="cat-title">System</div>
         <button class="nb" onclick="tog()">SETTINGS ⚙️</button>
     </div>
 
     <div class="mc">
         <div id="home" class="page active">
-            <h1 class="hero-title">Home</h1>
+            <h1>Home</h1>
             <div class="hero-box">
                 <p style="font-size: 1.4rem; color: #eee; margin: 0;">Welcome to <span style="color: var(--p);">THE HONOURED INVENTORY.</span></p>
-                <p style="color: #aaa; margin-top: 15px;">Access premium animations, custom movesets, and logic strings. <br>
-                <span style="color: var(--p); font-weight: bold;">NOTICE:</span> Credits are required for content creation. Do not claim this arsenal as your own.</p>
+                <p style="color: #888; margin-top: 15px;">Your primary source for high-level combat strings and custom animations.</p>
             </div>
-            <div style="width: 100%; max-width: 800px; aspect-ratio: 16/9; background: #111; border: 3px solid var(--p); margin-top: 40px; box-shadow: 0 0 20px var(--p);">
+            <div style="width: 100%; max-width: 800px; aspect-ratio: 16/9; border: 3px solid var(--p); margin-top: 40px; box-shadow: 0 0 20px var(--p);">
                 <iframe width="100%" height="100%" src="https://www.youtube.com/embed/7E-KYBDySz8" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
 
         <div id="codes" class="page">
-            <h1 class="hero-title" style="font-size: 3.5rem;">Codes</h1>
-            <div style="margin-top: 40px; width: 100%; display: flex; flex-direction: column; align-items: center;">
-                
-                <div class="u-card">
-                    <button class="u-btn" onclick="alert('Health Logic Copied')">VIEW CODE</button>
-                    <h2 class="u-title">HEALTH INDICATOR</h2>
-                    <p class="u-desc">Visual health bar customizer string.</p>
-                </div>
-
-                <div class="u-card">
-                    <button class="u-btn" onclick="alert('Arsenal Logic Copied')">VIEW CODE</button>
-                    <h2 class="u-title">FULL ARSENAL CODE</h2>
-                    <p class="u-desc">Complete weapon library and combat logic strings.</p>
-                </div>
-
+            <h1 style="font-size: 3.5rem;">Codes</h1>
+            <div class="u-card" style="margin-top: 40px;">
+                <button class="u-btn" onclick="copyCode('HEALTH')">VIEW CODE</button>
+                <h2 class="u-title">HEALTH INDICATOR</h2>
+                <p style="color:#666">Visual health bar customizer string.</p>
+            </div>
+            <div class="u-card">
+                <button class="u-btn" onclick="copyCode('ARSENAL')">VIEW CODE</button>
+                <h2 class="u-title">FULL ARSENAL CODE</h2>
+                <p style="color:#666">Weapon library and combat logic strings.</p>
             </div>
         </div>
-        
-        <div id="suggest" class="page"><h1>Suggestions</h1></div>
-        <div id="contact" class="page"><h1>Contact</h1></div>
+
+        <div id="movesets" class="page"><h1>Movesets</h1><p>Library Loading...</p></div>
+        <div id="animations" class="page"><h1>Animations</h1><p>Library Loading...</p></div>
     </div>
 
     <div class="mo" id="sMod">
         <div class="sc">
-            <h2 style="color:var(--p); margin-top: 0;">AURA SETTINGS</h2>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin: 20px 0;">
+            <h2 style="color:var(--p); margin: 0;">AURA SETTINGS</h2>
+            <div class="row">
                 <span>Background Music</span>
-                <div class="tgl-bg" onclick="mu()">
-                    <div class="tgl-kn" id="m-knob"></div>
+                <div class="tgl" id="tgl-bg" onclick="mu()">
+                    <div class="knob" id="kn"></div>
                 </div>
             </div>
             <button class="nb active" style="text-align: center;" onclick="tog()">CLOSE</button>
@@ -156,20 +152,22 @@
         function tog() { mod.style.display = (mod.style.display == 'flex') ? 'none' : 'flex'; }
 
         function mu() { 
-            const knob = document.getElementById('m-knob');
+            const kn = document.getElementById('kn'), tgl = document.getElementById('tgl-bg');
             if(music.paused) { 
-                music.play(); knob.style.left = '27.5px'; knob.style.background = 'var(--s)';
+                music.play(); kn.style.left = '27.5px'; tgl.style.background = 'var(--p)';
             } else { 
-                music.pause(); knob.style.left = '2.5px'; knob.style.background = '#fff';
+                music.pause(); kn.style.left = '2.5px'; tgl.style.background = '#444';
             } 
         }
+
+        function copyCode(type) { alert(type + " Code copied to clipboard (Mockup)"); }
 
         window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
         function updateTrail() {
             let x = mouse.x, y = mouse.y;
             trs.forEach((t, i) => {
                 t.style.left = x + "px"; t.style.top = y + "px";
-                x += ((trs[i+1]?.offsetLeft || x) - x) * 0.3; y += ((trs[i+1]?.offsetTop || y) - y) * 0.3;
+                x += ((trs[i+1]?.offsetLeft || x) - x) * 0.35; y += ((trs[i+1]?.offsetTop || y) - y) * 0.35;
             });
             requestAnimationFrame(updateTrail);
         }
