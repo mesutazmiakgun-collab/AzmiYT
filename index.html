@@ -10,49 +10,51 @@
         
         body { background: #000; color: #fff; margin: 0; display: flex; height: 100vh; overflow: hidden; background: radial-gradient(circle at 10% 50%, var(--g) 0%, #000 100%); }
         
-        /* INSTANT CURSOR */
-        #c { width: 12px; height: 12px; background: var(--p); position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; box-shadow: 0 0 15px var(--p); transform: translate(-50%, -50%); left: -100px; top: -100px; transition: width 0.2s, height 0.2s; }
+        /* GHOST TRAIL CURSOR */
+        .tr { width: 12px; height: 12px; background: var(--p); position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); left: -100px; top: -100px; }
+        #c { z-index: 10000; box-shadow: 0 0 15px var(--p); }
         
-        /* SIDEBAR: Fully hides off-screen */
+        /* SIDEBAR LOGIC */
         .sd { 
-            width: 280px; min-width: 280px; 
-            background: rgba(5,5,5,.98); padding: 40px 20px; 
-            display: flex; flex-direction: column; 
-            border-right: 3px solid var(--p); 
-            z-index: 100; position: relative; 
+            width: 280px; min-width: 280px; background: rgba(5,5,5,.98); 
+            padding: 40px 20px; display: flex; flex-direction: column; 
+            border-right: 3px solid var(--p); z-index: 100; position: relative; 
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-left 0.5s; 
         }
-        
-        /* The "Gone" State */
         .sd.hidden { transform: translateX(-100%); margin-left: -280px; }
 
-        /* Floating Toggle Button (Stays visible so you can reopen) */
+        /* TOGGLE BUTTON: Fixed decoupling */
         #m-tog { 
             position: absolute; top: 20px; right: -45px; 
             background: var(--p); color: #fff; border: none; 
             width: 35px; height: 35px; border-radius: 5px; 
-            z-index: 1000; box-shadow: 0 0 10px var(--p); 
+            z-index: 1001; box-shadow: 0 0 10px var(--p); 
             display: flex; align-items: center; justify-content: center; 
             font-weight: bold; transition: 0.3s;
         }
-        .sd.hidden #m-tog { right: -55px; opacity: 0.7; }
-        #m-tog:hover { transform: scale(1.1); opacity: 1; }
+        .sd.hidden #m-tog { right: -40px; position: fixed; left: 10px; }
         
         .st { font-size: 1.8rem; color: var(--p); text-transform: uppercase; text-shadow: 0 0 10px var(--p); margin-bottom: 5px; }
         .rk { font-size: .8rem; color: var(--s); margin-bottom: 30px; letter-spacing: 2px; }
-        .nb { background: #000; border: 1px solid #444; color: #fff; padding: 15px; text-align: left; margin-bottom: 12px; width: 100%; display: block; text-decoration: none; }
+        .nb { background: #000; border: 1px solid #444; color: #fff; padding: 15px; text-align: left; margin-bottom: 12px; width: 100%; display: block; text-decoration: none; transition: 0.2s; }
         .nb.active { border: 2px solid var(--s) !important; box-shadow: 0 0 20px var(--s); background: #001; }
-        .set-btn { margin-top: auto; background: #111; border: 2px solid #fff; color: #fff; padding: 12px; text-align: center; width: 100%; }
+        .set-btn { margin-top: auto; background: #111; border: 2px solid #fff; color: #fff; padding: 12px; text-align: center; width: 100%; transition: 0.2s; }
 
-        /* Main Content expands automatically */
-        .mc { flex: 1; padding: 50px 60px; overflow-y: auto; position: relative; transition: 0.5s; }
+        /* MAIN CONTENT: Auto-centering logic */
+        .mc { 
+            flex: 1; padding: 50px 60px; overflow-y: auto; 
+            display: flex; flex-direction: column; align-items: center; /* This centers everything */
+            text-align: center; transition: 0.5s; 
+        }
+        .page { display: none; width: 100%; max-width: 1000px; } 
+        .page.active { display: flex; flex-direction: column; align-items: center; }
+
         h1 { font-size: 4.5rem; margin: 0; color: var(--p); text-shadow: 4px 4px 0 #fff; }
         .glitch { animation: gl 3s infinite; }
         @keyframes gl { 0%, 6% { transform: translate(0); } 2% { transform: translate(-2px,2px); text-shadow: 4px 4px 0 #fff,-2px 0 var(--p); } 4% { transform: translate(2px,-2px); text-shadow: 4px 4px 0 #fff,2px 0 var(--s); } }
         
-        .welcome-text { font-size: 1.4rem; line-height: 1.6; max-width: 900px; margin: 25px 0 40px; }
-        .page { display: none; } .page.active { display: block; }
-        .vb { max-width: 850px; aspect-ratio: 16/9; border: 6px solid var(--p); box-shadow: 0 0 50px var(--p); background: #000; }
+        .welcome-text { font-size: 1.4rem; line-height: 1.6; max-width: 800px; margin: 25px 0 40px; }
+        .vb { width: 100%; max-width: 850px; aspect-ratio: 16/9; border: 6px solid var(--p); box-shadow: 0 0 50px var(--p); background: #000; }
 
         /* AURA LINK */
         .cl { color: #f00; font-size: 3rem; text-decoration: none; display: inline-block; margin-top: 20px; position: relative; }
@@ -72,7 +74,10 @@
     </style>
 </head>
 <body>
-    <div id="c"></div>
+    <div id="c" class="tr"></div>
+    <div class="tr" style="opacity: 0.6;"></div><div class="tr" style="opacity: 0.4;"></div>
+    <div class="tr" style="opacity: 0.2;"></div><div class="tr" style="opacity: 0.1;"></div>
+
     <audio id="m" loop><source src="Let%20It%20Ride%20-%20Anno%20Domini%20Beats.mp3"></audio>
 
     <div class="sd" id="sidebar">
@@ -114,10 +119,29 @@
     </div></div>
 
     <script>
-        const dot = document.getElementById('c'), b = document.getElementById('b'), mod = document.getElementById('sMod'), music = document.getElementById('m'), side = document.getElementById('sidebar');
+        const trs = document.querySelectorAll('.tr'), b = document.getElementById('b'), mod = document.getElementById('sMod'), music = document.getElementById('m'), side = document.getElementById('sidebar');
         let pts = 0;
+        let coords = { x: 0, y: 0 };
 
-        document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; });
+        document.addEventListener('mousemove', e => {
+            coords.x = e.clientX;
+            coords.y = e.clientY;
+        });
+
+        function updateTrailPositions() {
+            let x = coords.x;
+            let y = coords.y;
+
+            trs.forEach((t, index) => {
+                t.style.left = x + "px";
+                t.style.top = y + "px";
+                const nextT = trs[index + 1] || trs[0];
+                x += (nextT.offsetLeft - x) * 0.35;
+                y += (nextT.offsetTop - y) * 0.35;
+            });
+            requestAnimationFrame(updateTrailPositions);
+        }
+        updateTrailPositions();
 
         function tgs() { 
             side.classList.toggle('hidden'); 
