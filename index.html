@@ -94,7 +94,7 @@
     <div class="mc" id="b">
         <div id="home" class="page active">
             <h1 class="glitch" style="animation: gl 3s infinite;">Home</h1>
-            <div style="font-size: 1.4rem; line-height: 1.6; max-width: 800px; margin: 25px 0 40px;">Welcome to THE HONOURED INVENTORY.</div>
+            <div style="font-size: 1.4rem; line-height: 1.6; max-width: 800px; margin: 25px 0 40px;">Welcome to THE HONOURED INVENTORY. Suit yourself.</div>
             <div class="vb" onmouseleave="v_reset()"><div class="v-fix" id="vf" onclick="v_click()"></div><iframe src="https://www.youtube.com/embed/DUqZNqbLF5g" style="width:100%;height:100%;border:none" allowfullscreen></iframe></div>
         </div>
 
@@ -154,13 +154,10 @@
             navigator.clipboard.writeText(document.getElementById('vault-text').value).then(() => { alert("Copied!"); });
         }
 
-        // --- PRODUCTION SENDING LOGIC ---
         async function sendSuggest() {
             const msg = document.getElementById('suggest-text').value;
             const btn = document.getElementById('send-btn');
-            
             if(!msg.trim()) return alert("Type something first!");
-
             btn.innerText = "SENDING...";
             btn.disabled = true;
 
@@ -170,7 +167,6 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: msg })
                 });
-
                 if (response.ok) {
                     alert("Suggestion received! I'll look into it.");
                     document.getElementById('suggest-text').value = "";
