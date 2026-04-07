@@ -3,211 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Honoured Inventory | Full Arsenal</title>
+    <title>Honoured | Absolute Inventory</title>
     <link href="https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --p: #f00; --s: #5ab9ff; --g: #300; --w: #fff; 
-            --c-color: #ffcc00; --sat: 100%;
-            --side-bg: rgba(10, 10, 10, 0.9);
+            --p: #f00; --s: #5ab9ff; --g: #300; --c: #ffcc00;
+            --side-bg: rgba(5, 5, 5, 0.98);
         }
-        
         * { font-family: 'Finger Paint', cursive !important; box-sizing: border-box; cursor: none; scrollbar-width: none; }
         *::-webkit-scrollbar { display: none !important; }
 
         body { 
             background: #000; color: #fff; margin: 0; display: flex; height: 100vh; overflow: hidden; 
-            filter: saturate(var(--sat)); transition: 0.5s;
-            background: radial-gradient(circle at 10% 50%, var(--g) 0%, #000 100%); 
+            background: radial-gradient(circle at 15% 50%, var(--g) 0%, #000 100%); 
         }
 
-        #crt-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 99999; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02)); background-size: 100% 3px, 3px 100%; display: none; }
+        /* VOID SCANLINES */
+        #crt { position: fixed; inset: 0; pointer-events: none; z-index: 9999; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02)); background-size: 100% 2px, 2px 100%; display: none; }
 
-        /* CURSOR TRAIL */
-        .tr { width: 12px; height: 12px; background: var(--c-color); position: fixed; border-radius: 50%; pointer-events: none; z-index: 100000; transform: translate(-50%, -50%); left: -100px; top: -100px; box-shadow: 0 0 15px var(--c-color); transition: opacity 0.3s; }
-        #c { width: 16px; height: 16px; box-shadow: 0 0 25px var(--c-color); z-index: 100001; }
+        /* CURSOR ENERGY */
+        .tr { width: 14px; height: 14px; background: var(--c); position: fixed; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); box-shadow: 0 0 25px var(--c); }
         
-        /* SIDEBAR */
-        .sd { width: 300px; min-width: 300px; background: var(--side-bg); backdrop-filter: blur(15px); padding: 40px 25px; display: flex; flex-direction: column; border-right: 1px solid rgba(255, 0, 0, 0.3); z-index: 100; transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        .sd.hidden { margin-left: -300px; }
-        #m-tog { position: fixed; top: 25px; left: 265px; background: var(--p); color: #fff; border: none; width: 45px; height: 45px; border-radius: 12px; z-index: 1001; box-shadow: 0 0 15px var(--p); transition: 0.5s; font-size: 1.2rem; }
-        .sd.hidden #m-tog { left: 15px; border-radius: 50%; }
+        /* SIDEBAR (LOCKDOWN) */
+        .sd { width: 320px; background: var(--side-bg); backdrop-filter: blur(25px); padding: 45px 30px; display: flex; flex-direction: column; border-right: 3px solid var(--p); z-index: 100; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 20px 0 60px rgba(0,0,0,1); }
+        .sd.hidden { margin-left: -320px; }
         
-        .st { font-size: 2.2rem; color: #fff; text-transform: uppercase; line-height: 0.9; margin-bottom: 5px; }
-        .st span { color: var(--p); text-shadow: 0 0 15px var(--p); }
-        .rk { font-size: .75rem; color: var(--c-color); letter-spacing: 4px; text-shadow: 0 0 8px var(--c-color); background: rgba(255, 204, 0, 0.1); padding: 5px 10px; border-radius: 4px; display: inline-block; margin-bottom: 30px;}
+        #tog { position: fixed; top: 25px; left: 280px; background: var(--p); color: #fff; border: none; width: 45px; height: 45px; border-radius: 8px; z-index: 1001; transition: 0.4s; box-shadow: 0 0 20px var(--p); font-size: 1.2rem; }
+        .sd.hidden #tog { left: 15px; border-radius: 50%; }
 
-        .nb { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); color: #ccc; padding: 15px; text-align: left; margin-bottom: 10px; width: 100%; transition: 0.3s; font-size: 0.85rem; border-radius: 8px; }
-        .nb:hover { transform: translateX(8px); border-color: var(--p); color: #fff; background: rgba(255, 255, 255, 0.08); }
-        .nb.active { border-color: var(--s); color: var(--s); background: rgba(90, 185, 255, 0.05); box-shadow: 0 0 15px rgba(90, 185, 255, 0.1); }
+        .st { font-size: 2.5rem; color: #fff; text-transform: uppercase; line-height: 0.8; margin-bottom: 10px; letter-spacing: -2px; }
+        .st span { color: var(--p); text-shadow: 0 0 25px var(--p); }
+        .rk { font-size: .7rem; color: var(--c); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; background: rgba(255,204,0,0.1); padding: 5px 12px; border-radius: 4px; display: inline-block; border: 1px solid rgba(255,204,0,0.2); }
 
-        /* CONTENT */
-        .mc { flex: 1; padding: 50px 60px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
-        .page { display: none; width: 100%; flex-direction: column; align-items: center; animation: fadeIn 0.5s ease; }
-        .page.active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .nb { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); color: #777; padding: 20px; text-align: left; margin-bottom: 12px; width: 100%; transition: 0.3s; font-size: 0.95rem; border-radius: 6px; }
+        .nb:hover { transform: translateX(15px); border-color: var(--p); color: #fff; background: rgba(255,0,0,0.08); }
+        .nb.active { border-color: var(--s); color: var(--s); background: rgba(90, 185, 255, 0.05); box-shadow: 0 0 25px rgba(90,185,255,0.15); }
 
-        h1 { font-size: 4.5rem; margin: 0 0 30px 0; color: var(--p); text-shadow: 4px 4px 0 #fff; animation: gl 3s infinite; text-align: center; }
+        /* MAIN VIEWPORT */
+        .mc { flex: 1; padding: 60px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+        .pg { display: none; width: 100%; max-width: 950px; flex-direction: column; align-items: center; animation: emerge 0.5s ease-out; }
+        .pg.active { display: flex; }
+        @keyframes emerge { from { opacity: 0; filter: contrast(2); transform: scale(0.95); } to { opacity: 1; filter: contrast(1); transform: scale(1); } }
 
-        /* ITEM CARDS */
-        .u-card { background: rgba(255,255,255,0.02); border: 1px solid #222; padding: 25px; width: 100%; max-width: 800px; margin-bottom: 15px; border-radius: 12px; position: relative; transition: 0.3s; }
-        .u-card:hover { border-color: var(--p); background: rgba(255,0,0,0.02); }
-        .u-card h2 { margin: 0; color: var(--s); font-size: 1.4rem; }
-        .u-card p { margin: 5px 0 0; color: #777; font-size: 0.9rem; }
-        .view-btn { position: absolute; right: 25px; top: 50%; transform: translateY(-50%); background: var(--p); color: #fff; border: none; padding: 10px 20px; border-radius: 5px; }
+        h1 { font-size: 5.5rem; margin: 0 0 45px 0; color: var(--p); text-shadow: 8px 8px 0 #fff; animation: glitch 5s infinite; text-transform: uppercase; }
 
-        /* TEXT AREAS */
-        textarea, input[type="text"] { width: 100%; background: #080808; color: var(--s); border: 1px solid #222; padding: 20px; font-size: 1rem; border-radius: 10px; outline: none; margin-top: 15px; resize: none; }
+        .card { background: rgba(255,255,255,0.01); border: 1px solid #151515; padding: 35px; width: 100%; margin-bottom: 25px; border-radius: 12px; position: relative; transition: 0.4s; overflow: hidden; }
+        .card:hover { border-color: var(--p); background: rgba(255,0,0,0.03); transform: translateY(-5px); }
+        .card::before { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,0,0,0.05), transparent); transition: 0.5s; }
+        .card:hover::before { left: 100%; }
+        
+        .card h2 { margin: 0; color: var(--s); font-size: 1.8rem; text-transform: uppercase; }
+        .btn { position: absolute; right: 35px; top: 50%; transform: translateY(-50%); background: var(--p); color: #fff; border: none; padding: 15px 30px; border-radius: 6px; font-weight: bold; box-shadow: 0 0 15px var(--p); }
 
-        /* SETTINGS */
-        .mo { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.98); z-index: 1000; justify-content: center; align-items: center; }
-        .sc { background: #050505; border: 2px solid var(--p); width: 500px; padding: 35px; border-radius: 20px; box-shadow: 0 0 50px rgba(255,0,0,0.1); }
-        .s-group { margin-bottom: 20px; border-bottom: 1px solid #111; padding-bottom: 15px; }
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: #222; border-radius: 5px; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--p); border-radius: 50%; }
+        textarea, input { width: 100%; background: #030303; color: var(--s); border: 1px solid #111; padding: 25px; font-size: 1.1rem; border-radius: 6px; outline: none; margin-top: 25px; border-left: 6px solid var(--p); }
 
-        @keyframes gl { 0%, 6% { transform: translate(0); } 2% { transform: translate(-2px,2px); text-shadow: 4px 4px 0 #fff,-2px 0 var(--p); } 4% { transform: translate(2px,-2px); text-shadow: 4px 4px 0 #fff,2px 0 var(--s); } }
+        /* SETTINGS MODAL */
+        .mo { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.99); z-index: 100000; justify-content: center; align-items: center; }
+        .sc { background: #000; border: 3px solid var(--p); width: 550px; padding: 45px; border-radius: 15px; box-shadow: 0 0 80px rgba(255,0,0,0.3); }
+        .s-group { margin-bottom: 30px; border-bottom: 1px solid #111; padding-bottom: 20px; }
+
+        @keyframes glitch { 0%, 5% { transform: translate(0); } 2% { transform: translate(-5px,3px); text-shadow: 8px 8px 0 #fff,-5px 0 var(--p); } 4% { transform: translate(5px,-3px); text-shadow: 8px 8px 0 #fff,5px 0 var(--s); } }
     </style>
 </head>
 <body>
-    <div id="crt-overlay"></div>
-    <div id="c" class="tr"></div>
-    <div class="tr pt" style="opacity: 0.6;"></div><div class="tr pt" style="opacity: 0.3;"></div>
+    <div id="crt"></div>
+    <div id="c" class="tr"></div><div class="tr" style="opacity:0.6"></div><div class="tr" style="opacity:0.3"></div>
 
     <audio id="bgm" loop><source src="Let It Ride - Anno Domini Beats.mp3"></audio>
-    <button id="m-tog" onclick="togSide()">«</button>
+    <button id="tog" onclick="togS()">«</button>
 
-    <div class="sd" id="sidebar">
+    <div class="sd" id="side">
         <div class="st">HONOURED<br><span>INVENTORY</span></div>
         <div class="rk">RANK: HONOURED</div>
-        <button class="nb active" onclick="nav('home',this)">HOME</button>
-        <button class="nb" onclick="nav('codes',this)">ARSENAL</button>
-        <button class="nb" onclick="nav('movesets',this)">MOVESETS</button>
-        <button class="nb" onclick="nav('animations',this)">ANIMATIONS</button>
-        <button class="nb" onclick="nav('suggest',this)">THE VAULT</button>
-        <button class="nb" onclick="nav('contact',this)">CONTACT</button>
-        <button class="nb" style="margin-top:auto; border-color:var(--p); color:var(--p);" onclick="togSet()">SETTINGS ⚙️</button>
+        <button class="nb active" onclick="nav('h',this)">HOME</button>
+        <button class="nb" onclick="nav('a',this)">ARSENAL</button>
+        <button class="nb" onclick="nav('m',this)">MOVESETS</button>
+        <button class="nb" onclick="nav('an',this)">ANIMATIONS</button>
+        <button class="nb" onclick="nav('v',this)">THE VAULT</button>
+        <button class="nb" onclick="nav('co',this)">CONTACT</button>
+        <button class="nb" style="margin-top:auto; border-color:var(--p); color:var(--p);" onclick="togM()">SYSTEM OVERRIDE ⚙️</button>
     </div>
 
     <div class="mc">
-        <div id="home" class="page active">
+        <div id="h" class="pg active">
             <h1>Home</h1>
-            <div style="width: 100%; max-width: 800px; aspect-ratio: 16/9; border: 1px solid var(--p); border-radius: 15px; overflow: hidden; box-shadow: 0 0 30px rgba(255,0,0,0.15);">
+            <div style="width:100%; aspect-ratio:16/9; border:3px solid var(--p); border-radius:15px; overflow:hidden; box-shadow:0 0 50px rgba(255,0,0,0.25);">
                 <iframe width="100%" height="100%" src="https://www.youtube.com/embed/7E-KYBDySz8" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
 
-        <div id="codes" class="page">
-            <div id="codes-list" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+        <div id="a" class="pg">
+            <div id="a-l" style="width:100%">
                 <h1>Arsenal</h1>
-                <div class="u-card">
-                    <h2>Health Indicator</h2><p>Special Grade UI interface.</p>
-                    <button class="view-btn" onclick="openData('HEALTH')">VIEW</button>
-                </div>
-                <div class="u-card">
-                    <h2>Full Inventory</h2><p>Complete data set transmission.</p>
-                    <button class="view-btn" onclick="openData('ARSENAL')">VIEW</button>
-                </div>
+                <div class="card"><h2>Combat UI</h2><p>V4.5 Special Grade Interface String</p><button class="btn" onclick="op('H')">EXTRACT</button></div>
+                <div class="card"><h2>Global Inventory</h2><p>Full itemization restore protocol</p><button class="btn" onclick="op('A')">EXTRACT</button></div>
+                <div class="card"><h2>Divine: SSK</h2><p>Split Soul Katana - True Strike Data</p><button class="btn" onclick="op('SSK')">EXTRACT</button></div>
+                <div class="card"><h2>Divine: PC</h2><p>Playful Cloud - Kinetic Chain String</p><button class="btn" onclick="op('PC')">EXTRACT</button></div>
             </div>
-            <div id="data-view" style="display:none; width:100%; max-width:800px;">
-                <button class="nb" style="width:120px; margin-bottom:20px;" onclick="closeData()">« BACK</button>
-                <textarea id="v-output" readonly style="min-height:400px; border-color:var(--s);"></textarea>
-                <button class="nb active" style="margin-top:20px; text-align:center;" onclick="copy()">COPY TO CLIPBOARD</button>
+            <div id="a-v" style="display:none; width:100%">
+                <button class="nb" style="width:140px; border-color:var(--p)" onclick="cl()">« CANCEL</button>
+                <textarea id="out" readonly style="min-height:450px"></textarea>
+                <button class="nb active" style="text-align:center; margin-top:20px; font-size:1.1rem" onclick="cp()">ACQUIRE STRING</button>
             </div>
         </div>
 
-        <div id="movesets" class="page">
+        <div id="m" class="pg">
             <h1>Movesets</h1>
-            <div class="u-card"><h2>Cursed Strike Combo</h2><p>Requires Grade 1 access.</p><button class="view-btn">LOCKED</button></div>
-            <div class="u-card"><h2>Domain Expansion</h2><p>Rank: Honoured Only.</p><button class="view-btn">LOCKED</button></div>
+            <div class="card"><h2>Hollow Purple</h2><p>Special Grade [200%] String</p><button class="btn" onclick="op('HP')">VIEW</button></div>
+            <div class="card"><h2>Infinite Void</h2><p>Domain Expansion Logic [999ms]</p><button class="btn" onclick="op('DE')">VIEW</button></div>
+            <div class="card"><h2>Cleave/Dismantle</h2><p>Shrine Slicing Protocol</p><button class="btn" onclick="op('CD')">VIEW</button></div>
         </div>
 
-        <div id="animations" class="page">
+        <div id="an" class="pg">
             <h1>Animations</h1>
-            <div class="u-card"><h2>Idle Stance</h2><p>Pulsing aura v1.2</p><button class="view-btn">VIEW</button></div>
+            <div class="card"><h2>Idle Aura</h2><p>60FPS Pulsating Energy Loop</p><button class="btn" onclick="op('AN')">SYNC</button></div>
+            <div class="card"><h2>Black Flash</h2><p>Critical Impact Frame Data</p><button class="btn" onclick="op('BF')">SYNC</button></div>
         </div>
 
-        <div id="suggest" class="page">
+        <div id="v" class="pg">
             <h1>The Vault</h1>
-            <div style="width:100%; max-width:650px;">
-                <textarea id="s-in" placeholder="Sacrifice a suggestion to the vault..."></textarea>
-                <button id="s-btn" class="nb active" style="margin-top:20px; text-align:center" onclick="send('xnjowojl', 's-in', 's-btn')">SUBMIT</button>
-            </div>
+            <textarea id="vi" placeholder="Input sacrifice for the vault..."></textarea>
+            <button id="vb" class="nb active" style="margin-top:25px; text-align:center" onclick="tx('xnjowojl','vi','vb')">SUBMIT DATA</button>
         </div>
 
-        <div id="contact" class="page">
+        <div id="co" class="pg">
             <h1>Contact</h1>
-            <div style="width:100%; max-width:650px;">
-                <input type="text" id="c-sub" placeholder="Subject">
-                <textarea id="c-msg" placeholder="Message..."></textarea>
-                <button id="c-btn" class="nb active" style="margin-top:20px; text-align:center" onclick="send('xdapbyva', 'c-msg', 'c-btn', 'c-sub')">SEND MESSAGE</button>
-            </div>
+            <input type="text" id="cs" placeholder="Subject Target">
+            <textarea id="cm" placeholder="Message Packet..."></textarea>
+            <button id="cb" class="nb active" style="margin-top:25px; text-align:center" onclick="tx('xdapbyva','cm','cb','cs')">TRANSMIT SIGNAL</button>
         </div>
     </div>
 
-    <div class="mo" id="set-mo">
+    <div class="mo" id="mod">
         <div class="sc">
-            <h2 style="color:var(--p); margin:0;">SYSTEM OVERRIDE</h2>
-            <div class="s-group" style="margin-top:20px;">
-                <div style="display:flex; justify-content:space-between; color:var(--s); font-size:0.8rem; margin-bottom:10px;"><span>Volume</span><span id="v-val">0%</span></div>
-                <input type="range" min="0" max="100" value="0" oninput="setVol(this.value)">
+            <h2 style="color:var(--p); margin:0; letter-spacing:4px">CORE OVERRIDE</h2>
+            <div class="s-group" style="margin-top:40px">
+                <div style="display:flex; justify-content:space-between; color:var(--s); font-size:0.85rem; margin-bottom:12px"><span>Output Volume</span><span id="vv">0%</span></div>
+                <input type="range" min="0" max="100" value="0" oninput="sv(this.value)" style="width:100%; accent-color:var(--p)">
             </div>
             <div class="s-group">
-                <div style="display:flex; justify-content:space-between; color:var(--s); font-size:0.8rem; margin-bottom:10px;"><span>Visuals</span></div>
-                <button class="tog-btn" id="c-tog" onclick="togCRT()" style="padding:10px; background:#111; border:1px solid #333; color:#fff; border-radius:5px; width:100%;">CRT SCANLINES: OFF</button>
+                <div style="display:flex; justify-content:space-between; color:var(--s); font-size:0.85rem; margin-bottom:12px"><span>Pulse Tempo</span><span id="pv">1.0x</span></div>
+                <input type="range" min="5" max="25" value="10" oninput="sp(this.value)" style="width:100%; accent-color:var(--p)">
             </div>
-            <button class="nb active" style="text-align:center; margin-top:20px;" onclick="togSet()">CLOSE</button>
+            <div class="s-group">
+                <button class="nb" id="ctb" onclick="tc()" style="width:100%; color:#fff">SCANLINES: DISABLED</button>
+            </div>
+            <button class="nb active" style="text-align:center; margin-top:10px" onclick="togM()">EXIT CONTROL ROOM</button>
         </div>
     </div>
 
     <script>
-        const bgm = document.getElementById('bgm'), side = document.getElementById('sidebar'), sMo = document.getElementById('set-mo'), trs = document.querySelectorAll('.tr'), crt = document.getElementById('crt-overlay');
-        const repo = { HEALTH: "HEALTH_UI_V3_STRING", ARSENAL: "FULL_INVENTORY_RESTORED_STRING" };
-        let mouse = { x: 0, y: 0 };
+        const b = document.getElementById('bgm'), s = document.getElementById('side'), m = document.getElementById('mod'), tr = document.querySelectorAll('.tr'), ct = document.getElementById('crt');
+        const r = { 
+            H: "health_ui_protocol_v4.5_sync_ENCODED", 
+            A: "inventory_restore_all_special_grade_AURA", 
+            SSK: "divine_ssk_soul_breaker_string_99",
+            PC: "divine_playful_cloud_kinetic_v2",
+            HP: "technique_hollow_purple_200_void", 
+            DE: "expansion_limitless_void_active_00", 
+            CD: "shrine_cleave_dismantle_slash_92",
+            AN: "aura_idle_60fps_loop_data",
+            BF: "black_flash_spark_impact_frame_7"
+        };
+        let ms = { x: 0, y: 0 };
 
-        function nav(id, b) { 
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nb').forEach(n => n.classList.remove('active'));
-            if(b) b.classList.add('active');
-            closeData();
-        }
-
-        function togSide() { side.classList.toggle('hidden'); document.getElementById('m-tog').innerText = side.classList.contains('hidden') ? '»' : '«'; }
-        function togSet() { sMo.style.display = (sMo.style.display == 'flex') ? 'none' : 'flex'; }
-        function setVol(v) { bgm.volume = v/100; document.getElementById('v-val').innerText = v+"%"; if(v>0 && bgm.paused) bgm.play(); }
-        function togCRT() { const act = crt.style.display === 'block'; crt.style.display = act ? 'none' : 'block'; document.getElementById('c-tog').innerText = `CRT SCANLINES: ${act ? 'OFF' : 'ON'}`; }
-
-        function openData(t) {
-            document.getElementById('codes-list').style.display='none';
-            document.getElementById('data-view').style.display='block';
-            document.getElementById('v-output').value = repo[t];
-        }
-        function closeData() {
-            document.getElementById('codes-list').style.display='flex';
-            document.getElementById('data-view').style.display='none';
-        }
-        function copy() { document.getElementById('v-output').select(); document.execCommand('copy'); alert("Copied."); }
-
-        async function send(fid, iid, bid, sid = null) {
-            const b = document.getElementById(bid), i = document.getElementById(iid);
-            if(!i.value.trim()) return;
-            b.innerText = "TRANSMITTING...";
-            const d = { message: i.value }; if(sid) d.subject = document.getElementById(sid).value;
-            try { await fetch(`https://formspree.io/f/${fid}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) }); b.innerText = "SENT"; i.value = ""; } catch (e) { b.innerText = "ERROR"; }
-            setTimeout(() => b.innerText = "SUBMIT", 3000);
-        }
-
-        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-        function trail() {
-            let x = mouse.x, y = mouse.y;
-            trs.forEach((t, i) => {
-                t.style.left = x + "px"; t.style.top = y + "px";
-                x += ((trs[i+1]?.offsetLeft || x) - x) * 0.3; y += ((trs[i+1]?.offsetTop || y) - y) * 0.3;
-            });
-            requestAnimationFrame(trail);
-        }
-        trail();
-    </script>
-</body>
-</html>
+        function nav(id, el) { document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nb').forEach(n=>n.classList.remove('active')); el.classList.add('active'); cl(); }
+        function togS() { s.classList.toggle('hidden'); document.getElementById('tog').innerText = s.classList.contains('hidden') ? '»' : '«'; }
+        function togM() { m.style.display = (m.style.display=='flex')?'none':'flex'; }
+        function sv(v) { b.volume = v/100; document.getElementById('vv').innerText = v+"%"; if(v>0 && b.paused) b.play(); }
+        function sp(v) { b.playbackRate = v/10; document.getElementById('pv').innerText = (v/10).toFixed(1)+"x"; }
+        function tc() { const a = ct.style.display === 'block'; ct.style.display = a ? 'none' : 'block'; document.getElementById('ctb').innerText = `SCANLINES: ${a ? 'DISABLED' : 'ENABLED'}`; document
