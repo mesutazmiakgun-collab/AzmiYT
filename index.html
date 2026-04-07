@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap" rel="stylesheet">
 
     <style>
+        /* Base Reset */
         * { font-family: 'Finger Paint', cursive !important; box-sizing: border-box; }
 
         body { 
@@ -18,25 +19,27 @@
             margin: 0; 
             display: flex; 
             height: 100vh; 
+            width: 100vw;
             overflow: hidden;
             background: radial-gradient(circle at 10% 50%, #200 0%, #000 100%);
         }
 
         /* Sidebar */
         .sidebar { 
-            width: 260px; 
-            background: rgba(5, 5, 5, 0.95); 
+            width: 280px; 
+            min-width: 280px;
+            background: rgba(5, 5, 5, 0.98); 
             padding: 40px 20px; 
             display: flex; 
             flex-direction: column; 
             border-right: 3px solid #FF0000;
             box-shadow: 10px 0 20px rgba(255, 0, 0, 0.1);
-            z-index: 10;
+            z-index: 100;
         }
 
         .sidebar-title { 
             font-size: 1.8rem; 
-            margin-bottom: 20px; 
+            margin-bottom: 30px; 
             color: #FF0000; 
             text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
             text-transform: uppercase;
@@ -46,18 +49,19 @@
             background: #000; 
             border: 1px solid #444; 
             color: #fff; 
-            padding: 18px 15px; 
+            padding: 15px; 
             text-align: left; 
             cursor: pointer; 
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-size: 1.1rem;
             transition: 0.3s;
+            width: 100%;
         }
 
         .nav-btn.active { 
             border: 2px solid #5ab9ff !important; 
-            box-shadow: 0 0 20px rgba(90, 185, 255, 0.6);
-            transform: translateX(10px);
+            box-shadow: 0 0 20px rgba(90, 185, 255, 0.4);
+            transform: translateX(5px);
             background: #001;
         }
 
@@ -68,38 +72,64 @@
             background: #111;
             border: 2px solid #fff;
             color: #fff;
-            padding: 15px;
+            padding: 12px;
             cursor: pointer;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
         }
 
-        /* JJS Style Settings Modal */
+        /* Main Content - Fixed Padding to prevent overlapping */
+        .main-content { 
+            flex: 1; 
+            padding: 40px 60px; 
+            overflow-y: auto; 
+            position: relative;
+            height: 100vh;
+        }
+
+        h1 { font-size: 4.5rem; margin: 0 0 10px 0; color: #FF0000; text-shadow: 4px 4px 0px #fff; letter-spacing: -3px; }
+        
+        .welcome-text { 
+            font-size: 1.4rem; 
+            line-height: 1.6; 
+            margin-bottom: 40px; /* Force space below text */
+            max-width: 900px;
+            display: block;
+        }
+
+        .page { display: none; width: 100%; }
+        .page.active { display: block; animation: fadeIn 0.4s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .status-msg { font-size: 1.5rem; color: #555; border: 2px dashed #333; padding: 40px; text-align: center; margin-top: 20px; }
+
+        /* Video Container Fix */
+        .video-wrapper {
+            margin-top: 20px;
+            max-width: 850px; 
+            aspect-ratio: 16/9; 
+            border: 6px solid #FF0000; 
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.4);
+        }
+
+        /* JJS Settings Modal */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 100;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1000;
             justify-content: center;
             align-items: center;
         }
 
         .settings-card {
-            background: rgba(10, 10, 10, 0.98);
+            background: #0a0a0a;
             border: 4px solid #FF0000;
-            width: 480px;
+            width: 450px;
             padding: 40px;
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.3);
-        }
-
-        .settings-header {
-            font-size: 2.2rem;
-            color: #FF0000;
-            border-bottom: 2px solid #333;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            text-align: left;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.3);
         }
 
         .setting-row {
@@ -107,92 +137,59 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
-        /* --- THE NEW SLIDER SWITCH --- */
-        .switch-container {
+        /* The Sliding Toggle */
+        .switch-track {
+            width: 70px;
+            height: 32px;
+            background: #222;
+            border-radius: 50px;
             position: relative;
-            width: 65px;
-            height: 30px;
-            background: #333;
-            border-radius: 30px; /* Pill shape */
             cursor: pointer;
-            transition: background 0.3s;
-            border: 1px solid #555;
+            border: 2px solid #444;
+            transition: 0.3s;
         }
 
-        .switch-handle {
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 22px;
-            height: 22px;
+        .switch-knob {
+            width: 24px;
+            height: 24px;
             background: #fff;
             border-radius: 50%;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        /* State when music is ON */
-        .switch-container.active {
-            background: #5ab9ff;
-            box-shadow: 0 0 15px rgba(90, 185, 255, 0.4);
-            border-color: #fff;
-        }
+        .switch-track.on { background: #5ab9ff; border-color: #fff; box-shadow: 0 0 15px #5ab9ff; }
+        .switch-track.on .switch-knob { transform: translateX(38px); }
 
-        .switch-container.active .switch-handle {
-            transform: translateX(35px); /* Moves it to the right side */
-        }
-
-        /* --- VOLUME SLIDER --- */
-        .volume-wrapper { width: 180px; }
         input[type="range"] {
             -webkit-appearance: none;
-            width: 100%;
-            background: #222;
-            height: 6px;
-            border-radius: 5px;
+            width: 180px;
+            background: #333;
+            height: 8px;
+            border-radius: 10px;
             outline: none;
         }
 
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 14px;
-            height: 24px;
+            width: 16px; height: 26px;
             background: #FF0000;
             border: 2px solid #fff;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(255,0,0,0.5);
         }
 
         .help-btn {
-            width: 100%;
-            background: #222;
-            color: #fff;
-            border: 2px solid #FF0000;
-            padding: 15px;
-            margin-top: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .help-btn:hover { background: #FF0000; }
-
-        .close-settings {
-            display: block;
-            margin: 25px auto 0;
-            background: none;
-            border: none;
-            color: #FF0000;
-            cursor: pointer;
-            text-transform: uppercase;
+            width: 100%; background: #111; color: #fff; border: 2px solid #FF0000; padding: 15px; margin-top: 10px; cursor: pointer;
         }
 
-        /* Main Content */
-        .main-content { flex-grow: 1; padding: 60px; overflow-y: auto; }
-        h1 { font-size: 4.5rem; margin: 0 0 20px 0; color: #FF0000; text-shadow: 4px 4px 0px #fff; letter-spacing: -3px; }
-        .status-msg { font-size: 1.5rem; color: #555; border: 2px dashed #333; padding: 40px; text-align: center; margin-top: 20px; }
-        .page { display: none; }
-        .page.active { display: block; }
+        .close-modal {
+            display: block; width: 100%; margin-top: 20px; background: none; border: none; color: #888; cursor: pointer; text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -211,41 +208,54 @@
         <button class="settings-btn" onclick="toggleSettings()">SETTINGS ⚙️</button>
     </div>
 
-    <div class="modal-overlay" id="settingsModal">
-        <div class="settings-card">
-            <div class="settings-header">SETTINGS</div>
-            
-            <div class="setting-row">
-                <span>Music Toggle</span>
-                <div class="switch-container" id="musicToggle" onclick="toggleMusic()">
-                    <div class="switch-handle"></div>
-                </div>
-            </div>
-
-            <div class="setting-row">
-                <span>Volume</span>
-                <div class="volume-wrapper">
-                    <input type="range" id="volSlider" min="0" max="1" step="0.05" value="0.4" oninput="updateVol()">
-                </div>
-            </div>
-
-            <button class="help-btn" onclick="showHelp()">HOW TO USE SITE</button>
-            <button class="close-settings" onclick="toggleSettings()">CLOSE</button>
-        </div>
-    </div>
-
     <div class="main-content">
         <div id="home" class="page active">
             <h1>Home</h1>
-            <p style="font-size: 1.4rem;">Welcome to THE HONOURED INVENTORY. Suit yourself with any animation or moveset.</p>
-            <div style="max-width: 850px; aspect-ratio: 16/9; border: 6px solid #FF0000; box-shadow: 0 0 50px rgba(255, 0, 0, 0.4);">
+            <div class="welcome-text">
+                Welcome to THE HONOURED INVENTORY. Suit yourself with any animation or moveset.
+            </div>
+            <div class="video-wrapper">
                 <iframe src="https://www.youtube.com/embed/DUqZNqbLF5g" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
             </div>
         </div>
-        <div id="codes" class="page"><h1>Codes</h1><div class="status-msg">No codes yet.</div></div>
-        <div id="movesets" class="page"><h1>Movesets</h1><div class="status-msg">Inventory empty.</div></div>
-        <div id="animations" class="page"><h1>Animations</h1><div class="status-msg">No animations yet.</div></div>
-        <div id="contact" class="page"><h1>Contact</h1><a href="https://guns.lol/azmi" target="_blank" style="color:#FF0000; font-size: 2rem;">guns.lol/azmi</a></div>
+
+        <div id="codes" class="page">
+            <h1>Codes</h1>
+            <div class="status-msg">No codes yet.</div>
+        </div>
+
+        <div id="movesets" class="page">
+            <h1>Movesets</h1>
+            <div class="status-msg">Inventory empty. Check back soon.</div>
+        </div>
+
+        <div id="animations" class="page">
+            <h1>Animations</h1>
+            <div class="status-msg">No custom animations uploaded yet.</div>
+        </div>
+
+        <div id="contact" class="page">
+            <h1>Contact</h1>
+            <a href="https://guns.lol/azmi" target="_blank" style="color:#FF0000; font-size: 2.5rem; text-decoration: none; border-bottom: 3px solid #fff;">guns.lol/azmi</a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="settingsModal">
+        <div class="settings-card">
+            <h2 style="color: #FF0000; border-bottom: 2px solid #222; padding-bottom: 10px;">SETTINGS</h2>
+            <div class="setting-row">
+                <span>Music Toggle</span>
+                <div class="switch-track" id="musicToggle" onclick="toggleMusic()">
+                    <div class="switch-knob"></div>
+                </div>
+            </div>
+            <div class="setting-row">
+                <span>Volume</span>
+                <input type="range" id="volSlider" min="0" max="1" step="0.05" value="0.4" oninput="updateVol()">
+            </div>
+            <button class="help-btn" onclick="showHelp()">HOW TO USE SITE</button>
+            <button class="close-modal" onclick="toggleSettings()">BACK TO SITE</button>
+        </div>
     </div>
 
     <script>
@@ -261,20 +271,18 @@
         function toggleMusic() {
             if (music.paused) {
                 music.play().then(() => {
-                    mToggle.classList.add('active');
-                }).catch(e => alert("Please interact with the page first!"));
+                    mToggle.classList.add('on');
+                }).catch(e => alert("Interact with the site first!"));
             } else {
                 music.pause();
-                mToggle.classList.remove('active');
+                mToggle.classList.remove('on');
             }
         }
 
-        function updateVol() {
-            music.volume = volSlider.value;
-        }
+        function updateVol() { music.volume = volSlider.value; }
 
         function showHelp() {
-            alert("Honoured Inventory Guide:\n\n1. Navigation: Sidebar links.\n2. Settings: Use the slider to toggle music.\n3. Volume: Adjust the slider bar.\n4. Credits: Always credit AzmiYT.");
+            alert("1. Navigation: Use sidebar buttons.\n2. Music: Settings -> Slide Toggle.\n3. Volume: Adjust slider in settings.\n4. Credits: Always credit AzmiYT.");
         }
 
         function showPage(pageId, btn) {
