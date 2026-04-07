@@ -1,77 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
-    body {
-        background-color: #050505;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 50px;
-        font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
-    }
+    <meta charset="UTF-8">
+    <title>Arsenal UI Fix</title>
+    <style>
+        /* This section restores your "Dark Mode" and "Red Glow" */
+        body {
+            background-color: #050505;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px;
+            margin: 0;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive; /* Matches your hand-drawn font */
+        }
 
-    /* Common Container Style */
-    .ui-card {
-        background-color: #000;
-        border: 2px solid #ff0000;
-        box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
-        padding: 20px;
-        width: 600px;
-        position: relative;
-        margin-bottom: 15px; /* Spacing between cards */
-    }
+        .ui-container {
+            background-color: #000;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+            padding: 25px;
+            width: 80%;
+            max-width: 800px;
+            margin-bottom: 20px;
+            position: relative;
+            box-sizing: border-box;
+        }
 
-    .title {
-        text-transform: uppercase;
-        font-size: 22px;
-        letter-spacing: 1px;
-        margin: 0;
-    }
+        .ui-header {
+            color: #33aaff; /* The blue from your screenshot */
+            text-transform: uppercase;
+            font-size: 24px;
+            margin: 0 0 10px 0;
+        }
 
-    /* Health Indicator Color */
-    .health-title { color: #33aaff; }
-    
-    /* Arsenal Color */
-    .arsenal-title { color: #33aaff; }
+        .ui-description {
+            color: #888;
+            font-size: 16px;
+            margin: 0;
+        }
 
-    .description {
-        color: #a0a0a0;
-        margin-top: 10px;
-        font-size: 16px;
-    }
+        .view-code-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: transparent;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-family: inherit;
+        }
 
-    .view-btn {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        background: transparent;
-        border: 1px solid #444;
-        color: #fff;
-        padding: 8px 15px;
-        cursor: pointer;
-        font-family: inherit;
-        font-size: 14px;
-    }
-
-    .view-btn:hover {
-        background-color: #fff;
-        color: #000;
-    }
-</style>
+        .view-code-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="ui-card">
-        <button class="view-btn">VIEW CODE</button>
-        <h2 class="title health-title">HEALTH INDICATOR</h2>
-        <p class="description">Visual health bar customizer string.</p>
+    <div class="ui-container">
+        <button class="view-code-btn">VIEW CODE</button>
+        <h2 class="ui-header">HEALTH INDICATOR</h2>
+        <p class="ui-description">Visual health bar customizer string.</p>
     </div>
 
-    <div class="ui-card">
-        <button class="view-btn">VIEW CODE</button>
-        <h2 class="title arsenal-title">FULL ARSENAL CODE</h2>
-        <p class="description">Complete weapon library and combat logic strings.</p>
+    <div class="ui-container">
+        <button class="view-code-btn">VIEW CODE</button>
+        <h2 class="ui-header">FULL ARSENAL CODE</h2>
+        <p class="ui-description">Complete weapon library and combat logic strings.</p>
     </div>
 
 </body>
