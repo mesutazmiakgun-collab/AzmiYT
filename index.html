@@ -37,19 +37,18 @@
 
         h1 { font-size: 4.5rem; margin: 0; color: var(--p); text-shadow: 4px 4px 0 #fff; }
 
-        /* VIDEO FIX */
+        /* VIDEO */
         .vb { width: 100%; max-width: 850px; aspect-ratio: 16/9; border: 6px solid var(--p); box-shadow: 0 0 50px var(--p); background: #000; margin-top: 20px; position: relative; }
         .v-fix { position: absolute; inset: 0; z-index: 10; background: transparent; }
         .v-fix.off { pointer-events: none; }
 
-        /* CODE CARDS */
+        /* CARDS & INPUTS */
         .code-card { background: #050505; border: 2px solid var(--p); padding: 20px; margin: 20px 0; display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 750px; box-shadow: 0 0 15px var(--p); }
         .code-info { text-align: left; }
         .code-name { color: var(--s); font-size: 1.2rem; display: block; text-transform: uppercase; }
         .code-desc { font-size: 0.9rem; color: #888; margin: 5px 0 0; }
         .copy-btn { width: auto !important; padding: 10px 20px !important; margin: 0 !important; font-size: 0.8rem; }
 
-        /* TEXT AREAS */
         textarea { width: 100%; max-width: 850px; background: #050505; color: var(--s); border: 2px solid #333; padding: 20px; font-size: 1rem; resize: none; outline: none; box-shadow: inset 0 0 15px #000; transition: border 0.3s; }
         textarea:focus { border-color: var(--p); }
         #vault-text { height: 350px; font-family: monospace !important; margin-top: 20px; }
@@ -57,7 +56,7 @@
 
         .v-btns { display: flex; gap: 15px; width: 100%; max-width: 850px; margin-top: 20px; }
 
-        /* SETTINGS MODAL */
+        /* MODAL */
         .mo { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.95); z-index: 1000; justify-content: center; align-items: center; }
         .sc { background: #0a0a0a; border: 4px solid var(--p); width: 450px; padding: 30px; box-shadow: 0 0 30px var(--p); }
         .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -94,8 +93,14 @@
     <div class="mc" id="b">
         <div id="home" class="page active">
             <h1 class="glitch" style="animation: gl 3s infinite;">Home</h1>
-            <div style="font-size: 1.4rem; line-height: 1.6; max-width: 800px; margin: 25px 0 40px;">Welcome to THE HONOURED INVENTORY. Suit yourself.</div>
-            <div class="vb" onmouseleave="v_reset()"><div class="v-fix" id="vf" onclick="v_click()"></div><iframe src="https://www.youtube.com/embed/DUqZNqbLF5g" style="width:100%;height:100%;border:none" allowfullscreen></iframe></div>
+            <div style="font-size: 1.4rem; line-height: 1.6; max-width: 800px; margin: 25px 0 40px; text-align: center;">
+                Welcome to THE HONOURED INVENTORY. Suit yourself. Here you will find anything related to Honoured. 
+                Everything is made by Azmi/Lover. No one else has credit for this.
+            </div>
+            <div class="vb" onmouseleave="v_reset()">
+                <div class="v-fix" id="vf" onclick="v_click()"></div>
+                <iframe src="https://www.youtube.com/embed/DUqZNqbLF5g" style="width:100%;height:100%;border:none" allowfullscreen></iframe>
+            </div>
         </div>
 
         <div id="codes" class="page">
