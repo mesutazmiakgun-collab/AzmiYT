@@ -29,7 +29,7 @@
         
         .cat-title { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 3px; margin: 15px 0 10px 5px; border-bottom: 1px solid #222; padding-bottom: 5px; }
 
-        .nb { background: #000; border: 1px solid #444; color: #fff; padding: 12px; text-align: left; margin-bottom: 10px; width: 100%; display: block; text-decoration: none; transition: 0.2s; font-size: 0.9rem; }
+        .nb { background: #000; border: 1px solid #444; color: #fff; padding: 12px; text-align: left; margin-bottom: 10px; width: 100%; display: block; text-decoration: none; transition: 0.2s; font-size: 0.9rem; cursor: none; }
         .nb.active { border: 2px solid var(--s) !important; box-shadow: 0 0 20px var(--s); background: #001; }
         
         .soc-link { border-color: #333; color: #aaa; text-align: center; }
@@ -47,18 +47,14 @@
         /* FORMS */
         .f-container { width: 100%; max-width: 700px; display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
         input, textarea { width: 100%; background: #050505; color: var(--s); border: 2px solid #333; padding: 15px; font-size: 1rem; outline: none; transition: border 0.3s; border-radius: 5px; }
-        input:focus, textarea:focus { border-color: var(--p); }
-        textarea { resize: none; }
-
+        
         /* MODAL */
         .mo { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.95); z-index: 1000; justify-content: center; align-items: center; }
         .sc { background: #0a0a0a; border: 4px solid var(--p); width: 450px; padding: 30px; box-shadow: 0 0 30px var(--p); }
         .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .th { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; }
-        .sw { width: 60px; height: 28px; background: #222; border-radius: 50px; position: relative; border: 1px solid #444; cursor: pointer; }
+        .sw { width: 60px; height: 28px; background: #222; border-radius: 50px; position: relative; border: 1px solid #444; }
         .kn { width: 20px; height: 20px; background: #fff; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: .3s; }
-        .sw.on { background: #0056b3 !important; border-color: #0056b3; box-shadow: 0 0 10px #0056b3; } 
-        .sw.on .kn { transform: translateX(32px); }
+        .sw.on { background: #0056b3 !important; } .sw.on .kn { transform: translateX(32px); }
         
         .sk { animation: sk .2s ease-in-out; } 
         @keyframes sk { 0%,100%{transform:translateX(0)} 25%{transform:translateX(5px)} 75%{transform:translateX(-5px)} }
@@ -86,10 +82,8 @@
         <button id="btn-contact" class="nb" onclick="pg('contact',this)">Contact</button>
         
         <div class="cat-title">Channel Hub</div>
-        <a href="https://youtube.com/@azmi" target="_blank" class="nb soc-link">YOUTUBE</a>
-        <a href="https://guns.lol/azmi" target="_blank" class="nb soc-link">GUNS.LOL</a>
-        <a href="#" target="_blank" class="nb soc-link">DISCORD</a>
-        <a href="#" target="_blank" class="nb soc-link">TIKTOK</a>
+        <a href="https://youtube.com/@thehonouredbro" target="_blank" class="nb soc-link">YOUTUBE</a>
+        <a href="https://guns.lol/@azmi" target="_blank" class="nb soc-link">GUNS.LOL</a>
 
         <button class="set-btn" onclick="tog()">SETTINGS ⚙️</button>
     </div>
@@ -97,14 +91,11 @@
     <div class="mc" id="b">
         <div id="home" class="page active">
             <h1 class="glitch" style="animation: gl 3s infinite;">Home</h1>
-            <div style="font-size: 1.2rem; line-height: 1.6; max-width: 800px; margin: 25px 0 40px; text-align: center;">
-                Welcome to THE HONOURED INVENTORY. Suit yourself with any animation or moveset or codes for movesets.
-            </div>
+            <p style="font-size: 1.2rem; margin-top: 20px;">Welcome to THE HONOURED INVENTORY.</p>
         </div>
 
         <div id="suggest" class="page">
             <h1>Suggestions</h1>
-            <p style="color:#888">Feedback or ideas? Send them to the vault.</p>
             <div class="f-container">
                 <textarea id="suggest-text" style="height:200px" placeholder="I think you should add..."></textarea>
                 <button id="send-btn" class="nb active" style="text-align: center;" onclick="sendSuggest()">SEND TO VAULT</button>
@@ -113,7 +104,6 @@
 
         <div id="contact" class="page">
             <h1>Contact</h1>
-            <p style="color:#888">Professional inquiries or business. Sent to my primary inbox.</p>
             <div class="f-container">
                 <input type="text" id="c-subject" placeholder="Subject">
                 <textarea id="c-message" style="height:250px" placeholder="Your message..."></textarea>
@@ -128,42 +118,43 @@
 
     <div class="mo" id="sMod"><div class="sc">
         <h2 style="color:var(--p)">AURA SETTINGS</h2>
-        <div class="row"><span>Theme</span><div style="display:flex;gap:10px"><div class="th" style="background:red; cursor:pointer" onclick="th('red')"></div><div class="th" style="background:#007bff; cursor:pointer" onclick="th('blue')"></div><div class="th" style="background:#a333ff; cursor:pointer" onclick="th('purple')"></div><div class="th" style="background:#ffcc00; cursor:pointer" onclick="th('gold')"></div></div></div>
         <div class="row"><span>Music</span><div class="sw" id="mt" onclick="mu()"><div class="kn"></div></div></div>
         <button class="set-btn" onclick="tog()">CLOSE</button>
     </div></div>
 
     <script>
         const b = document.getElementById('b'), mod = document.getElementById('sMod'), music = document.getElementById('m'), side = document.getElementById('sidebar');
-        let pts = 0; let coords = { x: 0, y: 0 };
         const trs = document.querySelectorAll('.tr');
+        let coords = { x: 0, y: 0 };
 
-        // FORMSPREE IDs
-        const ID_SUGGEST = "xnjowojl";
-        const ID_CONTACT = "xdapbyva";
+        // NAVIGATION
+        function pg(id, btn) { 
+            const target = document.getElementById(id);
+            if(!target) return;
+            b.classList.add('sk'); setTimeout(()=>b.classList.remove('sk'),200); 
+            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); 
+            target.classList.add('active');
+            if(btn) { document.querySelectorAll('.nb').forEach(n=>n.classList.remove('active')); btn.classList.add('active'); }
+        }
 
+        // FORMSPREE LOGIC
         async function sendToFormspree(id, data, btnId) {
             const btn = document.getElementById(btnId);
             const originalText = btn.innerText;
             btn.innerText = "SENDING...";
-            btn.disabled = true;
             try {
                 const response = await fetch(`https://formspree.io/f/${id}`, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify(data) 
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) 
                 });
-                if(response.ok) alert("Sent successfully!");
-                else alert("Error sending.");
+                if(response.ok) alert("Successfully sent!"); else alert("Error sending.");
             } catch (e) { alert("Network error."); }
             btn.innerText = originalText;
-            btn.disabled = false;
         }
 
         function sendSuggest() {
             const msg = document.getElementById('suggest-text').value;
             if(!msg.trim()) return alert("Message cannot be empty.");
-            sendToFormspree(ID_SUGGEST, { category: "Suggestion", message: msg }, "send-btn");
+            sendToFormspree("xnjowojl", { category: "Suggestion", message: msg }, "send-btn");
             document.getElementById('suggest-text').value = "";
         }
 
@@ -171,22 +162,16 @@
             const sub = document.getElementById('c-subject').value;
             const msg = document.getElementById('c-message').value;
             if(!msg.trim()) return alert("Message cannot be empty.");
-            sendToFormspree(ID_CONTACT, { subject: sub, message: msg }, "contact-btn");
-            document.getElementById('c-subject').value = "";
-            document.getElementById('c-message').value = "";
+            sendToFormspree("xdapbyva", { subject: sub, message: msg }, "contact-btn");
+            document.getElementById('c-subject').value = ""; document.getElementById('c-message').value = "";
         }
 
-        // UI & NAVIGATION
+        // UI ACTIONS
         function tgs() { side.classList.toggle('hidden'); document.getElementById('m-tog').innerText = side.classList.contains('hidden') ? '»' : '«'; }
         function tog() { mod.style.display = (mod.style.display=='flex')?'none':'flex'; }
-        function pg(id, btn) { 
-            b.classList.add('sk'); setTimeout(()=>b.classList.remove('sk'),200); 
-            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); 
-            if(btn) { document.querySelectorAll('.nb').forEach(n=>n.classList.remove('active')); btn.classList.add('active'); }
-            document.getElementById(id).classList.add('active'); 
-        }
+        function mu() { if(music.paused){ music.play(); document.getElementById('mt').classList.add('on'); } else { music.pause(); document.getElementById('mt').classList.remove('on'); } }
 
-        // CURSOR TRAIL
+        // MOUSE TRAIL
         document.addEventListener('mousemove', e => { coords.x = e.clientX; coords.y = e.clientY; });
         function updateTrail() {
             let x = coords.x; let y = coords.y;
@@ -198,12 +183,8 @@
         }
         updateTrail();
 
-        function th(c) { 
-            const ths = { red:['#f00','#5ab9ff','#300'], blue:['#007bff','#fff','#001'], purple:['#a333ff','#ff00ff','#101'], gold:['#ffcc00','#fff','#220'] };
-            const t=ths[c]; document.documentElement.style.setProperty('--p',t[0]); document.documentElement.style.setProperty('--s',t[1]); document.documentElement.style.setProperty('--g',t[2]); 
-        }
-        function mu() { if(music.paused){ music.play(); document.getElementById('mt').classList.add('on'); } else { music.pause(); document.getElementById('mt').classList.remove('on'); } }
-
+        // RANK SYSTEM
+        let pts = 0;
         setInterval(() => { pts++; const rk=["UNRANKED","GRADE 4","GRADE 3","GRADE 2","GRADE 1","SPECIAL GRADE","HONOURED"]; document.getElementById('r').innerText="RANK: "+rk[Math.min(Math.floor(pts/10),6)]; }, 1000);
     </script>
 </body>
