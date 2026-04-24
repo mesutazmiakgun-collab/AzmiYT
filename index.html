@@ -4,237 +4,421 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Honoured | Absolute Inventory</title>
-    <link href="https://fonts.googleapis.com/css2?family=Finger+Paint&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Modern Sci-Fi Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        /* =========================================
+           1. CORE THEME & LAYOUT (CYBER-DASH)
+           ========================================= */
         :root { 
-            --primary: #f00; 
-            --accent: #00e5ff;
-            --bg-dark: #0a0a0a;
-            --glass: rgba(20, 20, 20, 0.8);
-            --border-glow: rgba(255, 0, 0, 0.3);
+            --p: #f00; /* Primary Neon Red */
+            --s: #00e5ff; /* Secondary Cyan */
+            --bg-deep: #050507; /* Base Background */
+            --panel-bg: rgba(20, 25, 30, 0.6); /* Glassmorphism Base */
+            --border-neon-r: rgba(255, 0, 0, 0.4);
+            --border-neon-c: rgba(0, 229, 255, 0.4);
+            --glow-r: 0 0 15px rgba(255, 0, 0, 0.7);
+            --glow-c: 0 0 15px rgba(0, 229, 255, 0.7);
+            
+            --main-font: 'Rajdhani', sans-serif;
+            --h-font: 'Orbitron', sans-serif;
         }
 
         * { 
             box-sizing: border-box; 
             scrollbar-width: none; 
-            cursor: none;
+            cursor: none !important; /* Force custom cursor */
         }
-        *::-webkit-scrollbar { display: none; }
+        *::-webkit-scrollbar { display: none !important; }
 
         body { 
-            background: var(--bg-dark);
-            color: #eee;
-            margin: 0;
-            font-family: 'Finger Paint', cursive;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
+            background: var(--bg-deep); 
+            color: #fff; 
+            margin: 0; 
+            display: flex; 
+            height: 100vh; 
+            overflow: hidden; 
+            font-family: var(--main-font);
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            
+            /* CSS GRID BACKGROUND ALTERNATIVE */
             background-image: 
-                radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
-            background-size: 40px 40px;
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
 
-        /* --- CURSOR SYSTEM --- */
-        #cursor { position: fixed; width: 10px; height: 10px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 9999999; transform: translate(-50%, -50%); mix-blend-mode: difference; transition: transform 0.1s; }
-        #trail { position: fixed; width: 30px; height: 30px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999998; transform: translate(-50%, -50%); transition: 0.15s ease-out; box-shadow: 0 0 15px var(--accent); }
+        h1, h2, h3 { font-family: var(--h-font); text-transform: uppercase; margin: 0; }
 
-        /* --- SIDEBAR REDESIGN --- */
-        .sidebar { 
-            width: 300px; 
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border-right: 1px solid var(--primary);
-            display: flex;
-            flex-direction: column;
-            padding: 40px 20px;
-            z-index: 1000;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        /* =========================================
+           2. CURSOR SYSTEM (AS DESIGNED)
+           ========================================= */
+        #cursor { 
+            position: fixed; width: 14px; height: 14px; 
+            background: #fff; border-radius: 50%; 
+            pointer-events: none; z-index: 10000; 
+            transform: translate(-50%, -50%); 
+            box-shadow: 0 0 10px #fff; 
+            transition: width 0.2s, height 0.2s;
+        }
+        #trail { 
+            position: fixed; width: 30px; height: 30px; 
+            border: 2px solid var(--p); border-radius: 50%; 
+            pointer-events: none; z-index: 9999; 
+            transform: translate(-50%, -50%); 
+            opacity: 0.6; transition: 0.1s ease-out;
+            box-shadow: 0 0 20px var(--p);
+        }
+
+        /* =========================================
+           3. SIDEBAR (VERTICAL PANEL)
+           ========================================= */
+        .sd { 
+            width: 320px; 
+            background: var(--panel-bg); 
+            border-right: 1px solid var(--border-neon-c); 
             box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; 
+            padding: 40px 25px; z-index: 1000; 
+            transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .sd.hidden { margin-left: -320px; }
+        
+        /* Sidebar branding matching image */
+        .branding { text-align: left; margin-bottom: 50px; position: relative;}
+        .branding h2 { font-size: 1.8rem; line-height: 1.1; font-weight: 700;}
+        .branding h2 span { color: var(--s); display: block; font-size: 1.4rem; font-weight: 400; letter-spacing: 2px;}
+        .status-block { margin-top: 15px; color: var(--s); font-size: 0.8rem; font-family: monospace; border-top: 1px solid rgba(0,229,255,0.2); padding-top: 10px;}
+
+        /* =========================================
+           4. NAV BUTTONS & INTERACTIVES
+           ========================================= */
+        .nb { 
+            width: 100%; padding: 16px 20px; margin-bottom: 12px; 
+            background: rgba(255,255,255,0.02); 
+            border: 1px solid rgba(255,255,255,0.05); 
+            color: #aaa; text-align: left; 
+            border-radius: 4px; font-family: var(--h-font); 
+            font-size: 0.9rem; font-weight: 600; text-transform: uppercase;
+            transition: 0.3s; display: flex; align-items: center; gap: 12px;
+        }
+        
+        /* Active & Hover states with Red Glow */
+        .nb:hover { background: rgba(255,0,0,0.03); color: #fff; border-color: rgba(255,0,0,0.3); padding-left: 25px;}
+        .nb.active { 
+            background: rgba(255, 0, 0, 0.1); 
+            border-color: var(--p); 
+            color: #fff; 
+            box-shadow: var(--glow-r);
+        }
+        .nb.active svg { fill: #fff; }
+
+        /* Icon styling */
+        .nb svg { width: 18px; height: 18px; fill: #666; transition: 0.3s; }
+
+        /* Toggle Button styling */
+        #tog { 
+            position: fixed; top: 15px; left: 260px; z-index: 1100; 
+            background: var(--panel-bg); border: 1px solid var(--border-neon-c); color: var(--s); 
+            width: 45px; height: 45px; border-radius: 8px; font-family: monospace;
+            box-shadow: var(--glow-c); transition: 0.4s;
+        }
+        .sd.hidden #tog { left: 15px; transform: rotate(180deg);}
+
+        /* =========================================
+           5. MAIN CONTENT (DASHBOARD GRID)
+           ========================================= */
+        .mc { flex: 1; padding: 60px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; position: relative; }
+        
+        /* Section styling matching image */
+        .pg { display: none; width: 100%; max-width: 1200px; grid-template-columns: 2fr 1fr; gap: 40px; }
+        .pg.active { display: grid; }
+        
+        /* Left Column */
+        .col-main { display: flex; flex-direction: column; gap: 30px; }
+        /* Right Column */
+        .col-side { display: flex; flex-direction: column; gap: 30px; }
+
+        .section-header { 
+            font-size: 2.2rem; margin-bottom: 10px; 
+            border-left: 4px solid var(--p); padding-left: 15px; 
+            color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
-        .sidebar.hidden { transform: translateX(-100%); }
-
-        #toggle-btn {
-            position: fixed; top: 25px; left: 20px; z-index: 2000;
-            background: var(--primary); border: none; color: white;
-            width: 45px; height: 45px; border-radius: 8px; font-weight: bold;
-            box-shadow: 0 0 15px var(--primary); transition: 0.3s;
+        /* Glass Cards with Cyan Borders */
+        .card { 
+            background: var(--panel-bg); 
+            border: 1px solid var(--border-neon-c); 
+            padding: 30px; border-radius: 12px; 
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
         }
+        .card:hover { border-color: var(--s); box-shadow: var(--glow-c); }
+        .card h3 { font-size: 1.2rem; color: #fff; margin-bottom: 15px;}
+        .card p { color: #ccc; line-height: 1.6; margin: 0 0 15px 0;}
 
-        .branding h2 { 
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4rem; letter-spacing: 2px; margin-bottom: 40px; 
-        }
-        .branding span { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-
-        /* --- NAVIGATION BUTTONS --- */
-        .nav-btn {
-            width: 100%; padding: 15px; margin-bottom: 10px;
-            background: transparent; border: 1px solid rgba(255,255,255,0.1);
-            color: #888; text-align: left; transition: 0.3s;
-            border-radius: 4px; position: relative; overflow: hidden;
-        }
-
-        .nav-btn:hover, .nav-btn.active {
-            color: #fff; border-color: var(--primary);
-            background: linear-gradient(90deg, rgba(255,0,0,0.1) 0%, transparent 100%);
-            padding-left: 25px;
-        }
-
-        /* --- CONTENT AREA --- */
-        .main-content { 
-            flex: 1; padding: 80px; overflow-y: auto; 
-            display: flex; flex-direction: column; align-items: center;
-        }
-
-        .page { display: none; width: 100%; max-width: 900px; animation: fadeIn 0.5s ease; }
-        .page.active { display: flex; flex-direction: column; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- GLASS CARDS --- */
-        .card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 25px; border-radius: 12px; margin-bottom: 20px;
-            transition: 0.3s; border-left: 5px solid var(--primary);
-        }
-        .card:hover { transform: scale(1.02); background: rgba(255,255,255,0.05); border-color: var(--primary); }
-
-        /* --- INPUTS & BUTTONS --- */
-        .action-btn {
-            background: var(--primary); color: white; border: none;
-            padding: 12px 28px; border-radius: 4px; font-weight: bold;
+        /* Standard Buttons with Red Glow */
+        .btn { 
+            background: rgba(200, 0, 0, 0.2); 
+            color: #fff; border: 1px solid var(--p); 
+            padding: 12px 24px; border-radius: 4px; 
+            font-family: var(--h-font); font-weight: 700; 
             text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4); transition: 0.3s;
+            box-shadow: var(--glow-r); transition: 0.3s;
         }
-        .action-btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        .btn:hover { background: rgba(255, 0, 0, 0.5); transform: scale(1.03); }
 
-        /* --- MODAL --- */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-        .modal-content { 
-            background: #111; border: 1px solid var(--accent); padding: 40px; 
-            width: 450px; border-radius: 15px; box-shadow: 0 0 50px rgba(0,229,255,0.2);
+        /* Youtube Container */
+        .vid-frame { 
+            width:100%; aspect-ratio:16/9; 
+            border:2px solid var(--border-neon-r); 
+            border-radius:12px; overflow:hidden; 
+            background:#000; box-shadow: var(--glow-r);
         }
 
-        .glitch-text { animation: glitch 0.4s infinite alternate; }
-        @keyframes glitch { 0% { text-shadow: 2px 0 red, -2px 0 blue; } 100% { text-shadow: -2px 0 red, 2px 0 blue; } }
+        /* Forms & Textareas */
+        input, textarea { 
+            width: 100%; background: rgba(0,0,0,0.3); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            color: #fff; padding: 15px; border-radius: 4px; 
+            font-family: inherit; margin-bottom: 15px;
+            transition: 0.3s;
+        }
+        input:focus, textarea:focus { 
+            outline: none; border-color: var(--s); 
+            background: rgba(0,229,255,0.05);
+        }
+
+        /* Code display specific */
+        .code-display { 
+            background: #000; border: 2px solid var(--p); 
+            color: var(--s); padding: 25px; 
+            font-family: 'Courier New', monospace; font-size: 1.1rem; 
+            border-radius: 8px; box-shadow: var(--glow-r);
+            text-align: center; margin-bottom: 20px;
+        }
+
+        /* =========================================
+           6. MODAL (SYSTEM OVERRIDE)
+           ========================================= */
+        .mo { 
+            display: none; position: fixed; inset: 0; 
+            background: rgba(0,0,0,0.9); z-index: 4000; 
+            justify-content: center; align-items: center; 
+            backdrop-filter: blur(15px);
+        }
+        .sc { 
+            background: #080808; border: 2px solid var(--border-neon-c); 
+            width: 500px; padding: 40px; border-radius: 12px; 
+            box-shadow: var(--glow-c); text-align: center;
+        }
+        .sc h2 { color: var(--s); margin-bottom: 30px; }
+
+        /* Slider styling */
+        input[type="range"] { -webkit-appearance: none; background: rgba(255,255,255,0.05); height: 8px; border-radius: 4px; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: var(--s); border-radius: 50%; box-shadow: var(--glow-c); }
+
     </style>
 </head>
 <body onclick="playSfx()">
+    
+    <audio id="sfx_click" src="https://www.fesliyanstudios.com/play-mp3/387"></audio>
+    <audio id="bgm" loop><source src="Let It Ride - Anno Domini Beats.mp3"></audio>
 
-    <audio id="sfx_click" src="https://www.fesliyanstudios.com/play-mp3/387"></audio>
-    <audio id="bgm" loop><source src="Let It Ride - Anno Domini Beats.mp3"></audio>
+    <div id="cursor"></div>
+    <div id="trail"></div>
 
-    <div id="cursor"></div>
-    <div id="trail"></div>
+    <!-- SIDEBAR (VERTICAL PANEL) -->
+    <div class="sd" id="side">
+        <button id="tog" onclick="togS()">»</button>
+        <div class="branding">
+            <h2 id="b-text">HONOURED<span>INVENTORY</span></h2>
+            <div class="status-block">SYSTEM: [ACTIVE]<br>AES-256 ENCRYPTED</div>
+        </div>
+        
+        <button class="nb active" onclick="nav('h',this)"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> HOME</button>
+        <button class="nb" onclick="nav('c',this)"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> CODES</button>
+        <button class="nb" onclick="nav('m',this)"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.29 16.29L5.7 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.59 7.59c-.38.39-1.02.39-1.41 0z"/></svg> MOVESETS</button>
+        <button class="nb" onclick="nav('a',this)"><svg viewBox="0 0 24 24"><path d="M13.5 1.5c-3.3 0-6 2.7-6 6 0 2.2 1.2 4.1 3 5.2v3.3c-2.4-.7-4.2-2.9-4.2-5.5v-1c0-1.7 1.3-3 3-3V5c-2.8 0-5 2.2-5 5v1c0 2 1 3.8 2.6 4.9L6 19.1c-.6.6-.6 1.5 0 2.1l1.4 1.4c.6.6 1.5.6 2.1 0l3-3c2 1 4.5.5 6-1.1 1.6-1.6 2-4.1 1-6l-3 3-1.4-1.4 3-3c-.8-1.5-2.2-2.6-3.8-2.9l1.6-3.7c.3-.8 0-1.7-.8-2-.3-.1-.6-.2-.9-.2z"/></svg> ANIMATIONS</button>
+        <button class="nb" onclick="nav('co',this)"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 1.99 2H20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg> CONTACT</button>
+        
+        <button class="nb" style="margin-top:auto; border-color:var(--border-neon-c); color:var(--s); box-shadow: var(--glow-c);" onclick="togM()"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg> SYSTEM OVERRIDE</button>
+    </div>
 
-    <button id="toggle-btn" onclick="toggleSidebar()">☰</button>
-
-    <div class="sidebar" id="sidebar">
-        <div class="branding">
-            <h2 id="brand-logo" class="glitch-text">HONOURED<br><span>INVENTORY</span></h2>
-        </div>
-        
-        <button class="nav-btn active" onclick="nav('h',this)">01. HOME</button>
-        <button class="nav-btn" onclick="nav('c',this)">02. CODES</button>
-        <button class="nav-btn" onclick="nav('m',this)">03. MOVESETS</button>
-        <button class="nav-btn" onclick="nav('a',this)">04. ANIMATIONS</button>
-        <button class="nav-btn" onclick="nav('co',this)">05. CONTACT</button>
-        
-        <button class="nav-btn" style="margin-top:auto; border-color:var(--accent); color:var(--accent);" onclick="toggleModal()">⚙️ SYSTEM OVERRIDE</button>
-    </div>
-
-    <div class="main-content">
-        <!-- Home -->
-        <div id="h" class="page active">
-            <h1 style="font-family: 'Orbitron';">DASHBOARD</h1>
-            <div class="card">
-                <p style="color: var(--accent);">STATUS: CONNECTED // ENCRYPTION: AES-256</p>
-                <p>Welcome to the custom toolset. Use of strings is at your own discretion. Stay Honoured.</p>
-            </div>
-            <div style="width:100%; aspect-ratio:16/9; border:1px solid var(--primary); border-radius:12px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/7E-KYBDySz8" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
-
-        <!-- Codes -->
-        <div id="c" class="page">
-            <h1 style="font-family: 'Orbitron';">ARCHIVE</h1>
-            <div id="c-list">
-                <div class="card">
-                    <h3>Health Indicator UI</h3>
-                    <p>Standard HP/Stamina overlay for combat data.</p>
-                    <button class="action-btn" onclick="openCode('HEALTH_UI_V4_AURA')">Access Data</button>
+    <!-- MAIN CONTENT (DASHBOARD GRID) -->
+    <div class="mc">
+        <!-- Home Page -->
+        <div id="h" class="pg active">
+            <div class="col-main">
+                <h1 class="section-header">SYSTEM DASHBOARD</h1>
+                <div class="card" style="border-left: 4px solid var(--p);">
+                    <h3>Welcome, Operative.</h3>
+                    <p>HONOURED DEV TEAM INVENTORY TOOLSET ACTIVE.<br>Access, view, and utilize strings with discretion. Stay Honoured.</p>
+                </div>
+                <div class="vid-frame">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/7E-KYBDySz8" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="card" style="font-family: monospace; color: var(--s); text-align:center;">
+                    > INVENTORY LOG: 2 STRINGS FOUND...
                 </div>
             </div>
-            <div id="c-sub" style="display:none; width:100%">
-                <button class="action-btn" style="background:#222; margin-bottom:20px;" onclick="closeCode()">« Return</button>
-                <textarea id="code-box" readonly style="width:100%; height:250px; background:#000; border:1px solid var(--primary); color:var(--accent); padding:20px; font-family: monospace; border-radius:8px;"></textarea>
-                <button class="action-btn" style="width:100%; background:var(--accent); color:#000; margin-top:20px;" onclick="copyCode()">Copy Data Sequence</button>
+            
+            <div class="col-side">
+                <h1 class="section-header">QUICK ACCESS</h1>
+                <div class="card">
+                    <h3>Health UI</h3>
+                    <p>Standard HP/Stamina overlay sequence.</p>
+                    <button class="btn" onclick="nav('c',document.querySelectorAll('.nb')[1])">Open Archive</button>
+                </div>
             </div>
-        </div>
-    </div>
+        </div>
 
-    <!-- System Modal -->
-    <div class="modal" id="sys-modal">
-        <div class="modal-content">
-            <h2 style="color:var(--accent); font-family: 'Orbitron';">SYSTEM SETTINGS</h2>
-            <hr style="border-color: rgba(255,255,255,0.1);">
-            <div style="margin: 20px 0;">
-                <p>Volume Control</p>
-                <input type="range" style="width:100%; accent-color: var(--primary);" oninput="setV(this.value)">
+        <!-- Codes Page -->
+        <div id="c" class="pg">
+            <div class="col-main">
+                <h1 class="section-header">ARCHIVE: CODES</h1>
+                <div id="c-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="card">
+                        <h3>Health Indicator UI</h3>
+                        <p>Combat data overlay V4.</p>
+                        <button class="btn" onclick="openCode('HEALTH_UI_V4_AURA')">VIEW SEQUENCE</button>
+                    </div>
+                    <div class="card">
+                        <h3>Full Arsenal</h3>
+                        <p>Unlock all special grade slots.</p>
+                        <button class="btn" onclick="openCode('ARSENAL_LOADOUT_SPECIAL')">VIEW SEQUENCE</button>
+                    </div>
+                </div>
+                
+                <div id="c-sub" style="display:none; width:100%">
+                    <button class="btn" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.2); margin-bottom:20px;" onclick="closeCode()">« Return</button>
+                    <div class="code-display" id="code-box"></div>
+                    <button class="btn" style="width:100%;" onclick="copyCode()">COPY ENTIRE SEQUENCE</button>
+                </div>
             </div>
-            <button class="action-btn" style="width:100%;" onclick="toggleModal()">Close Override</button>
+        </div>
+
+        <!-- Placeholder Pages -->
+        <div id="m" class="pg">
+            <div class="col-main"><h1 class="section-header">MOVESETS</h1><div class="card"><p>Awaiting Data Transmission...</p></div></div>
         </div>
-    </div>
+        <div id="a" class="pg">
+            <div class="col-main"><h1 class="section-header">ANIMATIONS</h1><div class="card"><p>Awaiting Data Transmission...</p></div></div>
+        </div>
 
-    <script>
-        // Enhanced Sidebar Toggle
-        function toggleSidebar() {
-            const sb = document.getElementById('sidebar');
-            sb.classList.toggle('hidden');
-            document.getElementById('toggle-btn').style.left = sb.classList.contains('hidden') ? '20px' : '260px';
-        }
+        <!-- Contact Page -->
+        <div id="co" class="pg">
+            <div class="col-main">
+                <h1 class="section-header">SYSTEM TRANSMISSION</h1>
+                <div class="card">
+                    <input type="text" id="co-title" placeholder="Topic / Protocol ID">
+                    <textarea id="co-msg" placeholder="Message content..." style="height: 200px;"></textarea>
+                    <button class="btn" style="width:100%;" onclick="send('xdapbyva', 'co-msg', 'co-title')">TRANSMIT MESSAGE</button>
+                </div>
+            </div>
+            <div class="col-side">
+                <h1 class="section-header">SUGGESTIONS</h1>
+                <div class="card">
+                    <textarea id="s-msg" placeholder="What should we add to the inventory?" style="height: 150px;"></textarea>
+                    <button class="btn" style="width:100%; background:rgba(0,229,255,0.1); border-color:var(--border-neon-c); color:var(--s); box-shadow:var(--glow-c);" onclick="send('xnjowojl', 's-msg')">SUBMIT LOG</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Navigation
-        function nav(id, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
+    <!-- MODAL (SYSTEM OVERRIDE) -->
+    <div class="mo" id="mod">
+        <div class="sc">
+            <h2>SYSTEM SETTINGS</h2>
+            <p style="color: #888; margin-bottom: 30px;">Adjust environmental parameters below.</p>
+            
+            <div style="margin-bottom:30px;">
+                <div style="display:flex; justify-content:space-between; color:var(--s); margin-bottom:10px;">
+                    <span>Aura Volume</span><span id="v-val">50%</span>
+                </div>
+                <input type="range" min="0" max="100" value="50" style="width:100%;" oninput="setV(this.value)">
+            </div>
+            
+            <button class="btn" style="width:100%;" onclick="togM()">EXIT OVERRIDE</button>
+        </div>
+    </div>
+
+    <script>
+        // Core Audio Setup
+        const b = document.getElementById('bgm'), sfx = document.getElementById('sfx_click');
+        function playSfx() { sfx.currentTime = 0; sfx.play(); }
+
+        // Sidebar Toggle with dynamic positioning
+        function togS() { 
+            const side = document.getElementById('side');
+            side.classList.toggle('hidden');
+            // document.getElementById('tog').innerText = side.classList.contains('hidden') ? '«' : '»';
         }
+        
+        // Navigation Logic
+        function nav(id, el) {
+            document.querySelectorAll('.pg').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nb').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            closeCode();
+            if(window.innerWidth < 1000) togS(); // Auto-close sidebar on mobile nav
+        }
 
         // Modal Logic
-        function toggleModal() {
-            const m = document.getElementById('sys-modal');
-            m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
-        }
+        function togM() { const m = document.getElementById('mod'); m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; }
 
-        // Cursor Logic
-        window.addEventListener('mousemove', e => {
-            const c = document.getElementById('cursor'), t = document.getElementById('trail');
-            c.style.left = e.clientX+'px'; c.style.top = e.clientY+'px';
-            t.style.left = e.clientX+'px'; t.style.top = e.clientY+'px';
-        });
-
-        // Code Access
-        function openCode(str) { 
+        // Code Viewer Logic
+        function openCode(str) { 
             document.getElementById('c-list').style.display='none'; 
             document.getElementById('c-sub').style.display='block'; 
-            document.getElementById('code-box').value=str; 
+            document.getElementById('code-box').innerText=str; 
         }
-        function closeCode() { 
-            document.getElementById('c-list').style.display='block'; 
+        function closeCode() { 
+            document.getElementById('c-list').style.display='grid'; 
             document.getElementById('c-sub').style.display='none'; 
         }
-        function copyCode() { 
-            document.getElementById('code-box').select(); 
-            document.execCommand('copy'); 
-            alert("Sequence Copied to Clipboard."); 
+        function copyCode() { 
+            const codeText = document.getElementById('code-box').innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                alert("Sequence Copied.");
+            });
         }
 
-        function playSfx() { document.getElementById('sfx_click').play(); }
-    </script>
+        // Settings Logic
+        function setV(v) { b.volume = v/100; document.getElementById('v-val').innerText = v+"%"; if(v>0 && b.paused) b.play(); }
+
+        // Custom Cursor Movement
+        window.addEventListener('mousemove', e => {
+            const c = document.getElementById('cursor'), t = document.getElementById('trail');
+            c.style.left = e.clientX+'px'; c.style.top = e.clientY+'px';
+            // Smooth trail logic
+            setTimeout(() => { t.style.left = e.clientX+'px'; t.style.top = e.clientY+'px'; }, 50);
+        });
+        
+        // Cursor Click Interaction
+        window.addEventListener('mousedown', () => {
+             document.getElementById('cursor').style.width = '10px';
+             document.getElementById('cursor').style.height = '10px';
+        });
+        window.addEventListener('mouseup', () => {
+             document.getElementById('cursor').style.width = '14px';
+             document.getElementById('cursor').style.height = '14px';
+        });
+
+        // Formspree Integration
+        async function send(fid, iid, sid=null) {
+            const m = document.getElementById(iid).value, t = sid ? document.getElementById(sid).value : "System Feedback";
+            if(!m) return;
+            const btn = event.target; btn.innerText = "TRANSMITTING..."; btn.disabled = true;
+            await fetch(`https://formspree.io/f/${fid}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subject: t, message: m }) });
+            alert("Sent."); document.getElementById(iid).value = "";
+            btn.innerText = "TRANSMIT MESSAGE"; btn.disabled = false;
+        }
+        
+    </script>
 </body>
 </html>
