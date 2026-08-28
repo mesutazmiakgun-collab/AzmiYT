@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Hidden Inventory V6</title>
+<title>Hidden Inventory V7</title>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
@@ -312,10 +312,67 @@ body.theme-gold{background:
 .secret-bar{height:12px;border-radius:20px;background:#080808;border:1px solid #ffffff20;overflow:hidden}.secret-fill{height:100%;width:0;background:linear-gradient(90deg,#62cfff,#b77cff,#ff5c6c,#5cff9b,#ffd45c,#00fff0,#ff00aa);transition:width .2s}.secret-progress-card{display:none}.secret-progress-card.found{display:block}
 .music-controls{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}.music-controls button{padding:10px 14px;border-radius:10px;background:#111419;border:1px solid #ffffff12;color:#fff;cursor:pointer}.master-volume{width:min(420px,100%);accent-color:var(--accent,#62cfff)}
 @media(max-width:850px){.sidebar{width:calc(100% - 30px);height:auto;max-height:48vh;bottom:auto;left:15px;top:15px}.content{margin-left:0;padding:52vh 20px 40px}.sidebar-footer{position:relative;left:auto;right:auto;bottom:auto;margin-top:15px}}
+
+/* V7 ADDITIONS */
+.stat.clickable{cursor:pointer}
+.stat.clickable:hover{transform:translateY(-5px) scale(1.01)}
+.favorite-btn{position:absolute;right:14px;top:14px;border:1px solid #ffffff14;background:#080a0d99;color:#777;border-radius:9px;width:36px;height:36px;font-size:20px;cursor:pointer;transition:.2s}
+.favorite-btn:hover,.favorite-btn.fav{color:#ffd45c;border-color:#ffd45c66;box-shadow:0 0 15px #ffd45c22}
+.card.has-favorite{padding-right:58px}
+.news-card{border-left:3px solid var(--accent,#62cfff)}
+.news-date{color:#666;font-size:15px;margin-bottom:7px}
+.news-version{color:var(--accent,#62cfff);font-size:17px}
+.achievement{display:flex;align-items:center;gap:15px}
+.achievement-icon{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;background:#ffffff08;border:1px solid #ffffff12;font-size:25px;flex-shrink:0}
+.achievement.locked{opacity:.45;filter:grayscale(1)}
+.achievement.unlocked{border-color:#ffd45c44;box-shadow:0 0 20px #ffd45c10}
+.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.status-item{padding:16px;border-radius:14px;background:#ffffff05;border:1px solid #ffffff0d}
+.random-result{margin-top:15px;display:none}
+.random-result.show{display:block;animation:show .3s forwards}
+.recent-list{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.recent-chip{border:1px solid #ffffff12;background:#ffffff06;color:#aaa;padding:7px 11px;border-radius:9px;cursor:pointer}
+.recent-chip:hover{color:#fff;border-color:var(--accent-border,#62cfff55)}
+.settings-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:13px 0;border-bottom:1px solid #ffffff0a}
+.settings-row:last-child{border-bottom:0}
+.toggle{min-width:90px}
+.boot-screen{position:fixed;inset:0;background:#030507;z-index:200000;display:flex;align-items:center;justify-content:center;transition:opacity .5s}
+.boot-screen.done{opacity:0;pointer-events:none;visibility:hidden}
+.boot-box{width:min(520px,90%);font-family:monospace}
+.boot-title{font-size:42px;color:#62cfff;text-shadow:0 0 20px #62cfff55}
+.boot-text{color:#777;margin-top:12px;font-family:monospace}
+.boot-msg{display:none}
+.boot-msg-1{display:inline;animation:msg1 5s steps(1,end) forwards}
+.boot-msg-2{animation:msg2 5s steps(1,end) forwards}
+.boot-msg-3{animation:msg3 5s steps(1,end) forwards}
+.boot-msg-4{animation:msg4 5s steps(1,end) forwards}
+.boot-msg-5{animation:msg5 5s steps(1,end) forwards}
+@keyframes msg1{0%,19.9%{display:inline}20%,100%{display:none}}
+@keyframes msg2{0%,19.9%{display:none}20%,39.9%{display:inline}40%,100%{display:none}}
+@keyframes msg3{0%,39.9%{display:none}40%,59.9%{display:inline}60%,100%{display:none}}
+@keyframes msg4{0%,59.9%{display:none}60%,79.9%{display:inline}80%,100%{display:none}}
+@keyframes msg5{0%,79.9%{display:none}80%,100%{display:inline}}
+.boot-track{height:6px;background:#111;margin-top:20px;border-radius:10px;overflow:hidden}
+.boot-fill{height:100%;width:0;background:var(--accent,#62cfff);transition:width .12s}
+@media(max-width:600px){.settings-row{align-items:flex-start;flex-direction:column}.boot-title{font-size:32px}}
+
 </style>
 </head>
 
 <body>
+<div class="boot-screen" id="bootScreen">
+  <div class="boot-box">
+    <div class="boot-title">HIDDEN INVENTORY</div>
+    <div class="boot-text" id="bootText">
+      <span class="boot-msg boot-msg-1">Initializing inventory...</span>
+      <span class="boot-msg boot-msg-2">Loading database...</span>
+      <span class="boot-msg boot-msg-3">Preparing interface...</span>
+      <span class="boot-msg boot-msg-4">Checking local systems...</span>
+      <span class="boot-msg boot-msg-5">Inventory online.</span>
+    </div>
+    <div class="boot-track"><div class="boot-fill" id="bootFill"></div></div>
+  </div>
+</div>
 
 <canvas id="particles"></canvas>
 <div class="cursor" id="cursor"></div>
@@ -335,7 +392,10 @@ body.theme-gold{background:
         <button onclick="showPage('moves',this)">⚔️ Movesets <span class="nav-key">3</span></button>
         <button onclick="showPage('animations',this)">🎞️ Animations <span class="nav-key">4</span></button>
         <button onclick="showPage('contact',this)">💬 Contact <span class="nav-key">5</span></button>
-        <button onclick="showPage('settings',this)">⚙️ Settings <span class="nav-key">6</span></button>
+        <button onclick="showPage('news',this)">📰 News <span class="nav-key">6</span></button>
+        <button onclick="showPage('achievements',this)">🏆 Achievements <span class="nav-key">7</span></button>
+        <button onclick="showPage('status',this)">📡 Status <span class="nav-key">8</span></button>
+        <button onclick="showPage('settings',this)">⚙️ Settings <span class="nav-key">9</span></button>
     </nav>
 
     <div class="sidebar-footer">
@@ -365,6 +425,7 @@ body.theme-gold{background:
         <div class="hero-actions">
             <button class="primary-btn" onclick="showPage('codes',document.querySelectorAll('.nav button')[1])">View Codes</button>
             <button class="secondary-btn" onclick="showPage('moves',document.querySelectorAll('.nav button')[2])">Explore Movesets</button>
+            <button class="secondary-btn" onclick="randomItem()">🎲 Random Item</button>
         </div>
     </div>
 
@@ -375,6 +436,9 @@ body.theme-gold{background:
         <div class="stat"><div class="stat-number">LIVE</div><div class="stat-label">Inventory Status</div></div>
     </div>
 
+    <div class="card random-result" id="randomResult"></div>
+    <div class="section-title">Recently Viewed</div>
+    <div class="card"><p>Your recently opened sections appear here.</p><div class="recent-list" id="recentList"></div></div>
     <div class="section-title">Quick Access</div>
 
     <div class="grid">
@@ -410,275 +474,5 @@ body.theme-gold{background:
 
     <div class="grid searchable">
 
-        <div class="card code">
-            <div>
-                <div class="code-name">WELCOME</div>
-                <div class="code-value">Reward: Free Items</div>
-                <span class="tag green">Working</span>
-            </div>
-            <button class="copy" onclick="copyCode('WELCOME')">Copy</button>
-        </div>
-
-        <div class="card code">
-            <div>
-                <div class="code-name">UPDATE1</div>
-                <div class="code-value">Reward: Unknown</div>
-                <span class="tag green">Working</span>
-            </div>
-            <button class="copy" onclick="copyCode('UPDATE1')">Copy</button>
-        </div>
-
-        <div class="card code">
-            <div>
-                <div class="code-name">INVENTORY</div>
-                <div class="code-value">Reward: Unknown</div>
-                <span class="tag green">Working</span>
-            </div>
-            <button class="copy" onclick="copyCode('INVENTORY')">Copy</button>
-        </div>
-
-    </div>
-
-    <div class="empty" id="codeEmpty">No codes matched the search.</div>
-</section>
-
-<section id="moves" class="page">
-
-    <div class="page-header">
-        <div>
-            <h1>Movesets</h1>
-            <div class="subtitle">Moves, keys and categories.</div>
-        </div>
-    </div>
-
-    <div class="filters">
-        <button class="filter active" onclick="filterMoves('all',this)">All</button>
-        <button class="filter" onclick="filterMoves('normal',this)">Normal</button>
-        <button class="filter" onclick="filterMoves('ultimate',this)">Ultimate</button>
-    </div>
-
-    <div class="grid" id="movesGrid">
-
-        <div class="card entry move normal" data-type="normal">
-            <div class="entry-top">
-                <h3>Move 1</h3><span class="key">1</span>
-            </div>
-            <p>Description of the first move.</p>
-            <span class="tag">Normal</span>
-        </div>
-
-        <div class="card entry move normal" data-type="normal">
-            <div class="entry-top">
-                <h3>Move 2</h3><span class="key">2</span>
-            </div>
-            <p>Description of the second move.</p>
-            <span class="tag">Normal</span>
-        </div>
-
-        <div class="card entry move normal" data-type="normal">
-            <div class="entry-top">
-                <h3>Move 3</h3><span class="key">3</span>
-            </div>
-            <p>Description of the third move.</p>
-            <span class="tag">Normal</span>
-        </div>
-
-        <div class="card entry move ultimate" data-type="ultimate">
-            <div class="entry-top">
-                <h3>Ultimate</h3><span class="key">4</span>
-            </div>
-            <p>Powerful ultimate ability.</p>
-            <span class="tag red">Ultimate</span>
-        </div>
-
-    </div>
-</section>
-
-<section id="animations" class="page">
-
-    <div class="page-header">
-        <div>
-            <h1>Animations</h1>
-            <div class="subtitle">Animation IDs and references.</div>
-        </div>
-    </div>
-
-    <div class="grid searchable">
-
-        <div class="card entry">
-            <div class="entry-top"><h3>Idle</h3><span class="key">ID</span></div>
-            <p>Animation ID: <span class="blue">0000000000</span></p>
-            <span class="tag">Idle</span>
-        </div>
-
-        <div class="card entry">
-            <div class="entry-top"><h3>Attack</h3><span class="key">ID</span></div>
-            <p>Animation ID: <span class="blue">0000000000</span></p>
-            <span class="tag">Combat</span>
-        </div>
-
-        <div class="card entry">
-            <div class="entry-top"><h3>Ultimate</h3><span class="key">ID</span></div>
-            <p>Animation ID: <span class="blue">0000000000</span></p>
-            <span class="tag red">Ultimate</span>
-        </div>
-
-    </div>
-
-</section>
-
-<section id="contact" class="page">
-
-    <div class="page-header">
-        <div>
-            <h1>Contact</h1>
-            <div class="subtitle">Report information or contact the community.</div>
-        </div>
-    </div>
-
-    <div class="card contact-box">
-        <h2>Join the community</h2>
-        <p>
-            Have an incorrect code, missing move, animation ID or another
-            piece of information? Send it to the community.
-        </p>
-        <a class="discord" href="https://discord.gg/VDsUzgFApG" target="_blank" rel="noopener noreferrer">Join the Discord</a>
-    </div>
-
-</section>
-
-
-<section id="settings" class="page">
-
-    <div class="page-header">
-        <div>
-            <h1>Settings</h1>
-            <div class="subtitle">Customize the look of Hidden Inventory.</div>
-        </div>
-    </div>
-
-    <div class="section-title">Site Themes</div>
-
-    <div class="grid theme-grid">
-        <button class="card theme-card selected" data-theme="blue" onclick="setTheme('blue',this)">
-            <div class="theme-preview preview-blue"></div>
-            <h3>Ocean Blue</h3>
-            <p>Default Hidden Inventory theme.</p>
-            <span class="tag">Default</span>
-        </button>
-
-        <button class="card theme-card" data-theme="purple" onclick="setTheme('purple',this)">
-            <div class="theme-preview preview-purple"></div>
-            <h3>Void Purple</h3>
-            <p>A darker purple inventory.</p>
-            <span class="tag">Purple</span>
-        </button>
-
-        <button class="card theme-card" data-theme="red" onclick="setTheme('red',this)">
-            <div class="theme-preview preview-red"></div>
-            <h3>Crimson</h3>
-            <p>A red combat-style theme.</p>
-            <span class="tag">Red</span>
-        </button>
-
-        <button class="card theme-card" data-theme="green" onclick="setTheme('green',this)">
-            <div class="theme-preview preview-green"></div>
-            <h3>Matrix</h3>
-            <p>A bright green system theme.</p>
-            <span class="tag">Green</span>
-        </button>
-
-        <button class="card theme-card" data-theme="gold" onclick="setTheme('gold',this)">
-            <div class="theme-preview preview-gold"></div>
-            <h3>Golden</h3>
-            <p>A warm gold accent theme.</p>
-            <span class="tag">Gold</span>
-        </button>
-
-        <button class="card theme-card" data-theme="cyan" onclick="setTheme('cyan',this)"><div class="theme-preview" style="background:linear-gradient(135deg,#02131a,#00f0ff)"></div><h3>Cyber Cyan</h3><p>A high-energy neon interface.</p><span class="tag">Cyan</span></button>
-        <button class="card theme-card" data-theme="orange" onclick="setTheme('orange',this)"><div class="theme-preview" style="background:linear-gradient(135deg,#160b04,#ff9b45)"></div><h3>Ember</h3><p>A fiery orange inventory.</p><span class="tag">Orange</span></button>
-        <button class="card theme-card" data-theme="pink" onclick="setTheme('pink',this)"><div class="theme-preview" style="background:linear-gradient(135deg,#170813,#ff66c7)"></div><h3>Neon Pink</h3><p>A vibrant cyber theme.</p><span class="tag">Pink</span></button>
-        <button class="card theme-card" data-theme="white" onclick="setTheme('white',this)"><div class="theme-preview" style="background:linear-gradient(135deg,#111,#fff)"></div><h3>Monochrome</h3><p>Clean black and white.</p><span class="tag">White</span></button>
-    </div>
-
-    <div class="section-title">Music</div>
-
-    <div class="card">
-        <h3>🎵 Music Player</h3>
-        <p>Choose a track. One master volume controls both songs.</p>
-        <div class="music-controls"><button id="playLetItRide">▶ Let It Ride</button><button id="playLockedIn">▶ Locked In</button></div>
-        <div style="margin-top:16px"><label for="masterVolume">Master Volume: <span id="volumeLabel">100%</span></label><br><input id="masterVolume" class="master-volume" type="range" min="0" max="100" value="100"></div>
-        <audio id="letItRide" preload="metadata" loop><source src="https://github.com/AzmiYT/Honoured-Inventory/raw/refs/heads/main/Let%20It%20Ride%20-%20Anno%20Domini%20Beats.mp3" type="audio/mpeg"></audio>
-        <audio id="lockedIn" preload="metadata" loop><source src="https://github.com/AzmiYT/Honoured-Inventory/raw/refs/heads/main/Locked%20In%20-%20Anno%20Domini%20Beats.mp3" type="audio/mpeg"></audio>
-    </div>
-
-    <div class="section-title">Visual Effects</div>
-    <div class="card"><p>Extra effects are disabled by default.</p><div class="grid" style="margin-top:14px">
-      <button class="primary-btn effectBtn" data-effect="scanlines">Scanlines: OFF</button><button class="primary-btn" id="glitchToggle">Glitch Events: OFF</button>
-      <button class="primary-btn effectBtn" data-effect="vignette">Vignette: OFF</button>
-      <button class="primary-btn effectBtn" data-effect="rgb">RGB Shift: OFF</button>
-      <button class="primary-btn effectBtn" data-effect="shake">Screen Shake: OFF</button>
-      <button class="primary-btn effectBtn" data-effect="invert">Invert: OFF</button>
-    </div></div>
-
-    <div class="card secret-progress-card" id="secretProgressCard">
-      <h3>???</h3><p style="color:#888;margin:6px 0 12px">A hidden signal is building...</p>
-      <div class="secret-bar"><div class="secret-fill" id="secretFill"></div></div>
-      <p id="secretStatus" style="color:#777;margin-top:7px">0%</p>
-    </div>
-</section>
-
-</main>
-
-<button class="back-top" id="backTop" onclick="scrollTopPage()">↑</button>
-<div class="toast" id="toast">Copied!</div><div class="glitch-stage" id="glitchStage"></div>
-
-<script>
-const content=document.getElementById('content'),search=document.getElementById('search'),toast=document.getElementById('toast'),backTop=document.getElementById('backTop');
-let toastTimer;
-function showToast(m){toast.textContent=m;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),1800)}
-function showPage(id,button){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const page=document.getElementById(id);if(page)page.classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));if(button)button.classList.add('active');content.scrollTop=0}
-function copyCode(code){navigator.clipboard.writeText(code).then(()=>showToast('Copied: '+code)).catch(()=>showToast('Could not copy code'))}
-function filterMoves(type,button){document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));button.classList.add('active');document.querySelectorAll('.move').forEach(m=>m.style.display=type==='all'||m.dataset.type===type?'':'none')}
-function resetSearch(){document.querySelectorAll('.search-hit').forEach(x=>x.classList.remove('search-hit'));document.querySelectorAll('.searchable .card').forEach(x=>x.style.display='')}
-function searchAll(q){q=q.trim().toLowerCase();resetSearch();if(!q)return;const all=[...document.querySelectorAll('.page')];const match=all.flatMap(page=>[...page.querySelectorAll('.card,.hero,.page-header,.section-title')].map(el=>({el,page}))).find(x=>x.el.innerText.toLowerCase().includes(q));if(!match){showToast('No results found');return}showPage(match.page.id,document.querySelector(`.nav button[onclick*="'${match.page.id}'"]`));setTimeout(()=>{match.el.classList.add('search-hit');match.el.scrollIntoView({behavior:'smooth',block:'center'})},60);addSecretProgress(8)}
-search.addEventListener('keydown',e=>{if(e.key==='Enter')searchAll(search.value)});
-search.addEventListener('input',()=>{if(!search.value)resetSearch()});
-content.addEventListener('scroll',()=>backTop.classList.toggle('show',content.scrollTop>350));function scrollTopPage(){content.scrollTo({top:0,behavior:'smooth'})}
-document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const r=document.createElement('span');r.className='ripple';const rect=b.getBoundingClientRect();r.style.left=e.clientX-rect.left+'px';r.style.top=e.clientY-rect.top+'px';b.appendChild(r);setTimeout(()=>r.remove(),600)});
-document.addEventListener('mousemove',e=>{const c=document.getElementById('cursor');c.style.left=e.clientX+'px';c.style.top=e.clientY+'px'});
-/* themes */
-const themeNames=['blue','purple','red','green','gold','cyan','orange','pink','white','easter'];
-function setTheme(theme,button){document.body.classList.remove(...themeNames.map(t=>'theme-'+t));document.body.classList.add('theme-'+theme);document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));if(button)button.classList.add('selected');if(theme!=='easter')localStorage.setItem('hiddenInventoryTheme',theme);showToast('Theme changed to '+theme.charAt(0).toUpperCase()+theme.slice(1));addSecretProgress(5)}
-const savedTheme=localStorage.getItem('hiddenInventoryTheme')||'blue';document.body.classList.add('theme-'+savedTheme);document.querySelectorAll('.theme-card').forEach(c=>{if(c.dataset.theme===savedTheme)c.classList.add('selected')});
-/* logo */
-const logo=document.getElementById('logoHome');let logoClicks=0,logoTimer;logo.addEventListener('click',()=>{showPage('home',document.querySelector('.nav button'));logoClicks++;addSecretProgress(7);clearTimeout(logoTimer);logoTimer=setTimeout(()=>logoClicks=0,2200);if(logoClicks>=7){logoClicks=0;showToast('👁️ 7-CLICK LOGO EASTER EGG FOUND');addSecretProgress(15)}});
-/* secret theme + hidden progress */
-let secretProgress=0;const fill=document.getElementById('secretFill'),status=document.getElementById('secretStatus'),progressCard=document.getElementById('secretProgressCard');
-function addSecretProgress(n){secretProgress=Math.min(100,secretProgress+n);if(fill)fill.style.width=secretProgress+'%';if(status)status.textContent=secretProgress+'%';if(secretProgress>=25)progressCard.classList.add('found');if(secretProgress>=100&&!document.querySelector('[data-theme="easter"]')){const b=document.createElement('button');b.className='card theme-card';b.dataset.theme='easter';b.innerHTML='<div class="theme-preview" style="background:linear-gradient(135deg,#00fff0,#ff00aa,#050505)"></div><h3>??? — EASTER VAULT</h3><p>A theme containing the site\'s hidden effects.</p><span class="tag">SECRET</span>';b.onclick=()=>setTheme('easter',b);document.querySelector('.theme-grid').appendChild(b);showToast('🔓 SECRET EASTER VAULT THEME UNLOCKED');}}
-/* secret search key */
-function checkSecretSearch(q){if(q.trim().toLowerCase()==='secret time'){addSecretProgress(30);showPage('settings',document.querySelectorAll('.nav button')[5]);showToast('⏱️ SECRET TIME DETECTED');return true}return false}
-const oldSearch=searchAll;
-searchAll=function(q){if(checkSecretSearch(q))return;oldSearch(q)};
-/* music */
-const letItRide=document.getElementById('letItRide'),lockedIn=document.getElementById('lockedIn'),volume=document.getElementById('masterVolume'),volumeLabel=document.getElementById('volumeLabel');letItRide.volume=1;lockedIn.volume=1;
-function setMasterVolume(){const v=Number(volume.value)/100;letItRide.volume=v;lockedIn.volume=v;volumeLabel.textContent=volume.value+'%'}volume.addEventListener('input',()=>{setMasterVolume();addSecretProgress(1)});setMasterVolume();
-document.getElementById('playLetItRide').onclick=()=>{if(letItRide.paused){lockedIn.pause();letItRide.play();showToast('Playing Let It Ride')}else letItRide.pause();addSecretProgress(10)};
-document.getElementById('playLockedIn').onclick=()=>{if(lockedIn.paused){letItRide.pause();lockedIn.play();showToast('Playing Locked In')}else lockedIn.pause();addSecretProgress(10)};
-/* effects */
-document.querySelectorAll('.effectBtn').forEach(btn=>btn.onclick=()=>{const c='effect-'+btn.dataset.effect;document.body.classList.toggle(c);const on=document.body.classList.contains(c);btn.textContent=btn.dataset.effect.replace(/^./,x=>x.toUpperCase())+': '+(on?'ON':'OFF');addSecretProgress(3)});
-/* keyboard sequence */
-const secretSeq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];let seq=[];document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;seq.push(e.key);if(seq.length>secretSeq.length)seq.shift();if(seq.join('|').toLowerCase()===secretSeq.join('|').toLowerCase()){seq=[];addSecretProgress(20);showToast('🕹️ SECRET KEY SEQUENCE FOUND');document.body.classList.add('effect-rgb')}});
-/* glitch timer */
-let glitchEnabled=false;const glitchToggle=document.getElementById('glitchToggle');glitchToggle.onclick=()=>{glitchEnabled=!glitchEnabled;glitchToggle.textContent='Glitch Events: '+(glitchEnabled?'ON':'OFF');showToast('Glitch Events '+(glitchEnabled?'enabled':'disabled'));addSecretProgress(3)};const glitchStage=document.getElementById('glitchStage');function doGlitch(){if(!glitchEnabled)return;if(Math.random()<.5){glitchStage.style.opacity=.8;document.body.classList.add('effect-rgb');setTimeout(()=>{glitchStage.style.opacity=0;document.body.classList.remove('effect-rgb')},900)}}setInterval(doGlitch,60000);
-/* progressive nav spam */
-let spam=[];let spamLevel=0;function spamGlitch(){spamLevel=Math.min(100,spamLevel+15);glitchStage.style.opacity=Math.min(.9,spamLevel/100);if(spamLevel>=25)document.body.classList.add('effect-rgb');if(spamLevel>=50)document.body.classList.add('effect-scanlines');if(spamLevel>=70)document.body.classList.add('effect-shake');if(spamLevel>=85)document.body.classList.add('effect-invert');if(spamLevel>=100){document.body.innerHTML='<div class="spam404"><div class="errbox"><h1>404</h1><h2>HIDDEN INVENTORY CORRUPTED</h2><p>Too much button spam detected.</p><p>Refresh the page to recover.</p></div></div>'}}
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{const now=Date.now();spam.push(now);spam=spam.filter(t=>now-t<1800);if(spam.length>=3){spam=[];spamGlitch()}}));
-/* keyboard nav */
-document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;const b=document.querySelectorAll('.nav button');if(e.key>='1'&&e.key<='6')b[Number(e.key)-1].click();if(e.key==='Escape'){search.value='';resetSearch()}});
-/* initial progress reveal */
-addSecretProgress(5);
-</script>
-
-</body>
-</html>
+        <div class="card has-fa
+            <button class="favorite-btn" title="Favorite" onclick="toggleFavorite(event,'welcome')">☆</button>vorite code"
