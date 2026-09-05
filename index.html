@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Hidden Inventory V7</title>
+<title>Hidden Inventory V8</title>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
@@ -38,7 +38,7 @@ body{
     z-index:10;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin
 }
 .logo{
-    font-size:39px;line-height:.9;margin:4px 0 28px;
+    font-size:47px;line-height:.88;margin:4px -4px 30px;width:calc(100% + 8px);letter-spacing:1px;
     text-shadow:0 0 22px #62cfff55;animation:float 4s ease-in-out infinite
 }
 .logo span{color:#62cfff}
@@ -324,6 +324,97 @@ body.theme-gold{background:
 @keyframes bootFade{from{opacity:1;visibility:visible}to{opacity:0;visibility:hidden;pointer-events:none}}
 @media(max-width:600px){.boot-title{font-size:32px}}
 
+
+/* V8 VISUAL OVERHAUL */
+:root{--accent:#62cfff;--accent-soft:#62cfff18;--accent-border:#62cfff66}
+body{--panel:rgba(10,13,17,.78);--glow:0 0 30px var(--accent-soft)}
+.logo{font-weight:900;letter-spacing:1.5px;transform-origin:left center}
+.logo span{display:inline-block}
+.sidebar{border-color:var(--accent-border);box-shadow:0 0 45px #0009,var(--glow),inset 0 0 30px #ffffff03}
+.hero{border-color:var(--accent-border);background:linear-gradient(135deg,var(--accent-soft),#ffffff04),rgba(255,255,255,.035)}
+.hero:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,transparent 0 45%,#fff1 50%,transparent 55%);transform:translateX(-120%);animation:sweep 8s ease-in-out infinite}
+@keyframes sweep{0%,55%{transform:translateX(-120%)}75%,100%{transform:translateX(120%)}}
+.card,.stat{backdrop-filter:blur(8px)}
+.command-card{cursor:pointer;text-align:left;border:1px solid var(--accent-border);background:linear-gradient(135deg,var(--accent-soft),#ffffff04)}
+.command-card:hover{box-shadow:0 0 35px var(--accent-soft),0 15px 35px #0007}
+.theme-toolbar{display:flex;justify-content:space-between;align-items:center;margin:-5px 0 14px;color:#777}
+.mini-label{font:700 12px monospace;letter-spacing:3px;color:var(--accent)}
+.theme-count{font:13px monospace}
+.theme-grid{grid-template-columns:repeat(auto-fit,minmax(225px,1fr))}
+.theme-card{min-height:185px;color:#fff}
+.theme-card h3{font-size:25px}
+.theme-card.selected:before{content:'ACTIVE';position:absolute;right:14px;top:12px;font:700 10px monospace;color:var(--accent);letter-spacing:2px}
+.theme-preview{height:78px;border-radius:14px;margin-bottom:13px;border:1px solid #ffffff18;position:relative;overflow:hidden}
+.theme-preview:after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 5px,#fff1 6px 7px);opacity:.35}
+.preview-cyan{background:radial-gradient(circle,#00f0ff88,transparent 45%),linear-gradient(135deg,#02131a,#00f0ff)}
+.preview-orange{background:radial-gradient(circle,#ff9b4588,transparent 45%),linear-gradient(135deg,#160b04,#ff6a00)}
+.preview-pink{background:radial-gradient(circle,#ff66c788,transparent 45%),linear-gradient(135deg,#170813,#ff008c)}
+.preview-white{background:linear-gradient(135deg,#080808,#ffffff)}
+.preview-bloodmoon{background:radial-gradient(circle at 70% 35%,#ff183c,#ff183c00 28%),linear-gradient(135deg,#080306,#3b0713)}
+.preview-toxic{background:radial-gradient(circle,#9dff0088,transparent 45%),linear-gradient(135deg,#020b05,#6cff00)}
+.preview-ice{background:radial-gradient(circle,#bdf8ff88,transparent 45%),linear-gradient(135deg,#031018,#bdf8ff)}
+.preview-sunset{background:radial-gradient(circle at 70% 35%,#ff8a0088,transparent 40%),linear-gradient(135deg,#15051c,#ff4d70)}
+.preview-easter{background:linear-gradient(120deg,#00fff0,#ff00aa,#ffe600,#050505);background-size:300% 300%;animation:previewChaos 2s linear infinite}
+@keyframes previewChaos{to{background-position:300% 0}}
+.preset-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.preset{text-align:left;cursor:pointer}
+.preset:hover{border-color:var(--accent-border)}
+.achievement.unlocked{border-color:#5cff9b77;box-shadow:0 0 22px #5cff9b12}
+.achievement.unlocked .tag{color:#5cff9b;border-color:#5cff9b55;background:#5cff9b12}
+.achievement.unlocked:after{content:'✓';position:absolute;right:18px;top:15px;color:#5cff9b;font-size:28px}
+.favorite-btn{position:absolute;top:13px;right:13px;border:1px solid #ffffff18;background:#0005;color:#777;border-radius:9px;width:35px;height:35px;cursor:pointer;font-size:20px}
+.favorite-btn:hover,.favorite-btn.active{color:#ffd45c;border-color:#ffd45c66;box-shadow:0 0 16px #ffd45c22}
+.recent-card{cursor:pointer}
+.boot-screen{background:radial-gradient(circle at center,#07131a,#030507 60%);overflow:hidden}
+.boot-screen:before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 3px,#62cfff08 4px 5px);pointer-events:none}
+.boot-box{position:relative}
+.boot-title{letter-spacing:5px}
+.glitch-stage{background:
+repeating-linear-gradient(0deg,transparent 0 3px,#00ffff33 4px 5px),
+repeating-linear-gradient(90deg,transparent 0 37px,#ff00aa16 38px 40px),
+linear-gradient(90deg,#ff00aa20,#00ffff20,#fff0);
+}
+.effect-heavy .content{filter:contrast(1.18) saturate(1.4)}
+.effect-heavy .card,.effect-heavy .hero,.effect-heavy .sidebar{animation:microJitter .08s steps(2) infinite}
+@keyframes microJitter{50%{transform:translate(2px,-1px)}}
+.effect-heavy:before{content:'';position:fixed;inset:0;z-index:9995;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 1px,#00ffff10 2px 3px),repeating-linear-gradient(90deg,transparent 0 80px,#ff00aa0a 81px 83px);mix-blend-mode:screen}
+body.theme-bloodmoon{--accent:#ff3150;--accent-soft:#ff31501b;--accent-border:#ff315077;background:radial-gradient(circle at 75% 15%,#7d0b1d55,transparent 28%),linear-gradient(135deg,#090307,#22060e,#080205)}
+body.theme-toxic{--accent:#9dff00;--accent-soft:#9dff0018;--accent-border:#9dff0066;background:radial-gradient(circle at 15% 20%,#9dff0030,transparent 30%),linear-gradient(135deg,#020603,#0b1807,#020402)}
+body.theme-ice{--accent:#bdf8ff;--accent-soft:#bdf8ff18;--accent-border:#bdf8ff66;background:radial-gradient(circle at 80% 10%,#bdf8ff35,transparent 30%),linear-gradient(135deg,#02070a,#061820,#020507)}
+body.theme-sunset{--accent:#ff7a5c;--accent-soft:#ff7a5c18;--accent-border:#ff7a5c66;background:radial-gradient(circle at 80% 20%,#ff4d7050,transparent 32%),linear-gradient(135deg,#10050f,#210b1b,#07030b)}
+body.theme-bloodmoon .logo span,body.theme-toxic .logo span,body.theme-ice .logo span,body.theme-sunset .logo span{color:var(--accent)}
+body.theme-bloodmoon .blue,body.theme-toxic .blue,body.theme-ice .blue,body.theme-sunset .blue{color:var(--accent)}
+body.theme-bloodmoon .nav button.active,body.theme-toxic .nav button.active,body.theme-ice .nav button.active,body.theme-sunset .nav button.active{border-color:var(--accent-border);box-shadow:0 0 25px var(--accent-soft),inset 3px 0 var(--accent)}
+body.theme-bloodmoon .nav button:hover,body.theme-toxic .nav button:hover,body.theme-ice .nav button:hover,body.theme-sunset .nav button:hover{border-color:var(--accent-border)}
+body.theme-bloodmoon .card:hover,body.theme-toxic .card:hover,body.theme-ice .card:hover,body.theme-sunset .card:hover{border-color:var(--accent-border)}
+body.theme-bloodmoon .tag,body.theme-toxic .tag,body.theme-ice .tag,body.theme-sunset .tag{color:var(--accent);border-color:var(--accent-border);background:var(--accent-soft)}
+body.theme-bloodmoon .primary-btn,body.theme-toxic .primary-btn,body.theme-ice .primary-btn,body.theme-sunset .primary-btn{border-color:var(--accent-border);background:var(--accent-soft)}
+body.theme-bloodmoon .search:focus,body.theme-toxic .search:focus,body.theme-ice .search:focus,body.theme-sunset .search:focus{border-color:var(--accent)}
+body.theme-bloodmoon .header-version,body.theme-toxic .header-version,body.theme-ice .header-version,body.theme-sunset .header-version{color:var(--accent);border-color:var(--accent-border);background:var(--accent-soft)}
+body.theme-easter{--accent:#00fff0;--accent-soft:#00fff025;--accent-border:#00fff099;background:linear-gradient(120deg,#020202,#260020,#00201f,#130020);background-size:500% 500%;animation:bg 2.2s ease infinite}
+body.theme-easter .content,body.theme-easter .sidebar{animation:themeTwitch .12s steps(2) infinite}
+@keyframes themeTwitch{50%{transform:translate(1px,-1px) skewX(.2deg)}}
+body.theme-easter .logo,body.theme-easter h1{text-shadow:4px 0 #ff00aa,-4px 0 #00ffff,0 0 28px #fff3}
+body.theme-easter .card{box-shadow:inset 0 0 0 1px #fff1,0 0 24px #00fff012}
+.judge-overlay{position:fixed;inset:0;z-index:1000000;background:#050505;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:none}
+.judge-overlay .judge-text{position:absolute;top:11%;font:900 clamp(35px,7vw,90px)/1 monospace;letter-spacing:8px;color:#fff;text-shadow:5px 0 #ff203d,-5px 0 #00ffff;z-index:5;animation:judgeFlicker .08s steps(2) infinite}
+@keyframes judgeFlicker{50%{opacity:.35;transform:translate(3px,-2px)}}
+.judge-overlay .hammer{position:absolute;width:min(170px,25vw);height:min(300px,42vw);z-index:8;transform:translate(35vw,-35vh) rotate(-35deg);animation:hammerSmash .9s cubic-bezier(.2,.8,.2,1) .35s forwards}
+.hammer-head{position:absolute;left:5%;top:0;width:90%;height:32%;background:linear-gradient(135deg,#bfc5ca,#565b61 45%,#181b1f);border:5px solid #111;border-radius:18px;box-shadow:0 0 30px #fff4}
+.hammer-handle{position:absolute;left:40%;top:27%;width:20%;height:73%;background:linear-gradient(90deg,#48250f,#c17a2b,#51290f);border:4px solid #160b03;border-radius:9px}
+@keyframes hammerSmash{0%{transform:translate(35vw,-35vh) rotate(-35deg)}70%{transform:translate(0,0) rotate(4deg)}78%{transform:translate(0,0) rotate(0deg) scale(1.06)}100%{transform:translate(0,0) rotate(0deg) scale(1)}}
+.judge-overlay .impact{position:absolute;width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 0 70px 35px #fff8;opacity:0;z-index:7;animation:impact .3s ease .95s forwards}
+@keyframes impact{to{opacity:1;transform:scale(18);}}
+.crack{position:absolute;left:50%;top:50%;width:3px;height:48vh;background:#fff;transform-origin:top;z-index:9;opacity:0;box-shadow:0 0 10px #fff;animation:crackIn .2s steps(2) 1.02s forwards}
+.crack:before,.crack:after{content:'';position:absolute;width:3px;height:27vh;background:#fff;left:0;top:8vh;transform-origin:top}
+.crack:before{transform:rotate(48deg)}.crack:after{transform:rotate(-55deg)}
+.crack.c2{transform:rotate(72deg);height:42vh}.crack.c3{transform:rotate(-72deg);height:38vh}.crack.c4{transform:rotate(160deg);height:30vh}
+@keyframes crackIn{to{opacity:.95}}
+.judge-overlay.broken .judge-content{animation:brokenScreen .16s steps(2) infinite}
+@keyframes brokenScreen{0%{transform:translate(0)}25%{transform:translate(-12px,5px) skewX(2deg)}50%{transform:translate(13px,-7px) skewX(-3deg);filter:hue-rotate(90deg) saturate(2)}75%{transform:translate(-4px,10px)}}
+.judge-overlay .break-lines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 6px,#fff1 7px 8px);mix-blend-mode:screen;z-index:10;pointer-events:none;animation:breakScan .04s steps(2) infinite}
+@keyframes breakScan{50%{transform:translateX(12px)}}
+
 </style>
 </head>
 
@@ -332,7 +423,7 @@ body.theme-gold{background:
 <div class="boot-screen" id="bootScreen">
   <div class="boot-box">
     <div class="boot-title">HIDDEN INVENTORY</div>
-    <div class="boot-text" id="bootText">Initializing inventory...</div>
+    <div class="boot-text" id="bootText">Initializing V8 inventory...</div>
     <div class="boot-track"><div class="boot-fill"></div></div>
   </div>
 </div>
@@ -355,13 +446,16 @@ body.theme-gold{background:
         <button onclick="showPage('codes',this)">🔑 Codes <span class="nav-key">2</span></button>
         <button onclick="showPage('moves',this)">⚔️ Movesets <span class="nav-key">3</span></button>
         <button onclick="showPage('animations',this)">🎞️ Animations <span class="nav-key">4</span></button>
-        <button onclick="showPage('contact',this)">💬 Contact <span class="nav-key">5</span></button>
-        <button onclick="showPage('settings',this)">⚙️ Settings <span class="nav-key">6</span></button>
+        <button onclick="showPage('news',this)">📰 News <span class="nav-key">5</span></button>
+        <button onclick="showPage('achievements',this)">🏆 Achievements <span class="nav-key">6</span></button>
+        <button onclick="showPage('status',this)">◉ Status <span class="nav-key">7</span></button>
+        <button onclick="showPage('contact',this)">💬 Contact <span class="nav-key">8</span></button>
+        <button onclick="showPage('settings',this)">⚙️ Settings <span class="nav-key">9</span></button>
     </nav>
 
     <div class="sidebar-footer">
         <span class="status"><span class="status-dot"></span> Inventory Online</span>
-        <br>Hidden Inventory V6
+        <br>Hidden Inventory V8
     </div>
 </aside>
 
@@ -374,7 +468,7 @@ body.theme-gold{background:
             <h1>Home</h1>
             <div class="subtitle">The <span class="blue">Hidden Inventory</span> community database.</div>
         </div>
-        <span class="header-version">V6.0</span>
+        <span class="header-version">V8.0</span>
     </div>
 
     <div class="hero">
@@ -390,11 +484,22 @@ body.theme-gold{background:
     </div>
 
     <div class="stats">
-        <div class="stat"><div class="stat-number">V6</div><div class="stat-label">Current Version</div></div>
+        <div class="stat"><div class="stat-number">V8</div><div class="stat-label">Current Version</div></div>
         <div class="stat"><div class="stat-number" id="codeCount">3</div><div class="stat-label">Listed Codes</div></div>
         <div class="stat"><div class="stat-number" id="moveCount">4</div><div class="stat-label">Moves Listed</div></div>
         <div class="stat"><div class="stat-number">LIVE</div><div class="stat-label">Inventory Status</div></div>
     </div>
+
+    <div class="section-title">Command Center</div>
+    <div class="grid command-grid">
+      <button class="card command-card" onclick="randomDiscovery()"><h3>🎲 Random Discovery</h3><p>Jump to a random inventory entry.</p></button>
+      <button class="card command-card" onclick="showPage('news',document.querySelectorAll('.nav button')[4])"><h3>📰 Latest News</h3><p>See what changed in V8.</p></button>
+      <button class="card command-card" onclick="showPage('achievements',document.querySelectorAll('.nav button')[8])"><h3>🏆 Achievements</h3><p>Track hidden discoveries.</p></button>
+      <button class="card command-card" onclick="showPage('status',document.querySelectorAll('.nav button')[6])"><h3>◉ System Status</h3><p>Check the archive's local diagnostics.</p></button>
+    </div>
+
+    <div class="section-title">Recently Viewed</div>
+    <div class="grid" id="recentGrid"><div class="notice">Nothing viewed yet. Explore the archive.</div></div>
 
     <div class="section-title">Quick Access</div>
 
@@ -431,7 +536,7 @@ body.theme-gold{background:
 
     <div class="grid searchable">
 
-        <div class="card code">
+        <div class="card code favoriteable" data-item="code-WELCOME">
             <div>
                 <div class="code-name">WELCOME</div>
                 <div class="code-value">Reward: Free Items</div>
@@ -569,6 +674,53 @@ body.theme-gold{background:
 </section>
 
 
+
+<section id="news" class="page">
+  <div class="page-header"><div><h1>News</h1><div class="subtitle">Latest inventory activity and update notes.</div></div><span class="header-version">V8.0</span></div>
+  <div class="notice">LIVE FEED • This page is stored locally in your browser.</div>
+  <div class="grid searchable">
+    <div class="card"><span class="tag green">V8.0</span><h3>Interface Overhaul</h3><p>Expanded themes, stronger visual effects, larger branding and a redesigned secret system.</p></div>
+    <div class="card"><span class="tag">SYSTEM</span><h3>Search Signal Added</h3><p>The archive now reacts to hidden phrases typed into the search terminal.</p></div>
+    <div class="card"><span class="tag red">SECRET</span><h3>Judgement Protocol</h3><p>A new phrase can trigger an irreversible screen failure until the page is refreshed.</p></div>
+    <div class="card"><span class="tag">ARCHIVE</span><h3>More Inventory Tools</h3><p>Random discovery, favorites, recently viewed entries and a live local activity panel are now available.</p></div>
+  </div>
+</section>
+
+<section id="achievements" class="page">
+  <div class="page-header"><div><h1>Achievements</h1><div class="subtitle">Discover what the archive is hiding.</div></div><span class="header-version" id="achievementCount">0 / 12</span></div>
+  <div class="grid" id="achievementGrid">
+    <div class="card achievement" data-ach="search"><h3>🔎 First Search</h3><p>Search the inventory for the first time.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="copy"><h3>📋 Collector</h3><p>Copy a code.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="theme"><h3>🎨 Chromatic</h3><p>Change your theme.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="music"><h3>🎵 Broadcast</h3><p>Play archive music.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="glitch"><h3>⚡ Corrupted</h3><p>Enable a glitch effect.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="random"><h3>🎲 Gambler</h3><p>Use Random Discovery.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="logo"><h3>👁️ Observer</h3><p>Find the logo secret.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="konami"><h3>🕹️ Old Signal</h3><p>Enter the hidden key sequence.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="status"><h3>◉ System Check</h3><p>Open the status page.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="news"><h3>📰 Informed</h3><p>Read the news archive.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="favorites"><h3>★ Archivist</h3><p>Favorite an inventory item.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="judge"><h3>⚖️ WE SEE WE JUDGE</h3><p>Trigger the judgement protocol.</p><span class="tag">LOCKED</span></div>
+  </div>
+</section>
+
+<section id="status" class="page">
+  <div class="page-header"><div><h1>System Status</h1><div class="subtitle">Local diagnostics for the Hidden Inventory interface.</div></div><span class="header-version">ONLINE</span></div>
+  <div class="stats">
+    <div class="stat"><div class="stat-number" id="clockStatus">--:--:--</div><div class="stat-label">Local Time</div></div>
+    <div class="stat"><div class="stat-number" id="sessionTime">0s</div><div class="stat-label">Session</div></div>
+    <div class="stat"><div class="stat-number" id="favoriteCount">0</div><div class="stat-label">Favorites</div></div>
+    <div class="stat"><div class="stat-number" id="visitedCount">0</div><div class="stat-label">Pages Visited</div></div>
+  </div>
+  <div class="section-title">Diagnostics</div>
+  <div class="grid">
+    <div class="card"><h3><span class="status-dot"></span> Core</h3><p>Interface engine operational.</p><span class="tag green">ONLINE</span></div>
+    <div class="card"><h3>Storage</h3><p id="storageStatus">Local storage available.</p><span class="tag green">READY</span></div>
+    <div class="card"><h3>Effects</h3><p id="effectStatus">No effects active.</p><span class="tag">LIVE</span></div>
+    <div class="card"><h3>Search Index</h3><p>Codes, moves, animations, news and system panels indexed.</p><span class="tag green">INDEXED</span></div>
+  </div>
+</section>
+
 <section id="settings" class="page">
 
     <div class="page-header">
@@ -579,49 +731,62 @@ body.theme-gold{background:
     </div>
 
     <div class="section-title">Site Themes</div>
-
+    <div class="theme-toolbar">
+      <span class="mini-label">LIVE COLOR ENGINE</span>
+      <span class="theme-count" id="themeCount">14 themes</span>
+    </div>
     <div class="grid theme-grid">
-        <button class="card theme-card selected" data-theme="blue" onclick="setTheme('blue',this)">
-            <div class="theme-preview preview-blue"></div>
-            <h3>Ocean Blue</h3>
-            <p>Default Hidden Inventory theme.</p>
-            <span class="tag">Default</span>
-        </button>
-
-        <button class="card theme-card" data-theme="purple" onclick="setTheme('purple',this)">
-            <div class="theme-preview preview-purple"></div>
-            <h3>Void Purple</h3>
-            <p>A darker purple inventory.</p>
-            <span class="tag">Purple</span>
-        </button>
-
-        <button class="card theme-card" data-theme="red" onclick="setTheme('red',this)">
-            <div class="theme-preview preview-red"></div>
-            <h3>Crimson</h3>
-            <p>A red combat-style theme.</p>
-            <span class="tag">Red</span>
-        </button>
-
-        <button class="card theme-card" data-theme="green" onclick="setTheme('green',this)">
-            <div class="theme-preview preview-green"></div>
-            <h3>Matrix</h3>
-            <p>A bright green system theme.</p>
-            <span class="tag">Green</span>
-        </button>
-
-        <button class="card theme-card" data-theme="gold" onclick="setTheme('gold',this)">
-            <div class="theme-preview preview-gold"></div>
-            <h3>Golden</h3>
-            <p>A warm gold accent theme.</p>
-            <span class="tag">Gold</span>
-        </button>
-
-        <button class="card theme-card" data-theme="cyan" onclick="setTheme('cyan',this)"><div class="theme-preview" style="background:linear-gradient(135deg,#02131a,#00f0ff)"></div><h3>Cyber Cyan</h3><p>A high-energy neon interface.</p><span class="tag">Cyan</span></button>
-        <button class="card theme-card" data-theme="orange" onclick="setTheme('orange',this)"><div class="theme-preview" style="background:linear-gradient(135deg,#160b04,#ff9b45)"></div><h3>Ember</h3><p>A fiery orange inventory.</p><span class="tag">Orange</span></button>
-        <button class="card theme-card" data-theme="pink" onclick="setTheme('pink',this)"><div class="theme-preview" style="background:linear-gradient(135deg,#170813,#ff66c7)"></div><h3>Neon Pink</h3><p>A vibrant cyber theme.</p><span class="tag">Pink</span></button>
-        <button class="card theme-card" data-theme="white" onclick="setTheme('white',this)"><div class="theme-preview" style="background:linear-gradient(135deg,#111,#fff)"></div><h3>Monochrome</h3><p>Clean black and white.</p><span class="tag">White</span></button>
+      <button class="card theme-card selected" data-theme="blue" onclick="setTheme('blue',this)">
+        <div class="theme-preview preview-blue"></div><h3>Ocean Blue</h3><p>Classic inventory terminal.</p><span class="tag">DEFAULT</span>
+      </button>
+      <button class="card theme-card" data-theme="purple" onclick="setTheme('purple',this)">
+        <div class="theme-preview preview-purple"></div><h3>Void Purple</h3><p>Deep-space archive energy.</p><span class="tag">VOID</span>
+      </button>
+      <button class="card theme-card" data-theme="red" onclick="setTheme('red',this)">
+        <div class="theme-preview preview-red"></div><h3>Crimson</h3><p>Warning lights and combat UI.</p><span class="tag red">DANGER</span>
+      </button>
+      <button class="card theme-card" data-theme="green" onclick="setTheme('green',this)">
+        <div class="theme-preview preview-green"></div><h3>Matrix</h3><p>Digital green terminal.</p><span class="tag green">SYSTEM</span>
+      </button>
+      <button class="card theme-card" data-theme="gold" onclick="setTheme('gold',this)">
+        <div class="theme-preview preview-gold"></div><h3>Golden</h3><p>Rare-item archive aesthetic.</p><span class="tag">RARE</span>
+      </button>
+      <button class="card theme-card" data-theme="cyan" onclick="setTheme('cyan',this)">
+        <div class="theme-preview preview-cyan"></div><h3>Cyber Cyan</h3><p>Neon cyber interface.</p><span class="tag">CYBER</span>
+      </button>
+      <button class="card theme-card" data-theme="orange" onclick="setTheme('orange',this)">
+        <div class="theme-preview preview-orange"></div><h3>Ember</h3><p>Hot orange reactor glow.</p><span class="tag">HEAT</span>
+      </button>
+      <button class="card theme-card" data-theme="pink" onclick="setTheme('pink',this)">
+        <div class="theme-preview preview-pink"></div><h3>Neon Pink</h3><p>Unstable neon signal.</p><span class="tag">NEON</span>
+      </button>
+      <button class="card theme-card" data-theme="white" onclick="setTheme('white',this)">
+        <div class="theme-preview preview-white"></div><h3>Monochrome</h3><p>Cold, clean, clinical.</p><span class="tag">CLEAN</span>
+      </button>
+      <button class="card theme-card" data-theme="bloodmoon" onclick="setTheme('bloodmoon',this)">
+        <div class="theme-preview preview-bloodmoon"></div><h3>Blood Moon</h3><p>Red moonlight over a black archive.</p><span class="tag red">DARK</span>
+      </button>
+      <button class="card theme-card" data-theme="toxic" onclick="setTheme('toxic',this)">
+        <div class="theme-preview preview-toxic"></div><h3>Toxic</h3><p>Radioactive green distortion.</p><span class="tag green">HAZARD</span>
+      </button>
+      <button class="card theme-card" data-theme="ice" onclick="setTheme('ice',this)">
+        <div class="theme-preview preview-ice"></div><h3>Frozen Core</h3><p>Glacial blue-white terminal.</p><span class="tag">COLD</span>
+      </button>
+      <button class="card theme-card" data-theme="sunset" onclick="setTheme('sunset',this)">
+        <div class="theme-preview preview-sunset"></div><h3>Afterglow</h3><p>Orange-violet sunset signal.</p><span class="tag">GLOW</span>
+      </button>
+      <button class="card theme-card" data-theme="easter" onclick="setTheme('easter',this)">
+        <div class="theme-preview preview-easter"></div><h3>??? — EASTER VAULT</h3><p>The unstable hidden theme.</p><span class="tag">SECRET</span>
+      </button>
     </div>
 
+    <div class="section-title">Interface Presets</div>
+    <div class="grid preset-grid">
+      <button class="card preset" onclick="applyPreset('cinematic')"><h3>🎬 Cinematic</h3><p>Vignette + scanlines + subtle RGB.</p></button>
+      <button class="card preset" onclick="applyPreset('terminal')"><h3>▣ Terminal</h3><p>Matrix theme + scanlines + RGB.</p></button>
+      <button class="card preset" onclick="applyPreset('unstable')"><h3>⚠ Unstable</h3><p>Crimson + heavy glitch effects.</p></button>
+      <button class="card preset" onclick="applyPreset('clean')"><h3>✦ Clean</h3><p>Monochrome with every visual effect off.</p></button>
+    </div>
     <div class="section-title">Music</div>
 
     <div class="card">
@@ -633,6 +798,7 @@ body.theme-gold{background:
         <audio id="lockedIn" preload="metadata" loop><source src="https://github.com/AzmiYT/Honoured-Inventory/raw/refs/heads/main/Locked%20In%20-%20Anno%20Domini%20Beats.mp3" type="audio/mpeg"></audio>
     </div>
 
+    <div class="section-title">Data</div><div class="card"><h3>🧹 Reset Local Data</h3><p>Clears achievements, favorites, recent items and saved theme.</p><button class="secondary-btn" onclick="resetV8Data()" style="margin-top:14px">Reset V8 Data</button></div>
     <div class="section-title">Visual Effects</div>
     <div class="card"><p>Extra effects are disabled by default.</p><div class="grid" style="margin-top:14px">
       <button class="primary-btn effectBtn" data-effect="scanlines">Scanlines: OFF</button><button class="primary-btn" id="glitchToggle">Glitch Events: OFF</button>
@@ -669,36 +835,297 @@ content.addEventListener('scroll',()=>backTop.classList.toggle('show',content.sc
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const r=document.createElement('span');r.className='ripple';const rect=b.getBoundingClientRect();r.style.left=e.clientX-rect.left+'px';r.style.top=e.clientY-rect.top+'px';b.appendChild(r);setTimeout(()=>r.remove(),600)});
 document.addEventListener('mousemove',e=>{const c=document.getElementById('cursor');c.style.left=e.clientX+'px';c.style.top=e.clientY+'px'});
 /* themes */
-const themeNames=['blue','purple','red','green','gold','cyan','orange','pink','white','easter'];
+const themeNames=['blue','purple','red','green','gold','cyan','orange','pink','white','easter','bloodmoon','toxic','ice','sunset'];
 function setTheme(theme,button){document.body.classList.remove(...themeNames.map(t=>'theme-'+t));document.body.classList.add('theme-'+theme);document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));if(button)button.classList.add('selected');if(theme!=='easter')localStorage.setItem('hiddenInventoryTheme',theme);showToast('Theme changed to '+theme.charAt(0).toUpperCase()+theme.slice(1));addSecretProgress(5)}
 const savedTheme=localStorage.getItem('hiddenInventoryTheme')||'blue';document.body.classList.add('theme-'+savedTheme);document.querySelectorAll('.theme-card').forEach(c=>{if(c.dataset.theme===savedTheme)c.classList.add('selected')});
-/* logo */
-const logo=document.getElementById('logoHome');let logoClicks=0,logoTimer;logo.addEventListener('click',()=>{showPage('home',document.querySelector('.nav button'));logoClicks++;addSecretProgress(7);clearTimeout(logoTimer);logoTimer=setTimeout(()=>logoClicks=0,2200);if(logoClicks>=7){logoClicks=0;showToast('👁️ 7-CLICK LOGO EASTER EGG FOUND');addSecretProgress(15)}});
+
 /* secret theme + hidden progress */
+
 let secretProgress=0;const fill=document.getElementById('secretFill'),status=document.getElementById('secretStatus'),progressCard=document.getElementById('secretProgressCard');
-function addSecretProgress(n){secretProgress=Math.min(100,secretProgress+n);if(fill)fill.style.width=secretProgress+'%';if(status)status.textContent=secretProgress+'%';if(secretProgress>=25)progressCard.classList.add('found');if(secretProgress>=100&&!document.querySelector('[data-theme="easter"]')){const b=document.createElement('button');b.className='card theme-card';b.dataset.theme='easter';b.innerHTML='<div class="theme-preview" style="background:linear-gradient(135deg,#00fff0,#ff00aa,#050505)"></div><h3>??? — EASTER VAULT</h3><p>A theme containing the site\'s hidden effects.</p><span class="tag">SECRET</span>';b.onclick=()=>setTheme('easter',b);document.querySelector('.theme-grid').appendChild(b);showToast('🔓 SECRET EASTER VAULT THEME UNLOCKED');}}
-/* secret search key */
-function checkSecretSearch(q){if(q.trim().toLowerCase()==='secret time'){addSecretProgress(30);showPage('settings',document.querySelectorAll('.nav button')[5]);showToast('⏱️ SECRET TIME DETECTED');return true}return false}
-const oldSearch=searchAll;
-searchAll=function(q){if(checkSecretSearch(q))return;oldSearch(q)};
+function addSecretProgress(n){
+  secretProgress=Math.min(100,secretProgress+n);
+  if(fill)fill.style.width=secretProgress+'%';
+  if(status)status.textContent=secretProgress+'%';
+  if(secretProgress>=25&&progressCard)progressCard.classList.add('found');
+}
+
 /* music */
 const letItRide=document.getElementById('letItRide'),lockedIn=document.getElementById('lockedIn'),volume=document.getElementById('masterVolume'),volumeLabel=document.getElementById('volumeLabel');letItRide.volume=1;lockedIn.volume=1;
 function setMasterVolume(){const v=Number(volume.value)/100;letItRide.volume=v;lockedIn.volume=v;volumeLabel.textContent=volume.value+'%'}volume.addEventListener('input',()=>{setMasterVolume();addSecretProgress(1)});setMasterVolume();
-document.getElementById('playLetItRide').onclick=()=>{if(letItRide.paused){lockedIn.pause();letItRide.play();showToast('Playing Let It Ride')}else letItRide.pause();addSecretProgress(10)};
-document.getElementById('playLockedIn').onclick=()=>{if(lockedIn.paused){letItRide.pause();lockedIn.play();showToast('Playing Locked In')}else lockedIn.pause();addSecretProgress(10)};
-/* effects */
-document.querySelectorAll('.effectBtn').forEach(btn=>btn.onclick=()=>{const c='effect-'+btn.dataset.effect;document.body.classList.toggle(c);const on=document.body.classList.contains(c);btn.textContent=btn.dataset.effect.replace(/^./,x=>x.toUpperCase())+': '+(on?'ON':'OFF');addSecretProgress(3)});
+
+
+/* V8 effects */
+document.querySelectorAll('.effectBtn').forEach(btn=>btn.onclick=()=>{
+  const c='effect-'+btn.dataset.effect;
+  document.body.classList.toggle(c);
+  const on=document.body.classList.contains(c);
+  btn.textContent=btn.dataset.effect.replace(/^./,x=>x.toUpperCase())+': '+(on?'ON':'OFF');
+  updateEffectStatus(); unlock('glitch');
+});
+function updateEffectStatus(){
+  const active=['scanlines','vignette','rgb','shake','invert'].filter(x=>document.body.classList.contains('effect-'+x));
+  const el=document.getElementById('effectStatus'); if(el) el.textContent=active.length?active.join(' • ').toUpperCase():'No effects active.';
+}
+
 /* keyboard sequence */
-const secretSeq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];let seq=[];document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;seq.push(e.key);if(seq.length>secretSeq.length)seq.shift();if(seq.join('|').toLowerCase()===secretSeq.join('|').toLowerCase()){seq=[];addSecretProgress(20);showToast('🕹️ SECRET KEY SEQUENCE FOUND');document.body.classList.add('effect-rgb')}});
-/* glitch timer */
-let glitchEnabled=false;const glitchToggle=document.getElementById('glitchToggle');glitchToggle.onclick=()=>{glitchEnabled=!glitchEnabled;glitchToggle.textContent='Glitch Events: '+(glitchEnabled?'ON':'OFF');showToast('Glitch Events '+(glitchEnabled?'enabled':'disabled'));addSecretProgress(3)};const glitchStage=document.getElementById('glitchStage');function doGlitch(){if(!glitchEnabled)return;if(Math.random()<.5){glitchStage.style.opacity=.8;document.body.classList.add('effect-rgb');setTimeout(()=>{glitchStage.style.opacity=0;document.body.classList.remove('effect-rgb')},900)}}setInterval(doGlitch,60000);
-/* progressive nav spam */
-let spam=[];let spamLevel=0;function spamGlitch(){spamLevel=Math.min(100,spamLevel+15);glitchStage.style.opacity=Math.min(.9,spamLevel/100);if(spamLevel>=25)document.body.classList.add('effect-rgb');if(spamLevel>=50)document.body.classList.add('effect-scanlines');if(spamLevel>=70)document.body.classList.add('effect-shake');if(spamLevel>=85)document.body.classList.add('effect-invert');if(spamLevel>=100){document.body.innerHTML='<div class="spam404"><div class="errbox"><h1>404</h1><h2>HIDDEN INVENTORY CORRUPTED</h2><p>Too much button spam detected.</p><p>Refresh the page to recover.</p></div></div>'}}
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{const now=Date.now();spam.push(now);spam=spam.filter(t=>now-t<1800);if(spam.length>=3){spam=[];spamGlitch()}}));
+const secretSeq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let seq=[];
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  seq.push(e.key); if(seq.length>secretSeq.length)seq.shift();
+  if(seq.join('|').toLowerCase()===secretSeq.join('|').toLowerCase()){
+    seq=[]; addSecretProgress(20); unlock('konami'); showToast('🕹️ SECRET KEY SEQUENCE FOUND');
+    document.body.classList.add('effect-rgb','effect-heavy');
+    setTimeout(()=>document.body.classList.remove('effect-heavy'),3500);
+  }
+});
+
+/* glitch events + much more aggressive 404 corruption */
+let glitchEnabled=false;
+const glitchToggle=document.getElementById('glitchToggle');
+glitchToggle.onclick=()=>{
+  glitchEnabled=!glitchEnabled;
+  glitchToggle.textContent='Glitch Events: '+(glitchEnabled?'ON':'OFF');
+  showToast('Glitch Events '+(glitchEnabled?'enabled':'disabled'));
+  addSecretProgress(3);
+};
+const glitchStage=document.getElementById('glitchStage');
+function doGlitch(){
+  if(!glitchEnabled)return;
+  if(Math.random()<.5){
+    const dur=350+Math.random()*1100;
+    glitchStage.style.opacity=.45+Math.random()*.5;
+    document.body.classList.add('effect-rgb');
+    if(Math.random()<.7)document.body.classList.add('effect-heavy');
+    if(Math.random()<.35)document.body.classList.add('effect-shake');
+    setTimeout(()=>{
+      glitchStage.style.opacity=0;
+      document.body.classList.remove('effect-rgb','effect-heavy','effect-shake');
+    },dur);
+  }
+}
+setInterval(doGlitch,60000);
+
+/* 404 spam progression: each stage becomes visibly worse */
+let spam=[],spamLevel=0;
+function spamGlitch(){
+  spamLevel=Math.min(100,spamLevel+10);
+  glitchStage.style.opacity=Math.min(.95,spamLevel/100);
+  if(spamLevel>=10)document.body.classList.add('effect-rgb');
+  if(spamLevel>=25)document.body.classList.add('effect-scanlines');
+  if(spamLevel>=40)document.body.classList.add('effect-heavy');
+  if(spamLevel>=55)document.body.classList.add('effect-shake');
+  if(spamLevel>=70)document.body.classList.add('effect-invert');
+  if(spamLevel>=85){
+    document.body.style.filter='contrast(1.5) saturate(2)';
+    document.querySelectorAll('.card,.hero,.stat,.nav button').forEach((el,i)=>{
+      el.style.transform=`translate(${(i%3)-1}px,${(i%5)-2}px) skewX(${(i%2)*2-1}deg)`;
+    });
+  }
+  if(spamLevel>=100){
+    unlock('glitch');
+    document.body.innerHTML='<div class="spam404"><div class="errbox"><h1>404</h1><h2>HIDDEN INVENTORY CORRUPTED</h2><p>ARCHIVE INTEGRITY: 0%</p><p>SIGNAL LOST • UI FRAGMENTATION COMPLETE</p><p>Refresh the page to recover.</p></div></div>';
+    document.body.style.filter='none';
+  }else{
+    showToast('⚠ CORRUPTION LEVEL '+spamLevel+'%');
+  }
+}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{
+  const now=Date.now(); spam.push(now); spam=spam.filter(t=>now-t<1800);
+  if(spam.length>=3){spam=[];spamGlitch()}
+}));
+
+/* achievements */
+const achState=JSON.parse(localStorage.getItem('hiV8Achievements')||'{}');
+function unlock(id){
+  if(achState[id])return;
+  achState[id]=true; localStorage.setItem('hiV8Achievements',JSON.stringify(achState));
+  const card=document.querySelector(`.achievement[data-ach="${id}"]`);
+  if(card){card.classList.add('unlocked');const tag=card.querySelector('.tag');if(tag)tag.textContent='UNLOCKED'}
+  updateAchievementCount();
+}
+function updateAchievementCount(){
+  const cards=[...document.querySelectorAll('.achievement')];
+  const n=cards.filter(c=>achState[c.dataset.ach]).length;
+  const label=document.getElementById('achievementCount'); if(label)label.textContent=n+' / '+cards.length;
+  cards.forEach(c=>{if(achState[c.dataset.ach]){c.classList.add('unlocked');const t=c.querySelector('.tag');if(t)t.textContent='UNLOCKED'}});
+}
+updateAchievementCount();
+
+/* favorites + recent items */
+let favorites=JSON.parse(localStorage.getItem('hiV8Favorites')||'[]');
+let recent=JSON.parse(localStorage.getItem('hiV8Recent')||'[]');
+function saveLists(){localStorage.setItem('hiV8Favorites',JSON.stringify(favorites));localStorage.setItem('hiV8Recent',JSON.stringify(recent));}
+function favoriteItem(name){
+  if(favorites.includes(name)) favorites=favorites.filter(x=>x!==name);
+  else {favorites.push(name);unlock('favorites')}
+  saveLists(); renderRecent(); updateFavoriteCount();
+}
+function updateFavoriteCount(){const e=document.getElementById('favoriteCount');if(e)e.textContent=favorites.length}
+function rememberRecent(name,page){
+  recent=[{name,page},...recent.filter(x=>x.name!==name)].slice(0,6);
+  saveLists(); renderRecent();
+}
+function renderRecent(){
+  const grid=document.getElementById('recentGrid'); if(!grid)return;
+  if(!recent.length){grid.innerHTML='<div class="notice">Nothing viewed yet. Explore the archive.</div>';return}
+  grid.innerHTML=recent.map(x=>`<button class="card recent-card" onclick="showPage('${x.page}',document.querySelector('.nav button[onclick*=\"\\'${x.page}\\'\"]'))"><h3>${htmlEscape(x.name)}</h3><p>Recently viewed inventory entry.</p><span class="tag">OPEN</span></button>`).join('');
+}
+function htmlEscape(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function decorateFavorites(){
+  document.querySelectorAll('.favoriteable').forEach(card=>{
+    if(card.querySelector('.favorite-btn'))return;
+    const name=card.dataset.item||card.querySelector('h3,.code-name')?.textContent.trim()||'Inventory item';
+    const b=document.createElement('button');b.className='favorite-btn';b.type='button';b.textContent=favorites.includes(name)?'★':'☆';b.title='Favorite';
+    if(favorites.includes(name))b.classList.add('active');
+    b.onclick=e=>{e.stopPropagation();favoriteItem(name);b.textContent=favorites.includes(name)?'★':'☆';b.classList.toggle('active',favorites.includes(name))};
+    card.appendChild(b);
+  });
+}
+decorateFavorites();updateFavoriteCount();renderRecent();
+
+/* random discovery */
+const discovery=[
+  ['Codes','codes','WELCOME'],['Codes','codes','UPDATE1'],['Codes','codes','INVENTORY'],
+  ['Moveset: Move 1','moves','Move 1'],['Moveset: Move 2','moves','Move 2'],['Moveset: Move 3','moves','Move 3'],
+  ['Moveset: Ultimate','moves','Ultimate'],['Animation: Idle','animations','Idle'],['Animation: Attack','animations','Attack'],
+  ['Animation: Ultimate','animations','Ultimate'],['News','news','News'],['Achievements','achievements','Achievements']
+];
+function randomDiscovery(){
+  const x=discovery[Math.floor(Math.random()*discovery.length)];
+  const btn=[...document.querySelectorAll('.nav button')].find(b=>b.getAttribute('onclick')?.includes(`'${x[1]}'`));
+  showPage(x[1],btn); unlock('random'); rememberRecent(x[2],x[1]); showToast('🎲 Discovered: '+x[2]);
+}
+
+/* page tracking */
+const visited=new Set(['home']);
+function trackPage(id){
+  visited.add(id);
+  const e=document.getElementById('visitedCount');if(e)e.textContent=visited.size;
+  if(id==='news')unlock('news');
+  if(id==='status')unlock('status');
+}
+const baseShowPage=showPage;
+showPage=function(id,button){
+  baseShowPage(id,button); trackPage(id);
+};
+trackPage('home');
+
+/* copy + search achievements */
+const baseCopyCode=copyCode;
+copyCode=function(code){baseCopyCode(code);unlock('copy')};
+const baseSearchAll=searchAll;
+searchAll=function(q){
+  if(checkSecretSearch(q))return;
+  if(q.trim())unlock('search');
+  baseSearchAll(q);
+};
+
+/* theme upgrades */
+const themeNamesV8=['blue','purple','red','green','gold','cyan','orange','pink','white','easter','bloodmoon','toxic','ice','sunset'];
+function setThemeV8(theme,button){
+  document.body.classList.remove(...themeNamesV8.map(t=>'theme-'+t));
+  document.body.classList.add('theme-'+theme);
+  document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));
+  if(button)button.classList.add('selected');
+  if(theme!=='easter')localStorage.setItem('hiddenInventoryTheme',theme);
+  showToast('Theme changed to '+theme.charAt(0).toUpperCase()+theme.slice(1));
+  addSecretProgress(5);unlock('theme');
+  updateEffectStatus();
+}
+setTheme=setThemeV8;
+const savedThemeV8=localStorage.getItem('hiddenInventoryTheme')||'blue';
+document.body.classList.remove(...themeNamesV8.map(t=>'theme-'+t));
+document.body.classList.add('theme-'+savedThemeV8);
+document.querySelectorAll('.theme-card').forEach(c=>c.classList.toggle('selected',c.dataset.theme===savedThemeV8));
+
+function applyPreset(type){
+  const map={
+    cinematic:['blue',['vignette','scanlines']],
+    terminal:['green',['scanlines','rgb']],
+    unstable:['bloodmoon',['scanlines','rgb','shake']],
+    clean:['white',[]]
+  };
+  const [theme,effects]=map[type];setTheme(theme,document.querySelector(`[data-theme="${theme}"]`));
+  ['scanlines','vignette','rgb','shake','invert'].forEach(x=>document.body.classList.remove('effect-'+x));
+  effects.forEach(x=>document.body.classList.add('effect-'+x));
+  document.querySelectorAll('.effectBtn').forEach(btn=>{
+    const on=effects.includes(btn.dataset.effect);
+    btn.textContent=btn.dataset.effect.replace(/^./,x=>x.toUpperCase())+': '+(on?'ON':'OFF');
+  });
+  updateEffectStatus();showToast('Preset loaded: '+type.toUpperCase());
+}
+
+/* logo */
+const logoV8=document.getElementById('logoHome');let logoClicksV8=0,logoTimerV8;
+logoV8.addEventListener('click',()=>{
+  showPage('home',document.querySelector('.nav button'));logoClicksV8++;addSecretProgress(7);
+  clearTimeout(logoTimerV8);logoTimerV8=setTimeout(()=>logoClicksV8=0,2200);
+  if(logoClicksV8>=7){logoClicksV8=0;showToast('👁️ 7-CLICK LOGO EASTER EGG FOUND');addSecretProgress(15);unlock('logo')}
+});
+
+/* secret search */
+function checkSecretSearch(q){
+  const v=q.trim().toLowerCase();
+  if(v==='secret time'){addSecretProgress(30);showPage('settings',document.querySelectorAll('.nav button')[8]);showToast('⏱️ SECRET TIME DETECTED');return true}
+  if(v==='we see we judge'){
+    unlock('judge'); triggerJudgement(); return true;
+  }
+  return false;
+}
+
+/* judgement protocol */
+function triggerJudgement(){
+  document.body.classList.add('effect-heavy');
+  const o=document.createElement('div');
+  o.className='judge-overlay';
+  o.innerHTML=`<div class="judge-text">WE SEE. WE JUDGE.</div>
+    <div class="judge-content">
+      <div class="hammer"><div class="hammer-head"></div><div class="hammer-handle"></div></div>
+    </div>
+    <div class="impact"></div>
+    <div class="crack"></div><div class="crack c2"></div><div class="crack c3"></div><div class="crack c4"></div>
+    <div class="break-lines"></div>`;
+  document.body.appendChild(o);
+  setTimeout(()=>o.classList.add('broken'),1200);
+  setTimeout(()=>{showToast('JUDGEMENT COMPLETE • REFRESH TO RECOVER');},1300);
+}
+
+/* music */
+document.getElementById('playLetItRide').onclick=()=>{if(letItRide.paused){lockedIn.pause();letItRide.play();showToast('Playing Let It Ride')}else letItRide.pause();addSecretProgress(10);unlock('music')};
+document.getElementById('playLockedIn').onclick=()=>{if(lockedIn.paused){letItRide.pause();lockedIn.play();showToast('Playing Locked In')}else lockedIn.pause();addSecretProgress(10);unlock('music')};
+
 /* keyboard nav */
-document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;const b=document.querySelectorAll('.nav button');if(e.key>='1'&&e.key<='6')b[Number(e.key)-1].click();if(e.key==='Escape'){search.value='';resetSearch()}});
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  const b=document.querySelectorAll('.nav button');
+  if(e.key>='1'&&e.key<='9'&&b[Number(e.key)-1])b[Number(e.key)-1].click();
+  if(e.key==='Escape'){search.value='';resetSearch()}
+});
+
+/* session status */
+const sessionStart=Date.now();
+setInterval(()=>{
+  const sec=Math.floor((Date.now()-sessionStart)/1000),m=Math.floor(sec/60),r=sec%60;
+  const st=document.getElementById('sessionTime');if(st)st.textContent=m+'m '+r+'s';
+  const cl=document.getElementById('clockStatus');if(cl)cl.textContent=new Date().toLocaleTimeString();
+},1000);
+
+/* reset button */
+function resetV8Data(){
+  ['hiV8Achievements','hiV8Favorites','hiV8Recent','hiddenInventoryTheme'].forEach(k=>localStorage.removeItem(k));
+  showToast('V8 local data reset — refresh to finish');
+}
+
+/* decorate after dynamic sections exist */
+document.querySelectorAll('.card').forEach(card=>{
+  if(card.matches('.code,.entry') && !card.classList.contains('favoriteable'))card.classList.add('favoriteable');
+});
+decorateFavorites();updateFavoriteCount();renderRecent();
+
 /* initial progress reveal */
 addSecretProgress(5);
+updateEffectStatus();
 </script>
 
 
@@ -706,11 +1133,11 @@ addSecretProgress(5);
 (function(){
   var text=document.getElementById("bootText");
   var messages=[
-    "Initializing inventory...",
+    "Initializing V8 inventory...",
     "Loading database...",
     "Preparing interface...",
     "Checking local systems...",
-    "Inventory online."
+    "V8 inventory online."
   ];
   if(!text)return;
   for(var i=0;i<messages.length;i++){
