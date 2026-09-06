@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Hidden Inventory V9</title>
+<title>Hidden Inventory V10</title>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
@@ -567,16 +567,190 @@ body.reduced-motion *,body.reduced-motion *:before,body.reduced-motion *:after{a
   overflow:hidden !important;
 }
 
+
+/* ================= HIDDEN INVENTORY V10 FEATURE PACK ================= */
+
+/* Control center */
+.v10-stat-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+.v10-stat{
+  padding:16px;
+  border:1px solid var(--accent-border);
+  border-radius:13px;
+  background:linear-gradient(145deg,var(--accent-soft),#ffffff02);
+}
+.v10-stat .num{
+  display:block;
+  margin-top:5px;
+  color:var(--accent);
+  font:700 25px monospace;
+}
+.v10-stat .label{color:#666;font:11px monospace;text-transform:uppercase;letter-spacing:1px}
+
+/* Notes */
+.v10-notes{
+  width:100%;
+  min-height:280px;
+  box-sizing:border-box;
+  resize:vertical;
+  padding:16px;
+  color:#ddd;
+  background:#05070a;
+  border:1px solid var(--accent-border);
+  border-radius:12px;
+  outline:none;
+  font:14px/1.6 monospace;
+}
+.v10-notes:focus{box-shadow:0 0 0 2px var(--accent-soft)}
+
+/* Scan */
+.v10-scan{
+  height:9px;
+  overflow:hidden;
+  border-radius:99px;
+  background:#111;
+  border:1px solid #ffffff10;
+}
+.v10-scan span{
+  display:block;height:100%;width:0;
+  background:var(--accent);
+  box-shadow:0 0 16px var(--accent);
+}
+.v10-log{
+  min-height:150px;
+  max-height:240px;
+  overflow:auto;
+  padding:14px;
+  border:1px solid var(--accent-border);
+  background:#020304;
+  border-radius:10px;
+  color:#777;
+  font:12px/1.7 monospace;
+  white-space:pre-wrap;
+}
+
+/* Shortcut overlay */
+.v10-shortcuts{
+  position:fixed;
+  inset:0;
+  z-index:999997;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:#000b;
+  backdrop-filter:blur(10px);
+}
+.v10-shortcuts.open{display:flex}
+.v10-shortcut-box{
+  width:min(620px,94vw);
+  max-height:80vh;
+  overflow:auto;
+  padding:22px;
+  border:1px solid var(--accent-border);
+  border-radius:18px;
+  background:#090c10f5;
+  box-shadow:0 30px 90px #000c,0 0 45px var(--accent-soft);
+}
+.v10-shortcut-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:12px 4px;
+  border-bottom:1px solid #ffffff08;
+  color:#aaa;
+  font-size:14px;
+}
+.v10-shortcut-row kbd{
+  padding:4px 8px;
+  border:1px solid #ffffff18;
+  border-bottom-width:2px;
+  border-radius:6px;
+  color:#ddd;
+  background:#11151a;
+  font:11px monospace;
+}
+
+/* Ambient mode */
+body.ambient-mode:before{
+  content:"";
+  position:fixed;
+  inset:-20%;
+  z-index:-1;
+  pointer-events:none;
+  background:radial-gradient(circle at 20% 30%,var(--accent-soft),transparent 25%),
+             radial-gradient(circle at 80% 70%,var(--accent-soft),transparent 25%);
+  filter:blur(60px);
+  animation:v10Ambient 10s ease-in-out infinite alternate;
+}
+@keyframes v10Ambient{
+  from{transform:translate(-3%,2%) scale(.95)}
+  to{transform:translate(3%,-2%) scale(1.08)}
+}
+
+/* Fullscreen notification */
+.v10-kill{
+  position:fixed;
+  left:50%;
+  top:12px;
+  z-index:999999;
+  transform:translateX(-50%);
+  display:none;
+  padding:7px 12px;
+  border:1px solid var(--accent-border);
+  border-radius:8px;
+  background:#07090de8;
+  color:var(--accent);
+  font:11px monospace;
+}
+body.fullscreen-mode .v10-kill{display:block}
+
+/* Responsive */
+@media(max-width:800px){
+  .v10-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:500px){
+  .v10-stat-grid{grid-template-columns:1fr 1fr}
+}
+
+
+.easter-checklist{display:grid;gap:7px;margin:12px 0 14px;font:11px monospace;color:#666}
+.easter-checklist>div{display:flex;justify-content:space-between;gap:15px;padding:7px 9px;border:1px solid #ffffff08;border-radius:7px;background:#ffffff02}
+.easter-checklist span{color:#555}.easter-checklist span.unlocked{color:var(--accent)}
+
 </style>
 </head>
 
 <body>
-<script>(function(){var t=localStorage.getItem('hiddenInventoryTheme');if(t==='easter'){localStorage.removeItem('hiddenInventoryTheme');t='blue'}if(t)document.body.classList.add('theme-'+t)})();</script>
+<div class="v10-shortcuts" id="v10Shortcuts" aria-hidden="true">
+  <div class="v10-shortcut-box">
+    <div class="v10-row">
+      <div>
+        <div class="page-title">Keyboard Controls</div>
+        <p class="subtitle">Quick access to the archive.</p>
+      </div>
+      <button class="v9-mini-btn" onclick="closeV10Shortcuts()">CLOSE</button>
+    </div>
+    <div class="v10-shortcut-row"><span>Command palette</span><kbd>CTRL + K</kbd></div>
+    <div class="v10-shortcut-row"><span>Keyboard controls</span><kbd>?</kbd></div>
+    <div class="v10-shortcut-row"><span>Go Home</span><kbd>H</kbd></div>
+    <div class="v10-shortcut-row"><span>Random discovery</span><kbd>R</kbd></div>
+    <div class="v10-shortcut-row"><span>Scroll to top</span><kbd>T</kbd></div>
+    <div class="v10-shortcut-row"><span>Close overlays</span><kbd>ESC</kbd></div>
+  </div>
+</div>
+<div class="v10-kill" id="v10FullscreenHint">F11 / ESC to leave fullscreen</div>
+
+<script>(function(){var t=localStorage.getItem('hiddenInventoryTheme');if(t==='easter' && localStorage.getItem('hiV8EasterUnlocked')!=='1'){localStorage.removeItem('hiddenInventoryTheme');t='blue'}if(t)document.body.classList.add('theme-'+t)})();</script>
 <div class="reading-ruler" id="readingRuler"></div>
 <div class="system-clock" id="systemClock">00:00:00</div>
 <div class="v9-toast-stack" id="v9ToastStack"></div>
 
-<script>(function(){var t=localStorage.getItem('hiddenInventoryTheme');if(t==='easter'){localStorage.removeItem('hiddenInventoryTheme');t='blue'}if(t)document.body.classList.add('theme-'+t)})();</script>
+<script>(function(){var t=localStorage.getItem('hiddenInventoryTheme');if(t==='easter' && localStorage.getItem('hiV8EasterUnlocked')!=='1'){localStorage.removeItem('hiddenInventoryTheme');t='blue'}if(t)document.body.classList.add('theme-'+t)})();</script>
 
 <div class="boot-screen" id="bootScreen">
   <div class="boot-box">
@@ -609,11 +783,14 @@ body.reduced-motion *,body.reduced-motion *:before,body.reduced-motion *:after{a
         <button onclick="showPage('status',this)">◉ Status <span class="nav-key">7</span></button>
         <button onclick="showPage('contact',this)">💬 Contact <span class="nav-key">8</span></button>
         <button onclick="showPage('vault',this)">🗄️ Vault <span>9</span></button>
-<button onclick="showPage('terminal',this)">⌨️ Terminal <span>0</span></button>
-<button onclick="showPage('settings',this)">⚙️ Settings <span class="nav-key">9</span></button>
+<button onclick="showPage('terminal',this)">⌨️ Terminal <span>10</span></button>
+<button onclick="showPage('control',this)">📊 Control <span>10</span></button>
+<button onclick="showPage('notes',this)">📝 Notes <span>11</span></button>
+<button onclick="showPage('scanner',this)">🔍 Scanner <span>12</span></button>
+<button onclick="showPage('settings',this)">⚙️ Settings <span class="nav-key">11</span></button>
     </nav>
 
-    <div class="sidebar-footer"><span class="status-dot"></span><span>Inventory Online</span><br><span>Hidden Inventory V9</span></div>
+    <div class="sidebar-footer"><span class="status-dot"></span><span>Inventory Online</span><br><span>Hidden Inventory V10</span></div>
 </aside>
 
 <main class="content" id="content">
@@ -660,7 +837,6 @@ body.reduced-motion *,body.reduced-motion *:before,body.reduced-motion *:after{a
       <div class="signal-code" id="dailySignalCode">----</div>
     </div>
 
-    <div class="card daily-signal"><div><span class="tag">DAILY SIGNAL</span><h3>Archive Signal</h3><p id="dailySignalText">Generating today's signal...</p></div><div class="signal-code" id="dailySignalCode">----</div></div>
     <div class="section-title">Recently Viewed</div>
     <div class="grid" id="recentGrid"><div class="notice">Nothing viewed yet. Explore the archive.</div></div>
 
@@ -860,6 +1036,7 @@ body.reduced-motion *,body.reduced-motion *:before,body.reduced-motion *:after{a
     <div class="card achievement" data-ach="random"><h3>🎲 Gambler</h3><p>Use Random Discovery.</p><span class="tag">LOCKED</span></div>
     <div class="card achievement" data-ach="logo"><h3>👁️ Observer</h3><p>Find the logo secret.</p><span class="tag">LOCKED</span></div>
     <div class="card achievement" data-ach="konami"><h3>🕹️ Old Signal</h3><p>Enter the hidden key sequence.</p><span class="tag">LOCKED</span></div>
+    <div class="card achievement" data-ach="secretTime"><h3>⏱️ Time Leak</h3><p>Find the secret time signal.</p><span class="tag">LOCKED</span></div>
     <div class="card achievement" data-ach="status"><h3>◉ System Check</h3><p>Open the status page.</p><span class="tag">LOCKED</span></div>
     <div class="card achievement" data-ach="news"><h3>📰 Informed</h3><p>Read the news archive.</p><span class="tag">LOCKED</span></div>
     <div class="card achievement" data-ach="favorites"><h3>★ Archivist</h3><p>Favorite an inventory item.</p><span class="tag">LOCKED</span></div>
@@ -891,9 +1068,61 @@ body.reduced-motion *,body.reduced-motion *:before,body.reduced-motion *:after{a
 <div class="grid"><div class="card"><h3>Data Backup</h3><p>Export your local favorites, achievements, recent views and settings.</p><button class="v9-mini-btn" onclick="exportV9Data()">EXPORT BACKUP</button></div>
 <div class="card"><h3>Data Restore</h3><p>Paste a backup below to restore your local state.</p><textarea class="v9-codebox" id="importV9Data" placeholder="Paste backup JSON here..."></textarea><button class="v9-mini-btn" onclick="importV9Data()">RESTORE</button></div></div>
 <div class="card"><h3>Achievement Progress</h3><p id="v9AchievementCount">0 / 12 unlocked</p><div class="v9-meter"><span id="v9AchievementMeter"></span></div></div></section>
-<section id="terminal" class="page"><div class="page-title">Inventory Terminal</div><p class="subtitle">Local diagnostics.</p><div class="terminal-output" id="terminalOutput">HIDDEN INVENTORY TERMINAL V9
+<section id="terminal" class="page"><div class="page-title">Inventory Terminal</div><p class="subtitle">Local diagnostics.</p><div class="terminal-output" id="terminalOutput">HIDDEN INVENTORY TERMINAL V10
 --------------------------------
 Type HELP for available commands.</div><input class="terminal-input" id="terminalInput" placeholder="ENTER COMMAND..." autocomplete="off"></section>
+
+<section id="control" class="page">
+  <div class="page-title">Control Center</div>
+  <p class="subtitle">Live statistics for this browser session.</p>
+  <div class="v10-stat-grid">
+    <div class="v10-stat"><span class="label">Session</span><span class="num" id="v10Session">00:00</span></div>
+    <div class="v10-stat"><span class="label">Clicks</span><span class="num" id="v10Clicks">0</span></div>
+    <div class="v10-stat"><span class="label">Searches</span><span class="num" id="v10Searches">0</span></div>
+    <div class="v10-stat"><span class="label">Pages</span><span class="num" id="v10Pages">0</span></div>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h3>Archive Activity</h3>
+      <p id="v10Activity">System ready.</p>
+      <button class="v9-mini-btn" onclick="runV10Activity()">RUN ACTIVITY CHECK</button>
+    </div>
+    <div class="card">
+      <h3>Interface Mode</h3>
+      <p id="v10Mode">Standard</p>
+      <button class="v9-mini-btn" onclick="toggleAmbientMode()">TOGGLE AMBIENT MODE</button>
+    </div>
+  </div>
+</section>
+
+<section id="notes" class="page">
+  <div class="page-title">Archive Notes</div>
+  <p class="subtitle">A private notepad saved locally in your browser.</p>
+  <div class="card">
+    <textarea class="v10-notes" id="v10Notes" placeholder="Write anything here..."></textarea>
+    <div class="v10-row" style="margin-top:10px">
+      <span id="v10NotesStatus" style="color:#666;font:11px monospace">Autosave enabled</span>
+      <button class="v9-mini-btn" onclick="clearV10Notes()">CLEAR NOTES</button>
+    </div>
+  </div>
+</section>
+
+<section id="scanner" class="page">
+  <div class="page-title">System Scanner</div>
+  <p class="subtitle">Run a visual local integrity scan.</p>
+  <div class="card">
+    <div class="v10-row"><h3>Archive Integrity</h3><span id="v10ScanPercent" style="color:var(--accent);font:700 16px monospace">0%</span></div>
+    <div class="v10-scan"><span id="v10ScanBar"></span></div>
+    <div class="v10-log" id="v10ScanLog">READY TO SCAN.
+No external connection required.</div>
+    <button class="v9-mini-btn" onclick="runV10Scan()">START SCAN</button>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>Storage</h3><p id="v10Storage">Calculating...</p></div>
+    <div class="card"><h3>Theme State</h3><p id="v10ThemeState">Checking...</p></div>
+  </div>
+</section>
+
 <section id="settings" class="page">
 
     <div class="page-header">
@@ -981,15 +1210,34 @@ Type HELP for available commands.</div><input class="terminal-input" id="termina
       <button class="primary-btn effectBtn" data-effect="invert">Invert: OFF</button>
     </div></div>
 
+    <div class="easter-checklist" id="easterEggChecklist">
+      <div>🕹️ Old Signal <span data-egg-check="konami">LOCKED</span></div>
+      <div>👁️ 7-Click Logo <span data-egg-check="logo">LOCKED</span></div>
+      <div>⏱️ Time Leak <span data-egg-check="secretTime">LOCKED</span></div>
+    </div>
     <div class="card secret-progress-card" id="secretProgressCard">
-      <h3>???</h3><p style="color:#888;margin:6px 0 12px">A hidden signal is building...</p>
+      <h3>???</h3><p style="color:#888;margin:6px 0 12px">Find every hidden Easter egg to unlock the vault.</p>
       <div class="secret-bar"><div class="secret-fill" id="secretFill"></div></div>
       <p id="secretStatus" style="color:#777;margin-top:7px">0%</p>
     </div>
 <div class="section-title">Interface Controls</div><div class="grid">
 <div class="card"><h3>Focus Mode</h3><p>Dim everything except what you're inspecting.</p><button class="v9-mini-btn" onclick="toggleFocusMode()">TOGGLE FOCUS</button></div>
 <div class="card"><h3>Reading Ruler</h3><p>Follow your cursor with a scanning line.</p><button class="v9-mini-btn" onclick="toggleRuler()">TOGGLE RULER</button></div>
-<div class="card"><h3>Reduced Motion</h3><p>Reduce animations and transitions.</p><button class="v9-mini-btn" onclick="toggleReducedMotion()">TOGGLE MOTION</button></div></div></section>
+<div class="card"><h3>Reduced Motion</h3><p>Reduce animations and transitions.</p><button class="v9-mini-btn" onclick="toggleReducedMotion()">TOGGLE MOTION</button></div></div>
+<div class="section-title">V10 Utilities</div>
+<div class="grid">
+  <div class="card">
+    <h3>Keyboard Guide</h3>
+    <p>View all global keyboard shortcuts.</p>
+    <button class="v9-mini-btn" onclick="openV10Shortcuts()">OPEN SHORTCUTS</button>
+  </div>
+  <div class="card">
+    <h3>Fullscreen Archive</h3>
+    <p>Hide the browser chrome for a cleaner archive view.</p>
+    <button class="v9-mini-btn" onclick="toggleV10Fullscreen()">TOGGLE FULLSCREEN</button>
+  </div>
+</div>
+</section>
 
 </main>
 
@@ -1008,7 +1256,7 @@ function showPage(id,button){document.querySelectorAll('.page').forEach(p=>p.cla
 function copyCode(code){navigator.clipboard.writeText(code).then(()=>showToast('Copied: '+code)).catch(()=>showToast('Could not copy code'))}
 function filterMoves(type,button){document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));button.classList.add('active');document.querySelectorAll('.move').forEach(m=>m.style.display=type==='all'||m.dataset.type===type?'':'none')}
 function resetSearch(){document.querySelectorAll('.search-hit').forEach(x=>x.classList.remove('search-hit'));document.querySelectorAll('.searchable .card').forEach(x=>x.style.display='')}
-function searchAll(q){q=q.trim().toLowerCase();resetSearch();if(!q)return;const all=[...document.querySelectorAll('.page')];const match=all.flatMap(page=>[...page.querySelectorAll('.card,.hero,.page-header,.section-title')].map(el=>({el,page}))).find(x=>x.el.innerText.toLowerCase().includes(q));if(!match){showToast('No results found');return}showPage(match.page.id,document.querySelector(`.nav button[onclick*="'${match.page.id}'"]`));setTimeout(()=>{match.el.classList.add('search-hit');match.el.scrollIntoView({behavior:'smooth',block:'center'})},60);addSecretProgress(8)}
+function searchAll(q){q=q.trim().toLowerCase();resetSearch();if(!q)return;const all=[...document.querySelectorAll('.page')];const match=all.flatMap(page=>[...page.querySelectorAll('.card,.hero,.page-header,.section-title')].map(el=>({el,page}))).find(x=>x.el.innerText.toLowerCase().includes(q));if(!match){showToast('No results found');return}showPage(match.page.id,document.querySelector(`.nav button[onclick*="'${match.page.id}'"]`));setTimeout(()=>{match.el.classList.add('search-hit');match.el.scrollIntoView({behavior:'smooth',block:'center'})},60)}
 search.addEventListener('keydown',e=>{if(e.key==='Enter')searchAll(search.value)});
 search.addEventListener('input',()=>{if(!search.value)resetSearch()});
 content.addEventListener('scroll',()=>backTop.classList.toggle('show',content.scrollTop>350));function scrollTopPage(){content.scrollTo({top:0,behavior:'smooth'})}
@@ -1016,27 +1264,47 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
 document.addEventListener('mousemove',e=>{const c=document.getElementById('cursor');c.style.left=e.clientX+'px';c.style.top=e.clientY+'px'});
 /* themes */
 const themeNames=['blue','purple','red','green','gold','cyan','orange','pink','white','easter','bloodmoon','toxic','ice','sunset'];
-function setTheme(theme,button){document.body.classList.remove(...themeNames.map(t=>'theme-'+t));document.body.classList.add('theme-'+theme);document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));if(button)button.classList.add('selected');if(theme!=='easter')localStorage.setItem('hiddenInventoryTheme',theme);showToast('Theme changed to '+theme.charAt(0).toUpperCase()+theme.slice(1));addSecretProgress(5)}
+function setTheme(theme,button){document.body.classList.remove(...themeNames.map(t=>'theme-'+t));document.body.classList.add('theme-'+theme);document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));if(button)button.classList.add('selected');if(theme!=='easter')localStorage.setItem('hiddenInventoryTheme',theme);showToast('Theme changed to '+theme.charAt(0).toUpperCase()+theme.slice(1))}
 const savedTheme=localStorage.getItem('hiddenInventoryTheme')||'blue';document.body.classList.add('theme-'+savedTheme);document.querySelectorAll('.theme-card').forEach(c=>{if(c.dataset.theme===savedTheme)c.classList.add('selected')});
 
-/* secret theme + hidden progress */
+/* Easter Vault — all eggs required */
 
-let secretProgress=0;const fill=document.getElementById('secretFill'),status=document.getElementById('secretStatus'),progressCard=document.getElementById('secretProgressCard');
-function addSecretProgress(n){
-  secretProgress=Math.min(100,secretProgress+n);
+const easterEggIds=['konami','logo','secretTime'];
+let secretProgress=0;
+const fill=document.getElementById('secretFill'),status=document.getElementById('secretStatus'),progressCard=document.getElementById('secretProgressCard');
+
+function updateEasterVault(){
+  const state=JSON.parse(localStorage.getItem('hiV8Achievements')||'{}');
+  const found=easterEggIds.filter(id=>!!state[id]).length;
+  secretProgress=Math.round(found/easterEggIds.length*100);
   if(fill)fill.style.width=secretProgress+'%';
-  if(status)status.textContent=secretProgress+'%';
-  if(secretProgress>=25&&progressCard)progressCard.classList.add('found');
-  if(secretProgress>=100){
+  if(status)status.textContent=found+'/'+easterEggIds.length+' EASTER EGGS FOUND';
+  if(progressCard)progressCard.classList.toggle('found',found>0);
+
+  easterEggIds.forEach(id=>{
+    const e=document.querySelector(`[data-egg-check="${id}"]`);
+    if(e){const ok=!!state[id];e.textContent=ok?'FOUND':'LOCKED';e.classList.toggle('unlocked',ok)}
+  });
+  const unlocked=found===easterEggIds.length;
+  if(unlocked){
     localStorage.setItem('hiV8EasterUnlocked','1');
     const ec=document.querySelector('.theme-card[data-theme="easter"]');
-    if(ec){ec.classList.add('found');ec.querySelector('.tag').textContent='UNLOCKED'}
+    if(ec){ec.classList.add('found');const tag=ec.querySelector('.tag');if(tag)tag.textContent='UNLOCKED'}
+  }else{
+    localStorage.removeItem('hiV8EasterUnlocked');
+    const ec=document.querySelector('.theme-card[data-theme="easter"]');
+    if(ec){ec.classList.remove('found');const tag=ec.querySelector('.tag');if(tag)tag.textContent='SECRET'}
   }
+  return unlocked;
 }
+
+/* Kept for compatibility with older feature hooks, but progress is now
+   derived ONLY from the three actual Easter eggs above. */
+function addSecretProgress(){updateEasterVault()}
 
 /* music */
 const letItRide=document.getElementById('letItRide'),lockedIn=document.getElementById('lockedIn'),volume=document.getElementById('masterVolume'),volumeLabel=document.getElementById('volumeLabel');letItRide.volume=1;lockedIn.volume=1;
-function setMasterVolume(){const v=Number(volume.value)/100;letItRide.volume=v;lockedIn.volume=v;volumeLabel.textContent=volume.value+'%'}volume.addEventListener('input',()=>{setMasterVolume();addSecretProgress(1)});setMasterVolume();
+function setMasterVolume(){const v=Number(volume.value)/100;letItRide.volume=v;lockedIn.volume=v;volumeLabel.textContent=volume.value+'%'}volume.addEventListener('input',()=>{setMasterVolume()});setMasterVolume();
 
 
 /* V8 effects */
@@ -1059,7 +1327,7 @@ document.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT')return;
   seq.push(e.key); if(seq.length>secretSeq.length)seq.shift();
   if(seq.join('|').toLowerCase()===secretSeq.join('|').toLowerCase()){
-    seq=[]; addSecretProgress(20); unlock('konami'); showToast('🕹️ SECRET KEY SEQUENCE FOUND');
+    seq=[]; unlock('konami'); showToast('🕹️ SECRET KEY SEQUENCE FOUND');
     document.body.classList.add('effect-rgb','effect-heavy');
     setTimeout(()=>document.body.classList.remove('effect-heavy'),3500);
   }
@@ -1139,12 +1407,14 @@ setInterval(()=>{
 
 /* achievements */
 const achState=JSON.parse(localStorage.getItem('hiV8Achievements')||'{}');
+/* Easter Vault is derived from actual Easter-egg achievements. */
 function unlock(id){
   if(achState[id])return;
   achState[id]=true; localStorage.setItem('hiV8Achievements',JSON.stringify(achState));
-  const card=document.querySelector(`.achievement[data-ach="${id}"]`);
+  const card=document.querySelector(`.achievement[data-ach="${id;if(window.updateV10AchievementProgress)window.updateV10AchievementProgress();}"]`);
   if(card){card.classList.add('unlocked');const tag=card.querySelector('.tag');if(tag)tag.textContent='UNLOCKED'}
   updateAchievementCount();
+  updateEasterVault();
 }
 function updateAchievementCount(){
   const cards=[...document.querySelectorAll('.achievement')];
@@ -1224,14 +1494,14 @@ searchAll=function(q){
 };
 
 /* theme upgrades */
-const themeNamesV8=['blue','purple','red','green','gold','cyan','orange','pink','white','easter','bloodmoon','toxic','ice','sunset'];
+const themeNamesV8=['blue','purple','red','green','gold','cyan','orange','pink','white','easter','bloodmoon','toxic','ice','sunset']; window.themeNamesV8=themeNamesV8;
 function setThemeV8(theme,button){
 if(theme==='easter'&&localStorage.getItem('hiV8EasterUnlocked')!=='1'){showToast('🔒 EASTER VAULT IS LOCKED');return}
 document.body.classList.remove(...themeNamesV8.map(t=>'theme-'+t));document.body.classList.add('theme-'+theme);
 document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));if(button)button.classList.add('selected');
-if(theme==='easter')localStorage.removeItem('hiddenInventoryTheme');else localStorage.setItem('hiddenInventoryTheme',theme);
-showToast('Theme changed to '+theme.charAt(0).toUpperCase()+theme.slice(1));addSecretProgress(5);unlock('theme');updateEffectStatus();}
-setTheme=setThemeV8;let savedThemeV8=localStorage.getItem('hiddenInventoryTheme')||'blue';if(savedThemeV8==='easter'){localStorage.removeItem('hiddenInventoryTheme');savedThemeV8='blue'}document.body.classList.remove(...themeNamesV8.map(t=>'theme-'+t));document.body.classList.add('theme-'+savedThemeV8);document.querySelectorAll('.theme-card').forEach(c=>c.classList.toggle('selected',c.dataset.theme===savedThemeV8));
+localStorage.setItem('hiddenInventoryTheme',theme);
+showToast('Theme changed to '+theme.charAt(0).toUpperCase()+theme.slice(1));unlock('theme');updateEffectStatus();}
+setTheme=setThemeV8;let savedThemeV8=localStorage.getItem('hiddenInventoryTheme')||'blue';if(savedThemeV8==='easter'&&localStorage.getItem('hiV8EasterUnlocked')!=='1'){localStorage.removeItem('hiddenInventoryTheme');savedThemeV8='blue'}document.body.classList.remove(...themeNamesV8.map(t=>'theme-'+t));document.body.classList.add('theme-'+savedThemeV8);document.querySelectorAll('.theme-card').forEach(c=>c.classList.toggle('selected',c.dataset.theme===savedThemeV8));
 if(localStorage.getItem('hiV8EasterUnlocked')==='1'){
   const ec=document.querySelector('.theme-card[data-theme="easter"]');
   if(ec){ec.classList.add('found');ec.querySelector('.tag').textContent='UNLOCKED'}
@@ -1257,22 +1527,28 @@ function applyPreset(type){
 /* logo */
 const logoV8=document.getElementById('logoHome');let logoClicksV8=0,logoTimerV8;
 logoV8.addEventListener('click',()=>{
-  showPage('home',document.querySelector('.nav button'));logoClicksV8++;addSecretProgress(7);
-  clearTimeout(logoTimerV8);logoTimerV8=setTimeout(()=>logoClicksV8=0,2200);
-  if(logoClicksV8>=7){logoClicksV8=0;showToast('👁️ 7-CLICK LOGO EASTER EGG FOUND');addSecretProgress(15);unlock('logo')}
+  showPage('home',document.querySelector('.nav button'));
+  logoClicksV8++;
+  clearTimeout(logoTimerV8);
+  logoTimerV8=setTimeout(()=>logoClicksV8=0,2200);
+  if(logoClicksV8>=7){
+    logoClicksV8=0;
+    showToast('👁️ 7-CLICK LOGO EASTER EGG FOUND');
+    unlock('logo');
+  }
 });
 
 /* secret search */
 function checkSecretSearch(q){
   const v=q.trim().toLowerCase();
-  if(v==='secret time'){addSecretProgress(30);showPage('settings',document.querySelectorAll('.nav button')[8]);showToast('⏱️ SECRET TIME DETECTED');return true}
+  if(v==='secret time'){unlock('secretTime');showPage('settings',document.querySelectorAll('.nav button')[8]);showToast('⏱️ SECRET TIME DETECTED');return true}
 return false;
 }
 
 /* judgement protocol */
 /* music */
-document.getElementById('playLetItRide').onclick=()=>{if(letItRide.paused){lockedIn.pause();letItRide.play();showToast('Playing Let It Ride')}else letItRide.pause();addSecretProgress(10);unlock('music')};
-document.getElementById('playLockedIn').onclick=()=>{if(lockedIn.paused){letItRide.pause();lockedIn.play();showToast('Playing Locked In')}else lockedIn.pause();addSecretProgress(10);unlock('music')};
+document.getElementById('playLetItRide').onclick=()=>{if(letItRide.paused){lockedIn.pause();letItRide.play();showToast('Playing Let It Ride')}else letItRide.pause();unlock('music')};
+document.getElementById('playLockedIn').onclick=()=>{if(lockedIn.paused){letItRide.pause();lockedIn.play();showToast('Playing Locked In')}else lockedIn.pause();unlock('music')};
 
 /* keyboard nav */
 document.addEventListener('keydown',e=>{
@@ -1334,8 +1610,8 @@ setInterval(()=>{
 
 /* reset button */
 function resetV8Data(){
-  ['hiV8Achievements','hiV8Favorites','hiV8Recent','hiddenInventoryTheme','hiV8EasterUnlocked'].forEach(k=>localStorage.removeItem(k));
-  showToast('V8 local data reset — refresh to finish');
+  ['hiV8Achievements','hiV8Favorites','hiV8Recent','hiddenInventoryTheme','hiV8EasterUnlocked'].forEach(k=>localStorage.removeItem(k));document.body.classList.remove('theme-easter');document.body.classList.add('theme-blue');
+  showToast('V10 local data reset — refresh to finish');
 }
 
 /* decorate after dynamic sections exist */
@@ -1345,7 +1621,7 @@ document.querySelectorAll('.card').forEach(card=>{
 decorateFavorites();updateFavoriteCount();renderRecent();
 
 /* initial progress reveal */
-addSecretProgress(5);
+updateEasterVault();
 updateEffectStatus();
 </script>
 
@@ -1375,18 +1651,276 @@ function toggleRuler(){document.body.classList.toggle('ruler-on');localStorage.s
 function toggleFocusMode(){document.body.classList.toggle('focus-mode');localStorage.setItem('hiV9Focus',document.body.classList.contains('focus-mode')?'1':'0');showToast('Focus mode '+(document.body.classList.contains('focus-mode')?'ON':'OFF'))}
 function toggleReducedMotion(){document.body.classList.toggle('reduced-motion');localStorage.setItem('hiV9Motion',document.body.classList.contains('reduced-motion')?'1':'0');showToast('Reduced motion '+(document.body.classList.contains('reduced-motion')?'ON':'OFF'))}
 if(localStorage.getItem('hiV9Ruler')==='1')document.body.classList.add('ruler-on');if(localStorage.getItem('hiV9Focus')==='1')document.body.classList.add('focus-mode');if(localStorage.getItem('hiV9Motion')==='1')document.body.classList.add('reduced-motion');
-function exportV9Data(){const d={version:'V9',theme:localStorage.getItem('hiddenInventoryTheme'),achievements:localStorage.getItem('hiV8Achievements'),favorites:localStorage.getItem('hiV8Favorites'),recent:localStorage.getItem('hiV8Recent'),easterUnlocked:localStorage.getItem('hiV8EasterUnlocked')};const b=document.getElementById('importV9Data');if(b)b.value=JSON.stringify(d);showToast('Backup generated — copy the JSON to save it.')}
-function importV9Data(){const b=document.getElementById('importV9Data');if(!b||!b.value.trim())return showToast('Paste a backup first.');try{const d=JSON.parse(b.value),k={theme:'hiddenInventoryTheme',achievements:'hiV8Achievements',favorites:'hiV8Favorites',recent:'hiV8Recent',easterUnlocked:'hiV8EasterUnlocked'};Object.keys(k).forEach(x=>{if(d[x]==null)localStorage.removeItem(k[x]);else localStorage.setItem(k[x],d[x])});if(d.theme==='easter')localStorage.removeItem('hiddenInventoryTheme');showToast('Backup restored — refresh to apply.')}catch(e){showToast('Invalid backup data.')}}
-const terminalInput=document.getElementById('terminalInput'),terminalOutput=document.getElementById('terminalOutput');function terminalPrint(x){if(terminalOutput){terminalOutput.textContent+='\\n> '+x;terminalOutput.scrollTop=terminalOutput.scrollHeight}}
-if(terminalInput)terminalInput.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const c=terminalInput.value.trim().toUpperCase();terminalInput.value='';if(c==='CLEAR')terminalOutput.textContent='';else if(c==='HELP')terminalPrint('HELP — commands\\nCLEAR — clear terminal\\nSTATUS — local status\\nTIME — current time\\nTHEME — active theme\\nRANDOM — random discovery\\nABOUT — system information');else if(c==='TIME')terminalPrint(new Date().toLocaleString());else if(c==='THEME')terminalPrint((themeNamesV8.find(x=>document.body.classList.contains('theme-'+x))||'blue').toUpperCase());else if(c==='STATUS')terminalPrint('FAVORITES: '+JSON.parse(localStorage.getItem('hiV8Favorites')||'[]').length+'\\nRECENT: '+JSON.parse(localStorage.getItem('hiV8Recent')||'[]').length);else if(c==='RANDOM')randomDiscovery();else if(c==='ABOUT')terminalPrint('HIDDEN INVENTORY V9\\nLOCAL ARCHIVE SYSTEM');else terminalPrint('UNKNOWN COMMAND — TYPE HELP')});
-const commandPalette=document.getElementById('commandPalette'),commandInput=document.getElementById('commandInput'),commandList=document.getElementById('commandList');const v9Commands=[['Go Home','home'],['Open Codes','codes'],['Open Movesets','moves'],['Open Animations','animations'],['Open News','news'],['Open Achievements','achievements'],['Open Status','status'],['Open Vault','vault'],['Open Terminal','terminal'],['Open Settings','settings'],['Random Discovery','__random'],['Random Theme','__theme'],['Scroll To Top','__top']];let commandIndex=0;
+function exportV9Data(){const d={version:'V9',theme:localStorage.getItem('hiddenInventoryTheme'),achievements:localStorage.getItem('hiV8Achievements'),favorites:localStorage.getItem('hiV8Favorites'),recent:localStorage.getItem('hiV8Recent')};const b=document.getElementById('importV9Data');if(b)b.value=JSON.stringify(d);showToast('Backup generated — copy the JSON to save it.')}
+function importV9Data(){const b=document.getElementById('importV9Data');if(!b||!b.value.trim())return showToast('Paste a backup first.');try{const d=JSON.parse(b.value),k={theme:'hiddenInventoryTheme',achievements:'hiV8Achievements',favorites:'hiV8Favorites',recent:'hiV8Recent'};Object.keys(k).forEach(x=>{if(d[x]==null)localStorage.removeItem(k[x]);else localStorage.setItem(k[x],d[x])});if(d.theme==='easter')localStorage.removeItem('hiddenInventoryTheme');showToast('Backup restored — refresh to apply.')}catch(e){showToast('Invalid backup data.')}}
+const terminalInput=document.getElementById('terminalInput'),terminalOutput=document.getElementById('terminalOutput');
+function terminalPrint(x){
+  if(!terminalOutput)return;
+  terminalOutput.textContent+='\n> '+String(x);
+  terminalOutput.scrollTop=terminalOutput.scrollHeight;
+}
+function getActiveTheme(){
+  const names=window.themeNamesV8||['blue','purple','red','green','gold','cyan','orange','pink','white','easter','bloodmoon','toxic','ice','sunset'];
+  return names.find(x=>document.body.classList.contains('theme-'+x))||'blue';
+}
+function runTerminalCommand(raw){
+  const c=String(raw||'').trim().toUpperCase();
+  if(!c)return;
+  if(c==='CLEAR'){terminalOutput.textContent='';return}
+  if(c==='HELP'){terminalPrint('HELP — commands\nCLEAR — clear terminal\nSTATUS — local status\nTIME — current time\nTHEME — active theme\nRANDOM — random discovery\nABOUT — system information');return}
+  if(c==='TIME'){terminalPrint(new Date().toLocaleString());return}
+  if(c==='THEME'){terminalPrint(getActiveTheme().toUpperCase());return}
+  if(c==='STATUS'){
+    let fav=[],recent=[];
+    try{fav=JSON.parse(localStorage.getItem('hiV8Favorites')||'[]')}catch(_){}
+    try{recent=JSON.parse(localStorage.getItem('hiV8Recent')||'[]')}catch(_){}
+    terminalPrint('FAVORITES: '+fav.length+'\nRECENT: '+recent.length+'\nEASTER VAULT: '+(localStorage.getItem('hiV8EasterUnlocked')==='1'?'UNLOCKED':'LOCKED'));
+    return;
+  }
+  if(c==='RANDOM'){if(typeof randomDiscovery==='function')randomDiscovery();else terminalPrint('Random discovery is unavailable.');return}
+  if(c==='ABOUT'){terminalPrint('HIDDEN INVENTORY V10\nLOCAL ARCHIVE SYSTEM');return}
+  terminalPrint('UNKNOWN COMMAND — TYPE HELP');
+}
+if(terminalInput){
+  terminalInput.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){e.preventDefault();runTerminalCommand(terminalInput.value);terminalInput.value=''}
+  });
+}
+
+const commandPalette=document.getElementById('commandPalette'),commandInput=document.getElementById('commandInput'),commandList=document.getElementById('commandList');const v9Commands=[['Go Home','home'],['Open Codes','codes'],['Open Movesets','moves'],['Open Animations','animations'],['Open News','news'],['Open Achievements','achievements'],['Open Status','status'],['Open Vault','vault'],['Open Terminal','terminal'],['Open Control','control'],['Open Notes','notes'],['Open Scanner','scanner'],['Open Settings','settings'],['Random Discovery','__random'],['Random Theme','__theme'],['Scroll To Top','__top']];let commandIndex=0;
 function renderCommands(f=''){const q=f.toLowerCase(),l=v9Commands.filter(x=>x[0].toLowerCase().includes(q));commandIndex=Math.min(commandIndex,Math.max(0,l.length-1));commandList.innerHTML=l.map((x,i)=>`<button class="command-item ${i===commandIndex?'selected':''}" onclick="runV9Command('${x[1]}')"><span>${x[0]}</span><kbd>${i+1}</kbd></button>`).join('')}
 function openCommands(){commandPalette.classList.add('open');commandInput.value='';commandIndex=0;renderCommands();setTimeout(()=>commandInput.focus(),20)}function closeCommands(){commandPalette.classList.remove('open')}function runV9Command(id){if(id==='__random')randomDiscovery();else if(id==='__theme'){const n=themeNamesV8.filter(x=>x!=='easter'),t=n[Math.floor(Math.random()*n.length)];setTheme(t,document.querySelector(`[data-theme="${t}"]`))}else if(id==='__top')scrollTopPage();else{const b=[...document.querySelectorAll('.nav button')].find(x=>x.getAttribute('onclick')?.includes(`'${id}'`));showPage(id,b)}closeCommands()}
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCommands();return}if(!commandPalette.classList.contains('open'))return;if(e.key==='Escape'){closeCommands();return}const it=commandList.querySelectorAll('.command-item');if(e.key==='ArrowDown'){e.preventDefault();commandIndex=Math.min(commandIndex+1,it.length-1);renderCommands(commandInput.value)}if(e.key==='ArrowUp'){e.preventDefault();commandIndex=Math.max(commandIndex-1,0);renderCommands(commandInput.value)}if(e.key==='Enter'&&it[commandIndex])it[commandIndex].click()});
 commandInput.addEventListener('input',()=>{commandIndex=0;renderCommands(commandInput.value)});commandPalette.addEventListener('click',e=>{if(e.target===commandPalette)closeCommands()});
 (function(){const d=new Date(),seed=Number(''+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')),code=((seed*9301+49297)%233280).toString(36).toUpperCase().slice(-4).padStart(4,'0'),m=['STABLE','UNUSUAL','ELEVATED','QUIET','WATCHFUL'][seed%5];const c=document.getElementById('dailySignalCode'),t=document.getElementById('dailySignalText');if(c)c.textContent=code;if(t)t.textContent='Signal '+m+' • refreshes with the next local day.'})();
 
+
+/* ================= V10 JS ================= */
+const v10Started=Date.now();
+let v10Clicks=0,v10Searches=0,v10Pages=new Set();
+
+function v10SetText(id,text){const e=document.getElementById(id);if(e)e.textContent=text}
+function v10Tick(){
+  const sec=Math.floor((Date.now()-v10Started)/1000),m=String(Math.floor(sec/60)).padStart(2,'0'),ss=String(sec%60).padStart(2,'0');
+  v10SetText('v10Session',m+':'+ss);
+  v10SetText('v10Clicks',v10Clicks);
+  v10SetText('v10Searches',v10Searches);
+  v10SetText('v10Pages',v10Pages.size);
+}
+setInterval(v10Tick,1000);v10Tick();
+
+document.addEventListener('click',e=>{
+  if(e.target.closest('button')){v10Clicks++;v10Tick()}
+});
+document.addEventListener('input',e=>{
+  if(e.target.matches('input[type="search"],#searchInput,.search-input')){v10Searches++;v10Tick()}
+});
+
+function runV10Activity(){
+  const a=[
+    'Checking local navigation... OK',
+    'Checking saved preferences... OK',
+    'Checking theme registry... OK',
+    'Checking achievement cache... OK',
+    'Checking favorite index... OK',
+    'Archive activity nominal.'
+  ];
+  let i=0;const el=document.getElementById('v10Activity');
+  if(!el)return;
+  el.textContent='Running...';
+  const timer=setInterval(()=>{el.textContent=a[i++];if(i>=a.length)clearInterval(timer)},220);
+}
+
+function toggleAmbientMode(){
+  document.body.classList.toggle('ambient-mode');
+  const on=document.body.classList.contains('ambient-mode');
+  localStorage.setItem('hiV10Ambient',on?'1':'0');
+  v10SetText('v10Mode',on?'Ambient':'Standard');
+  showToast('Ambient mode '+(on?'ON':'OFF'));
+}
+if(localStorage.getItem('hiV10Ambient')==='1'){
+  document.body.classList.add('ambient-mode');
+  v10SetText('v10Mode','Ambient');
+}
+
+const v10Notes=document.getElementById('v10Notes');
+if(v10Notes){
+  v10Notes.value=localStorage.getItem('hiV10Notes')||'';
+  v10Notes.addEventListener('input',()=>{
+    localStorage.setItem('hiV10Notes',v10Notes.value);
+    v10SetText('v10NotesStatus','Saved '+new Date().toLocaleTimeString());
+  });
+}
+function clearV10Notes(){
+  if(v10Notes)v10Notes.value='';
+  localStorage.removeItem('hiV10Notes');
+  v10SetText('v10NotesStatus','Notes cleared');
+  showToast('Archive notes cleared');
+}
+
+function openV10Shortcuts(){
+  const e=document.getElementById('v10Shortcuts');
+  if(e){e.classList.add('open');e.setAttribute('aria-hidden','false')}
+}
+function closeV10Shortcuts(){
+  const e=document.getElementById('v10Shortcuts');
+  if(e){e.classList.remove('open');e.setAttribute('aria-hidden','true')}
+}
+document.getElementById('v10Shortcuts')?.addEventListener('click',e=>{
+  if(e.target.id==='v10Shortcuts')closeV10Shortcuts();
+});
+
+async function toggleV10Fullscreen(){
+  try{
+    if(!document.fullscreenElement){
+      await document.documentElement.requestFullscreen();
+      document.body.classList.add('fullscreen-mode');
+    }else{
+      await document.exitFullscreen();
+      document.body.classList.remove('fullscreen-mode');
+    }
+  }catch(e){showToast('Fullscreen is unavailable in this browser')}
+}
+document.addEventListener('fullscreenchange',()=>{
+  document.body.classList.toggle('fullscreen-mode',!!document.fullscreenElement);
+});
+
+function runV10Scan(){
+  const bar=document.getElementById('v10ScanBar'),pct=document.getElementById('v10ScanPercent'),log=document.getElementById('v10ScanLog');
+  if(!bar||!pct||!log)return;
+  let n=0;bar.style.width='0%';pct.textContent='0%';
+  log.textContent='INITIALIZING SCANNER...';
+  const checks=['Reading page structure...','Checking local storage...','Checking navigation registry...','Checking theme state...','Checking interface modules...','Finalizing report...'];
+  const timer=setInterval(()=>{
+    n+=5;bar.style.width=n+'%';pct.textContent=n+'%';
+    if(n%20===0)log.textContent+=`\\n${checks[Math.min(n/20-1,checks.length-1)]} OK`;
+    if(n>=100){
+      clearInterval(timer);
+      log.textContent+='\\n\\nSCAN COMPLETE — NO EXTERNAL CONNECTIONS REQUIRED.';
+      const used=new Blob([document.documentElement.outerHTML]).size;
+      v10SetText('v10Storage',Math.round(used/1024)+' KB page size');
+      const theme=themeNamesV8.find(x=>document.body.classList.contains('theme-'+x))||'blue';
+      v10SetText('v10ThemeState',theme.toUpperCase());
+    }
+  },80);
+}
+
+document.addEventListener('keydown',e=>{
+  const tag=(e.target.tagName||'').toLowerCase();
+  if(['input','textarea','select'].includes(tag))return;
+  if(e.key==='?'){e.preventDefault();openV10Shortcuts()}
+  else if(e.key.toLowerCase()==='h'){const b=[...document.querySelectorAll('.nav button')].find(x=>x.getAttribute('onclick')?.includes("'home'"));if(b)showPage('home',b)}
+  else if(e.key.toLowerCase()==='r'){if(typeof randomDiscovery==='function')randomDiscovery()}
+  else if(e.key.toLowerCase()==='t'){window.scrollTo({top:0,behavior:'smooth'})}
+  else if(e.key==='Escape')closeV10Shortcuts();
+});
+
+/* Track pages opened by the existing showPage function without replacing it. */
+const v10OriginalShowPage=window.showPage;
+if(typeof v10OriginalShowPage==='function'){
+  window.showPage=function(id,button){
+    v10Pages.add(id);v10Tick();
+    return v10OriginalShowPage.apply(this,arguments);
+  };
+}
+
+/* Keep V10 state out of the existing full reset unless explicitly supported. */
+
 </script>
 
+
+<script>
+/* V10 stability bridge */
+window.toggleFocusMode=window.toggleFocusMode||function(){
+  document.body.classList.toggle('focus-mode');
+  localStorage.setItem('hiV9Focus',document.body.classList.contains('focus-mode')?'1':'0');
+  if(typeof showToast==='function')showToast('Focus mode '+(document.body.classList.contains('focus-mode')?'ON':'OFF'));
+};
+window.toggleRuler=window.toggleRuler||function(){
+  document.body.classList.toggle('ruler-on');
+  localStorage.setItem('hiV9Ruler',document.body.classList.contains('ruler-on')?'1':'0');
+  if(typeof showToast==='function')showToast('Reading ruler '+(document.body.classList.contains('ruler-on')?'ON':'OFF'));
+};
+window.toggleReducedMotion=window.toggleReducedMotion||function(){
+  document.body.classList.toggle('reduced-motion');
+  localStorage.setItem('hiV9Motion',document.body.classList.contains('reduced-motion')?'1':'0');
+  if(typeof showToast==='function')showToast('Reduced motion '+(document.body.classList.contains('reduced-motion')?'ON':'OFF'));
+};
+</script>
+
+
+<script>
+window.updateV10AchievementProgress=function(){
+  let s={};try{s=JSON.parse(localStorage.getItem('hiV8Achievements')||'{}')||{}}catch(e){}
+  const total=12, found=Math.min(total,Object.keys(s).filter(k=>s[k]).length);
+  const c=document.getElementById('v9AchievementCount'),m=document.getElementById('v9AchievementMeter');
+  if(c)c.textContent=found+' / '+total+' unlocked';
+  if(m)m.style.width=(found/total*100)+'%';
+};
+</script>
+
+<script>
+(function(){
+ function dedupeSignals(){
+  const h=document.getElementById('home');if(!h)return;
+  const a=[...h.querySelectorAll('.card')].filter(x=>/ARCHIVE SIGNAL/i.test(x.textContent||''));
+  a.slice(1).forEach(x=>x.remove());
+  if(window.updateV10AchievementProgress)window.updateV10AchievementProgress();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',dedupeSignals);else dedupeSignals();
+})();
+</script>
+
+<style>
+#backendVoid{position:fixed;inset:0;z-index:2147483647;background:#000;display:grid;place-items:center;opacity:0;transition:opacity .7s}
+#backendVoid.active{opacity:1}
+#backendVoid .core{color:#fff;text-align:center;font:700 18px monospace;letter-spacing:3px}
+body.backend-collapse #content,body.backend-collapse .sidebar,body.backend-collapse #particles,body.backend-collapse .cursor{transform:scale(.02);opacity:0;transition:transform 2.1s,opacity 1.5s}
+</style>
+<script>
+(function(){
+ const ADMIN='hiV10AdminTemp',input=document.getElementById('terminalInput'),output=document.getElementById('terminalOutput');
+ function print(x){if(typeof terminalPrint==='function')terminalPrint(x);else if(output)output.textContent+='\\n> '+x}
+ function active(){return sessionStorage.getItem(ADMIN)==='1'}
+ function command(raw){
+  const c=String(raw||'').trim(),u=c.toUpperCase();
+  if(u==='RANK SET ADMIN TEMP'){sessionStorage.setItem(ADMIN,'1');print('RANK SET: ADMIN');print('Temporary admin rank enabled. It will be removed after refreshing.');return true}
+  if(u==='RANK'){print('CURRENT RANK: '+(active()?'ADMIN (TEMP)':'USER'));return true}
+  if(!active())return false;
+  if(u==='ADMIN HELP'){print('ADMIN COMMANDS\\nADMIN HELP\\nRANK\\nSET THEME <name>\\nUNLOCK ALL\\nCLEAR ACHIEVEMENTS\\nCLEAR FAVORITES\\nCLEAR RECENT\\nGLITCH\\nAMBIENT\\nHOME');return true}
+  if(u==='UNLOCK ALL'){
+   let s={};try{s=JSON.parse(localStorage.getItem('hiV8Achievements')||'{}')||{}}catch(e){}
+   ['search','copy','theme','music','glitch','random','logo','konami','status','news','favorites','secretTime'].forEach(k=>s[k]=true);
+   localStorage.setItem('hiV8Achievements',JSON.stringify(s));
+   if(window.updateV10AchievementProgress)window.updateV10AchievementProgress();
+   if(typeof updateEasterVault==='function')updateEasterVault();
+   print('ALL 12 ACHIEVEMENTS UNLOCKED.');return true
+  }
+  if(u==='CLEAR ACHIEVEMENTS'){localStorage.removeItem('hiV8Achievements');if(window.updateV10AchievementProgress)window.updateV10AchievementProgress();if(typeof updateEasterVault==='function')updateEasterVault();print('ACHIEVEMENTS CLEARED.');return true}
+  if(u==='CLEAR FAVORITES'){localStorage.removeItem('hiV8Favorites');print('FAVORITES CLEARED.');return true}
+  if(u==='CLEAR RECENT'){localStorage.removeItem('hiV8Recent');print('RECENT ITEMS CLEARED.');return true}
+  if(u==='GLITCH'){document.body.classList.toggle('effect-heavy');print('HEAVY GLITCH: '+(document.body.classList.contains('effect-heavy')?'ON':'OFF'));return true}
+  if(u==='AMBIENT'){if(typeof toggleAmbientMode==='function')toggleAmbientMode();return true}
+  if(u==='HOME'){if(typeof showPage==='function')showPage('home',document.querySelector('.nav button'));return true}
+  if(u.startsWith('SET THEME ')){const t=c.slice(10).trim().toLowerCase();if(typeof setTheme==='function')setTheme(t,document.querySelector('.theme-card[data-theme="'+t+'"]'));print('THEME: '+t);return true}
+  return false
+ }
+ if(input)input.addEventListener('keydown',function(e){
+  if(e.key!=='Enter')return;
+  const raw=input.value.trim(),u=raw.toUpperCase();
+  if(u==='OPEN BACKEND'){
+   e.preventDefault();e.stopImmediatePropagation();input.value='';
+   const o=document.createElement('div');o.id='backendVoid';o.innerHTML='<div class="core">OPENING BACKEND...<br><small>ACCESS GRANTED</small></div>';document.body.appendChild(o);
+   requestAnimationFrame(()=>o.classList.add('active'));
+   setTimeout(()=>{try{localStorage.clear();sessionStorage.clear()}catch(_){}document.body.classList.add('backend-collapse')},1500);
+   setTimeout(()=>{o.querySelector('.core').textContent='SYSTEM PURGED'},2400);
+   setTimeout(()=>location.reload(),3800);
+   return;
+  }
+  if(command(raw)){e.preventDefault();e.stopImmediatePropagation();input.value=''}
+ },true);
+ window.updateV10AchievementProgress&&window.updateV10AchievementProgress();
+})();
+</script>
 </body>
 </html>
