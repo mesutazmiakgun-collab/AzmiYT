@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Hidden Inventory V8</title>
+<title>Hidden Inventory V9</title>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
@@ -397,98 +397,92 @@ body.theme-easter .content,body.theme-easter .sidebar{animation:themeTwitch .12s
 body.theme-easter .logo,body.theme-easter h1{text-shadow:4px 0 #ff00aa,-4px 0 #00ffff,0 0 28px #fff3}
 body.theme-easter .card{box-shadow:inset 0 0 0 1px #fff1,0 0 24px #00fff012}
 
-.judge-overlay{position:fixed;inset:0;z-index:1000000;background:rgba(0,0,0,.08);overflow:hidden;pointer-events:none;cursor:none}
-.judge-overlay .judge-text{position:absolute;z-index:50;left:0;right:0;top:16%;text-align:center;font:800 clamp(25px,4vw,54px)/1.05 Arial,sans-serif;letter-spacing:-1px;color:#fff;text-shadow:2px 3px 0 #000,0 0 18px #000;opacity:0;animation:judgeText .35s ease .45s forwards}
-@keyframes judgeText{from{opacity:0;transform:translateY(-8px) scale(.96)}to{opacity:1;transform:none}}
-.judge-overlay .hammer{position:absolute;z-index:60;left:62%;top:8%;width:min(300px,32vw);height:min(470px,52vw);transform-origin:72% 13%;transform:translate(45vw,-65vh) rotate(-42deg);animation:gavelSmash 1.55s cubic-bezier(.18,.82,.22,1) forwards;filter:drop-shadow(0 18px 16px rgba(0,0,0,.55))}
-.hammer-head{position:absolute;left:0;top:0;width:100%;height:30%;border-radius:46% 46% 42% 42%;background:radial-gradient(circle at 28% 24%,#ead29a 0 7%,transparent 8%),linear-gradient(135deg,#e5b967 0%,#b87528 48%,#704016 100%);border:7px solid #3a210d;box-shadow:inset 10px 8px 0 rgba(255,255,255,.16),inset -14px -14px 0 rgba(38,18,4,.22),0 4px 0 #1c1008}
-.hammer-head:before{content:'';position:absolute;left:14%;top:17%;width:70%;height:9%;border-radius:50%;border-top:4px solid rgba(90,47,13,.38);transform:rotate(-7deg)}
-.hammer-head:after{content:'';position:absolute;right:18%;top:42%;width:24%;height:9%;border-radius:50%;border-top:4px solid rgba(90,47,13,.3);transform:rotate(35deg)}
-.hammer-handle{position:absolute;left:40%;top:24%;width:21%;height:78%;border-radius:18px;background:linear-gradient(90deg,#5b2c0e 0%,#c9822b 30%,#e0a24c 50%,#9d5c1b 70%,#4d240b 100%);border:6px solid #3a1b08;box-shadow:inset 7px 0 7px rgba(255,255,255,.12)}
-@keyframes gavelSmash{0%{transform:translate(45vw,-65vh) rotate(-42deg)}27%{transform:translate(3vw,-14vh) rotate(-42deg)}42%{transform:translate(3vw,-20vh) rotate(-48deg)}63%{transform:translate(0,7vh) rotate(12deg)}70%{transform:translate(0,0) rotate(2deg) scale(1.06)}76%{transform:translate(0,2vh) rotate(-2deg) scale(1)}100%{transform:translate(0,0) rotate(0deg) scale(1)}}
-.judge-overlay .crack{position:absolute;left:50%;top:53%;width:3px;height:54vh;z-index:55;opacity:0;transform-origin:top center;background:linear-gradient(to bottom,#fff,#e9eef2 65%,rgba(255,255,255,.2));box-shadow:0 0 5px rgba(255,255,255,.65);animation:crackAppear .16s steps(2) 1.12s forwards}
-.judge-overlay .crack:before,.judge-overlay .crack:after{content:'';position:absolute;width:2px;height:18vh;left:0;top:13vh;transform-origin:top center;background:#fff;box-shadow:0 0 4px rgba(255,255,255,.6)}
-.judge-overlay .crack:before{transform:rotate(53deg)}.judge-overlay .crack:after{transform:rotate(-47deg)}
-.judge-overlay .crack.c2{transform:rotate(37deg);height:62vh}.judge-overlay .crack.c3{transform:rotate(-38deg);height:63vh}.judge-overlay .crack.c4{transform:rotate(77deg);height:48vh}.judge-overlay .crack.c5{transform:rotate(-76deg);height:50vh}.judge-overlay .crack.c6{transform:rotate(112deg);height:37vh}.judge-overlay .crack.c7{transform:rotate(-111deg);height:40vh}
-@keyframes crackAppear{0%{opacity:0;transform:scaleY(0)}100%{opacity:.94;transform:scaleY(1)}}
-.judge-overlay .break-lines{position:absolute;inset:0;z-index:70;background:linear-gradient(90deg,transparent 0 49%,rgba(255,255,255,.05) 50%,transparent 51%),repeating-linear-gradient(0deg,transparent 0 5px,rgba(255,255,255,.025) 6px 7px);opacity:0;animation:screenBreak .4s ease 1.15s forwards}
-@keyframes screenBreak{0%{opacity:0}25%{opacity:.9}100%{opacity:.45}}
-body.judged-broken .content,body.judged-broken .sidebar{animation:judgedJitter .11s steps(2) infinite}
-body.judged-broken .judge-overlay .judge-text{animation:judgedTextGlitch .12s steps(2) infinite}
-body.judged-broken{overflow:hidden}
-@keyframes judgedJitter{0%{transform:translate(0)}25%{transform:translate(-3px,1px)}50%{transform:translate(4px,-2px)}75%{transform:translate(-1px,3px)}}
-@keyframes judgedTextGlitch{50%{transform:translate(3px,-1px);filter:hue-rotate(45deg)}}
+body.theme-red .boot-screen{background:radial-gradient(circle,#ff5c6c38,transparent 34%),#090405}
+body.theme-purple .boot-screen{background:radial-gradient(circle,#b77cff38,transparent 34%),#07050b}
+body.theme-green .boot-screen{background:radial-gradient(circle,#5cff9b35,transparent 34%),#030906}
+body.theme-gold .boot-screen{background:radial-gradient(circle,#ffd45c35,transparent 34%),#090805}
+body.theme-cyan .boot-screen{background:radial-gradient(circle,#00f0ff35,transparent 34%),#02090b}
+body.theme-orange .boot-screen{background:radial-gradient(circle,#ff6a0038,transparent 34%),#0b0602}
+body.theme-pink .boot-screen{background:radial-gradient(circle,#ff008c35,transparent 34%),#0b0208}
+body.theme-white .boot-screen{background:radial-gradient(circle,#ffffff25,transparent 34%),#050505}
+body.theme-bloodmoon .boot-screen{background:radial-gradient(circle,#ff315045,transparent 34%),#090307}
+body.theme-toxic .boot-screen{background:radial-gradient(circle,#9dff0040,transparent 34%),#020603}
+body.theme-ice .boot-screen{background:radial-gradient(circle,#bdf8ff45,transparent 34%),#02070a}
+body.theme-sunset .boot-screen{background:radial-gradient(circle,#ff7a5c40,transparent 34%),#10050f}
+body.theme-easter .boot-screen{background:linear-gradient(135deg,#001f1d,#21001b,#1c1700);background-size:300% 300%;animation:bootEaster 1.5s linear infinite}
+@keyframes bootEaster{to{background-position:300% 0}}
 
+.command-palette{position:fixed;inset:0;z-index:999990;display:none;align-items:flex-start;justify-content:center;padding-top:12vh;background:#0009;backdrop-filter:blur(9px)}
+.command-palette.open{display:flex}
+.command-box{width:min(650px,92vw);border:1px solid var(--accent-border);background:#0a0d11f2;border-radius:18px;box-shadow:0 25px 80px #000b,0 0 45px var(--accent-soft);overflow:hidden}
+.command-input{width:100%;padding:20px 22px;background:transparent;border:0;outline:0;color:#fff;font:20px monospace;border-bottom:1px solid #ffffff12}
 
-/* V8 SIDEBAR POLISH */
-.sidebar{
-  overflow-y:auto;
-  overflow-x:hidden;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(255,255,255,.22) transparent;
-  scrollbar-gutter:stable;
-}
-.sidebar::-webkit-scrollbar{
-  width:7px;
-}
-.sidebar::-webkit-scrollbar-track{
-  background:transparent;
-}
-.sidebar::-webkit-scrollbar-thumb{
-  background:rgba(255,255,255,.22);
-  border-radius:999px;
-  border:2px solid transparent;
-  background-clip:padding-box;
-}
-.sidebar::-webkit-scrollbar-thumb:hover{
-  background:rgba(255,255,255,.38);
-  border:2px solid transparent;
-  background-clip:padding-box;
+@keyframes hitFlash{
+  0%{opacity:0;transform:translate(-50%,-50%) scaleX(.2) rotate(-7deg)}
+  40%{opacity:.9;transform:translate(-50%,-50%) scaleX(1) rotate(-7deg)}
+  100%{opacity:0;transform:translate(-50%,-50%) scaleX(1.35) rotate(-7deg)}
 }
 
-/* Hide the browser-looking white scrollbar corner/arrow area. */
-.sidebar::-webkit-scrollbar-button{
-  display:none;
-  width:0;
-  height:0;
-}
-.sidebar::-webkit-scrollbar-corner{
-  background:transparent;
-}
+.command-list{max-height:52vh;overflow:auto;padding:8px}
+.command-item{width:100%;display:flex;justify-content:space-between;gap:15px;text-align:left;padding:14px 16px;border:1px solid transparent;background:transparent;color:#bbb;border-radius:11px;cursor:pointer;font-size:16px}
+.command-item:hover,.command-item.selected{color:#fff;background:var(--accent-soft);border-color:var(--accent-border)}
+.command-item kbd{color:#666;font:12px monospace}
+.command-hint{padding:10px 16px;color:#666;font:12px monospace}
+.daily-signal{display:flex;align-items:center;justify-content:space-between;gap:15px;border:1px solid var(--accent-border);background:linear-gradient(110deg,var(--accent-soft),#ffffff03)}
+.daily-signal .signal-code{font:700 25px monospace;color:var(--accent)}
 
-.logo.logo-home{
-  display:block;
-  width:calc(100% + 10px);
-  min-height:112px;
-  padding:6px 4px 10px;
-  margin:0 -5px 28px;
-  font-size:clamp(48px,5vw,62px);
-  line-height:.86;
-  letter-spacing:1px;
-  text-align:left;
-  transform:none;
-}
-.logo.logo-home span{
-  font-size:1em;
-  letter-spacing:1px;
-}
-.search-wrap{
-  margin-top:0;
-}
 
-/* Keep the footer inside the scrollable sidebar instead of floating over nav items. */
-.sidebar-footer{
-  position:relative;
-  bottom:auto;
-  margin-top:22px;
-  padding-top:18px;
-  padding-bottom:20px;
-}
+/* ================= HIDDEN INVENTORY V9 ================= */
+.favoriteable .favorite-btn{right:62px;top:13px;z-index:3}
+.code.favoriteable .favorite-btn,.entry .favorite-btn{right:58px}
+.boot-screen{background:radial-gradient(circle at 50% 45%,var(--accent-soft,#62cfff18),transparent 34%),#030507}
+.boot-title{color:var(--accent,#62cfff);text-shadow:0 0 22px var(--accent,#62cfff)}
+.boot-fill{background:var(--accent,#62cfff);box-shadow:0 0 14px var(--accent,#62cfff)}
+.boot-track{border:1px solid var(--accent-border,#62cfff33)}
+body.theme-red .boot-screen{background:radial-gradient(circle,#ff5c6c38,transparent 34%),#090405}
+body.theme-purple .boot-screen{background:radial-gradient(circle,#b77cff38,transparent 34%),#07050b}
+body.theme-green .boot-screen{background:radial-gradient(circle,#5cff9b35,transparent 34%),#030906}
+body.theme-gold .boot-screen{background:radial-gradient(circle,#ffd45c35,transparent 34%),#090805}
+body.theme-cyan .boot-screen{background:radial-gradient(circle,#00f0ff35,transparent 34%),#02090b}
+body.theme-orange .boot-screen{background:radial-gradient(circle,#ff6a0038,transparent 34%),#0b0602}
+body.theme-pink .boot-screen{background:radial-gradient(circle,#ff008c35,transparent 34%),#0b0208}
+body.theme-white .boot-screen{background:radial-gradient(circle,#ffffff25,transparent 34%),#050505}
+body.theme-bloodmoon .boot-screen{background:radial-gradient(circle,#ff315045,transparent 34%),#090307}
+body.theme-toxic .boot-screen{background:radial-gradient(circle,#9dff0040,transparent 34%),#020603}
+body.theme-ice .boot-screen{background:radial-gradient(circle,#bdf8ff45,transparent 34%),#02070a}
+body.theme-sunset .boot-screen{background:radial-gradient(circle,#ff7a5c40,transparent 34%),#10050f}
+body.theme-easter .boot-screen{background:linear-gradient(135deg,#001f1d,#21001b,#1c1700);background-size:300% 300%;animation:bootEaster 1.5s linear infinite}
+@keyframes bootEaster{to{background-position:300% 0}}
+.v9-mini-btn{border:1px solid var(--accent-border);background:var(--accent-soft);color:#ccc;border-radius:8px;padding:8px 11px;cursor:pointer;font:12px monospace}
+.v9-mini-btn:hover{color:#fff;border-color:var(--accent)}
+.v9-meter{height:6px;background:#111;border-radius:10px;overflow:hidden;border:1px solid #ffffff0c}.v9-meter span{display:block;height:100%;width:0;background:var(--accent);box-shadow:0 0 12px var(--accent);transition:width .5s}
+.command-palette{position:fixed;inset:0;z-index:999990;display:none;align-items:flex-start;justify-content:center;padding-top:12vh;background:#0009;backdrop-filter:blur(9px)}
+.command-palette.open{display:flex}
+.command-box{width:min(650px,92vw);border:1px solid var(--accent-border);background:#0a0d11f2;border-radius:18px;box-shadow:0 25px 80px #000b,0 0 45px var(--accent-soft);overflow:hidden}
+.command-input{width:100%;padding:20px 22px;background:transparent;border:0;outline:0;color:#fff;font:20px monospace;border-bottom:1px solid #ffffff12}
+.command-list{max-height:52vh;overflow:auto;padding:8px}.command-item{width:100%;display:flex;justify-content:space-between;gap:15px;text-align:left;padding:14px 16px;border:1px solid transparent;background:transparent;color:#bbb;border-radius:11px;cursor:pointer;font-size:16px}
+.command-item:hover,.command-item.selected{color:#fff;background:var(--accent-soft);border-color:var(--accent-border)}.command-item kbd{color:#666;font:12px monospace}.command-hint{padding:10px 16px;color:#666;font:12px monospace}
+.system-clock{position:fixed;right:20px;top:18px;z-index:9998;padding:7px 10px;border:1px solid var(--accent-border);border-radius:8px;background:#07090ce6;color:var(--accent);font:11px monospace;letter-spacing:1px;backdrop-filter:blur(8px)}
+.reading-ruler{position:fixed;left:0;right:0;height:2px;z-index:999998;background:var(--accent);box-shadow:0 0 12px var(--accent);pointer-events:none;display:none}body.ruler-on .reading-ruler{display:block}
+body.focus-mode .card,body.focus-mode .hero,body.focus-mode .stat{opacity:.35;transition:opacity .2s}body.focus-mode .card:hover,body.focus-mode .hero:hover,body.focus-mode .stat:hover{opacity:1}
+body.reduced-motion *,body.reduced-motion *:before,body.reduced-motion *:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+.v9-toast-stack{position:fixed;right:22px;bottom:22px;z-index:999999;display:flex;flex-direction:column;gap:9px;pointer-events:none}
+.v9-toast{min-width:250px;max-width:360px;padding:13px 16px;border:1px solid var(--accent-border);border-left:3px solid var(--accent);background:#080b0fe8;backdrop-filter:blur(12px);border-radius:12px;color:#ddd;font:13px monospace;box-shadow:0 12px 35px #0009}
+.terminal-output{min-height:120px;max-height:240px;overflow:auto;padding:14px;border:1px solid var(--accent-border);background:#020403;border-radius:10px;color:var(--accent);font:12px/1.7 monospace;white-space:pre-wrap}
+.terminal-input{width:100%;box-sizing:border-box;margin-top:8px;padding:12px;border:1px solid var(--accent-border);border-radius:9px;background:#050706;color:var(--accent);outline:none;font:13px monospace}
+.daily-signal{display:flex;align-items:center;justify-content:space-between;gap:15px;border:1px solid var(--accent-border);background:linear-gradient(110deg,var(--accent-soft),#ffffff03)}.daily-signal .signal-code{font:700 25px monospace;color:var(--accent)}
+.v9-codebox{width:100%;box-sizing:border-box;min-height:90px;margin-top:8px;padding:12px;border:1px solid #ffffff12;background:#05070a;border-radius:10px;color:#777;font:11px monospace;word-break:break-all}
 
 </style>
 </head>
 
 <body>
+<script>(function(){var t=localStorage.getItem('hiddenInventoryTheme');if(t==='easter'){localStorage.removeItem('hiddenInventoryTheme');t='blue'}if(t)document.body.classList.add('theme-'+t)})();</script>
+<div class="reading-ruler" id="readingRuler"></div>
+<div class="system-clock" id="systemClock">00:00:00</div>
+<div class="v9-toast-stack" id="v9ToastStack"></div>
+
+<script>(function(){var t=localStorage.getItem('hiddenInventoryTheme');if(t==='easter'){localStorage.removeItem('hiddenInventoryTheme');t='blue'}if(t)document.body.classList.add('theme-'+t)})();</script>
 
 <div class="boot-screen" id="bootScreen">
   <div class="boot-box">
@@ -520,12 +514,14 @@ body.judged-broken{overflow:hidden}
         <button onclick="showPage('achievements',this)">🏆 Achievements <span class="nav-key">6</span></button>
         <button onclick="showPage('status',this)">◉ Status <span class="nav-key">7</span></button>
         <button onclick="showPage('contact',this)">💬 Contact <span class="nav-key">8</span></button>
-        <button onclick="showPage('settings',this)">⚙️ Settings <span class="nav-key">9</span></button>
+        <button onclick="showPage('vault',this)">🗄️ Vault <span>9</span></button>
+<button onclick="showPage('terminal',this)">⌨️ Terminal <span>0</span></button>
+<button onclick="showPage('settings',this)">⚙️ Settings <span class="nav-key">9</span></button>
     </nav>
 
     <div class="sidebar-footer">
         <span class="status"><span class="status-dot"></span> Inventory Online</span>
-        <br>Hidden Inventory V8
+        <br>Hidden Inventory V9
     </div>
 </aside>
 
@@ -568,6 +564,12 @@ body.judged-broken{overflow:hidden}
       <button class="card command-card" onclick="showPage('status',document.querySelectorAll('.nav button')[6])"><h3>◉ System Status</h3><p>Check the archive's local diagnostics.</p></button>
     </div>
 
+    <div class="card daily-signal">
+      <div><span class="tag">DAILY SIGNAL</span><h3 id="dailySignalTitle">Archive Signal</h3><p id="dailySignalText">Generating today's local signal...</p></div>
+      <div class="signal-code" id="dailySignalCode">----</div>
+    </div>
+
+    <div class="card daily-signal"><div><span class="tag">DAILY SIGNAL</span><h3>Archive Signal</h3><p id="dailySignalText">Generating today's signal...</p></div><div class="signal-code" id="dailySignalCode">----</div></div>
     <div class="section-title">Recently Viewed</div>
     <div class="grid" id="recentGrid"><div class="notice">Nothing viewed yet. Explore the archive.</div></div>
 
@@ -738,7 +740,7 @@ body.judged-broken{overflow:hidden}
             Have an incorrect code, missing move, animation ID or another
             piece of information? Send it to the community.
         </p>
-        <a class="discord" href="https://discord.gg/VDsUzgFApG" target="_blank" rel="noopener noreferrer">Join the Discord</a>
+        <a class="discord" href="https://discord.gg/Sqd9yzwnUX" target="_blank" rel="noopener noreferrer">Join the Discord</a>
     </div>
 
 </section>
@@ -770,7 +772,6 @@ body.judged-broken{overflow:hidden}
     <div class="card achievement" data-ach="status"><h3>◉ System Check</h3><p>Open the status page.</p><span class="tag">LOCKED</span></div>
     <div class="card achievement" data-ach="news"><h3>📰 Informed</h3><p>Read the news archive.</p><span class="tag">LOCKED</span></div>
     <div class="card achievement" data-ach="favorites"><h3>★ Archivist</h3><p>Favorite an inventory item.</p><span class="tag">LOCKED</span></div>
-    <div class="card achievement" data-ach="judge"><h3>⚖️ WE SEE WE JUDGE</h3><p>Trigger the judgement protocol.</p><span class="tag">LOCKED</span></div>
   </div>
 </section>
 
@@ -782,6 +783,9 @@ body.judged-broken{overflow:hidden}
     <div class="stat"><div class="stat-number" id="favoriteCount">0</div><div class="stat-label">Favorites</div></div>
     <div class="stat"><div class="stat-number" id="visitedCount">0</div><div class="stat-label">Pages Visited</div></div>
   </div>
+  <div class="section-title">Live Activity</div>
+  <div class="grid"><div class="card"><h3>Last Action</h3><p id="lastAction">Site initialized.</p></div>
+  <div class="card"><h3>Theme</h3><p id="currentThemeStatus">Detecting theme...</p></div></div>
   <div class="section-title">Diagnostics</div>
   <div class="grid">
     <div class="card"><h3><span class="status-dot"></span> Core</h3><p>Interface engine operational.</p><span class="tag green">ONLINE</span></div>
@@ -791,6 +795,14 @@ body.judged-broken{overflow:hidden}
   </div>
 </section>
 
+
+<section id="vault" class="page"><div class="page-title">Archive Vault</div><p class="subtitle">Local inventory control room.</p>
+<div class="grid"><div class="card"><h3>Data Backup</h3><p>Export your local favorites, achievements, recent views and settings.</p><button class="v9-mini-btn" onclick="exportV9Data()">EXPORT BACKUP</button></div>
+<div class="card"><h3>Data Restore</h3><p>Paste a backup below to restore your local state.</p><textarea class="v9-codebox" id="importV9Data" placeholder="Paste backup JSON here..."></textarea><button class="v9-mini-btn" onclick="importV9Data()">RESTORE</button></div></div>
+<div class="card"><h3>Achievement Progress</h3><p id="v9AchievementCount">0 / 12 unlocked</p><div class="v9-meter"><span id="v9AchievementMeter"></span></div></div></section>
+<section id="terminal" class="page"><div class="page-title">Inventory Terminal</div><p class="subtitle">Local diagnostics.</p><div class="terminal-output" id="terminalOutput">HIDDEN INVENTORY TERMINAL V9
+--------------------------------
+Type HELP for available commands.</div><input class="terminal-input" id="terminalInput" placeholder="ENTER COMMAND..." autocomplete="off"></section>
 <section id="settings" class="page">
 
     <div class="page-header">
@@ -883,14 +895,21 @@ body.judged-broken{overflow:hidden}
       <div class="secret-bar"><div class="secret-fill" id="secretFill"></div></div>
       <p id="secretStatus" style="color:#777;margin-top:7px">0%</p>
     </div>
-</section>
+<div class="section-title">Interface Controls</div><div class="grid">
+<div class="card"><h3>Focus Mode</h3><p>Dim everything except what you're inspecting.</p><button class="v9-mini-btn" onclick="toggleFocusMode()">TOGGLE FOCUS</button></div>
+<div class="card"><h3>Reading Ruler</h3><p>Follow your cursor with a scanning line.</p><button class="v9-mini-btn" onclick="toggleRuler()">TOGGLE RULER</button></div>
+<div class="card"><h3>Reduced Motion</h3><p>Reduce animations and transitions.</p><button class="v9-mini-btn" onclick="toggleReducedMotion()">TOGGLE MOTION</button></div></div></section>
 
 </main>
 
 <button class="back-top" id="backTop" onclick="scrollTopPage()">↑</button>
 <div class="toast" id="toast">Copied!</div><div class="glitch-stage" id="glitchStage"></div>
 
-<script>
+<div class="command-palette" id="commandPalette" aria-hidden="true">
+<div class="command-box"><input class="command-input" id="commandInput" placeholder="Type a command..." autocomplete="off">
+<div class="command-list" id="commandList"></div><div class="command-hint">CTRL + K • ESC • ↑ ↓ • ENTER</div></div></div>
+
+<div class="command-palette" id="commandPalette" aria-hidden="true"><div class="command-box"><input class="command-input" id="commandInput" placeholder="Type a command..." autocomplete="off"><div class="command-list" id="commandList"></div><div class="command-hint">CTRL + K • ESC • ↑ ↓ • ENTER</div></div></div><script>
 const content=document.getElementById('content'),search=document.getElementById('search'),toast=document.getElementById('toast'),backTop=document.getElementById('backTop');
 let toastTimer;
 function showToast(m){toast.textContent=m;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),1800)}
@@ -917,6 +936,11 @@ function addSecretProgress(n){
   if(fill)fill.style.width=secretProgress+'%';
   if(status)status.textContent=secretProgress+'%';
   if(secretProgress>=25&&progressCard)progressCard.classList.add('found');
+  if(secretProgress>=100){
+    localStorage.setItem('hiV8EasterUnlocked','1');
+    const ec=document.querySelector('.theme-card[data-theme="easter"]');
+    if(ec){ec.classList.add('found');ec.querySelector('.tag').textContent='UNLOCKED'}
+  }
 }
 
 /* music */
@@ -1000,10 +1024,27 @@ function spamGlitch(){
     showToast('⚠ CORRUPTION LEVEL '+spamLevel+'%');
   }
 }
+let lastSpamAction=0;
 document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{
-  const now=Date.now(); spam.push(now); spam=spam.filter(t=>now-t<1800);
+  const now=Date.now(); lastSpamAction=now;
+  spam.push(now); spam=spam.filter(t=>now-t<1800);
   if(spam.length>=3){spam=[];spamGlitch()}
 }));
+setInterval(()=>{
+  if(!spamLevel || !lastSpamAction || Date.now()-lastSpamAction<=2000)return;
+  spamLevel=Math.max(0,spamLevel-5);
+  glitchStage.style.opacity=Math.min(.95,spamLevel/100);
+  if(spamLevel<70)document.body.classList.remove('effect-invert');
+  if(spamLevel<55)document.body.classList.remove('effect-shake');
+  if(spamLevel<40)document.body.classList.remove('effect-heavy');
+  if(spamLevel<25)document.body.classList.remove('effect-scanlines');
+  if(spamLevel<10)document.body.classList.remove('effect-rgb');
+  if(spamLevel<85){
+    document.body.style.filter='';
+    document.querySelectorAll('.card,.hero,.stat,.nav button').forEach(el=>el.style.transform='');
+  }
+  if(spamLevel===0){spam=[];glitchStage.style.opacity=0;lastSpamAction=0;showToast('✓ SYSTEM GLITCHES STABILIZED')}
+},250);
 
 /* achievements */
 const achState=JSON.parse(localStorage.getItem('hiV8Achievements')||'{}');
@@ -1094,20 +1135,16 @@ searchAll=function(q){
 /* theme upgrades */
 const themeNamesV8=['blue','purple','red','green','gold','cyan','orange','pink','white','easter','bloodmoon','toxic','ice','sunset'];
 function setThemeV8(theme,button){
-  document.body.classList.remove(...themeNamesV8.map(t=>'theme-'+t));
-  document.body.classList.add('theme-'+theme);
-  document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));
-  if(button)button.classList.add('selected');
-  if(theme!=='easter')localStorage.setItem('hiddenInventoryTheme',theme);
-  showToast('Theme changed to '+theme.charAt(0).toUpperCase()+theme.slice(1));
-  addSecretProgress(5);unlock('theme');
-  updateEffectStatus();
+if(theme==='easter'&&localStorage.getItem('hiV8EasterUnlocked')!=='1'){showToast('🔒 EASTER VAULT IS LOCKED');return}
+document.body.classList.remove(...themeNamesV8.map(t=>'theme-'+t));document.body.classList.add('theme-'+theme);
+document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));if(button)button.classList.add('selected');
+if(theme==='easter')localStorage.removeItem('hiddenInventoryTheme');else localStorage.setItem('hiddenInventoryTheme',theme);
+showToast('Theme changed to '+theme.charAt(0).toUpperCase()+theme.slice(1));addSecretProgress(5);unlock('theme');updateEffectStatus();}
+setTheme=setThemeV8;let savedThemeV8=localStorage.getItem('hiddenInventoryTheme')||'blue';if(savedThemeV8==='easter'){localStorage.removeItem('hiddenInventoryTheme');savedThemeV8='blue'}document.body.classList.remove(...themeNamesV8.map(t=>'theme-'+t));document.body.classList.add('theme-'+savedThemeV8);document.querySelectorAll('.theme-card').forEach(c=>c.classList.toggle('selected',c.dataset.theme===savedThemeV8));
+if(localStorage.getItem('hiV8EasterUnlocked')==='1'){
+  const ec=document.querySelector('.theme-card[data-theme="easter"]');
+  if(ec){ec.classList.add('found');ec.querySelector('.tag').textContent='UNLOCKED'}
 }
-setTheme=setThemeV8;
-const savedThemeV8=localStorage.getItem('hiddenInventoryTheme')||'blue';
-document.body.classList.remove(...themeNamesV8.map(t=>'theme-'+t));
-document.body.classList.add('theme-'+savedThemeV8);
-document.querySelectorAll('.theme-card').forEach(c=>c.classList.toggle('selected',c.dataset.theme===savedThemeV8));
 
 function applyPreset(type){
   const map={
@@ -1138,31 +1175,10 @@ logoV8.addEventListener('click',()=>{
 function checkSecretSearch(q){
   const v=q.trim().toLowerCase();
   if(v==='secret time'){addSecretProgress(30);showPage('settings',document.querySelectorAll('.nav button')[8]);showToast('⏱️ SECRET TIME DETECTED');return true}
-  if(v==='we see we judge'){
-    unlock('judge'); triggerJudgement(); return true;
-  }
-  return false;
+return false;
 }
 
 /* judgement protocol */
-function triggerJudgement(){
-  document.body.classList.add('effect-heavy','effect-rgb');
-  if(document.querySelector('.judge-overlay')) return;
-  const o=document.createElement('div');
-  o.className='judge-overlay';
-  o.innerHTML=`<div class="judge-text">THE JUDGE HAS SPOKEN.</div>
-    <div class="hammer"><div class="hammer-head"></div><div class="hammer-handle"></div></div>
-    <div class="crack"></div><div class="crack c2"></div><div class="crack c3"></div>
-    <div class="crack c4"></div><div class="crack c5"></div><div class="crack c6"></div>
-    <div class="crack c7"></div><div class="break-lines"></div>`;
-  document.body.appendChild(o);
-  setTimeout(()=>{
-    document.body.classList.add('judged-broken');
-    o.classList.add('broken');
-  },1180);
-  setTimeout(()=>showToast('THE JUDGE HAS SPOKEN • REFRESH TO RECOVER'),1450);
-}
-
 /* music */
 document.getElementById('playLetItRide').onclick=()=>{if(letItRide.paused){lockedIn.pause();letItRide.play();showToast('Playing Let It Ride')}else letItRide.pause();addSecretProgress(10);unlock('music')};
 document.getElementById('playLockedIn').onclick=()=>{if(lockedIn.paused){letItRide.pause();lockedIn.play();showToast('Playing Locked In')}else lockedIn.pause();addSecretProgress(10);unlock('music')};
@@ -1175,6 +1191,48 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){search.value='';resetSearch()}
 });
 
+
+/* V8.1 command palette */
+const commandPalette=document.getElementById('commandPalette'),commandInput=document.getElementById('commandInput'),commandList=document.getElementById('commandList');
+const commands=[['Go Home','home'],['Open Codes','codes'],['Open Movesets','moves'],['Open Animations','animations'],['Open News','news'],['Open Achievements','achievements'],['Open Status','status'],['Open Contact','contact'],['Open Settings','settings'],['Random Discovery','__random'],['Random Theme','__theme'],['Scroll To Top','__top']];
+let commandIndex=0;
+function renderCommands(filter=''){const q=filter.toLowerCase(),list=commands.filter(c=>c[0].toLowerCase().includes(q));commandIndex=Math.min(commandIndex,Math.max(0,list.length-1));commandList.innerHTML=list.map((c,i)=>`<button class="command-item ${i===commandIndex?'selected':''}" onclick="runCommand('${c[1]}')"><span>${c[0]}</span><kbd>${i+1}</kbd></button>`).join('')}
+function openCommands(){commandPalette.classList.add('open');commandInput.value='';commandIndex=0;renderCommands();setTimeout(()=>commandInput.focus(),20)}
+function closeCommands(){commandPalette.classList.remove('open');commandPalette.setAttribute('aria-hidden','true')}
+function runCommand(id){
+  if(id==='__random')randomDiscovery();
+  else if(id==='__theme'){const n=themeNamesV8.filter(x=>x!=='easter'),t=n[Math.floor(Math.random()*n.length)];setTheme(t,document.querySelector(`[data-theme="${t}"]`))}
+  else if(id==='__top')scrollTopPage();
+  else{const b=[...document.querySelectorAll('.nav button')].find(b=>b.getAttribute('onclick')?.includes(`'${id}'`));showPage(id,b)}
+  setLastAction('Command: '+id);closeCommands();
+}
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCommands();return}
+  if(!commandPalette.classList.contains('open'))return;
+  if(e.key==='Escape'){closeCommands();return}
+  const items=commandList.querySelectorAll('.command-item');
+  if(e.key==='ArrowDown'){e.preventDefault();commandIndex=Math.min(commandIndex+1,items.length-1);renderCommands(commandInput.value)}
+  if(e.key==='ArrowUp'){e.preventDefault();commandIndex=Math.max(commandIndex-1,0);renderCommands(commandInput.value)}
+  if(e.key==='Enter'&&items[commandIndex])items[commandIndex].click();
+});
+commandInput.addEventListener('input',()=>{commandIndex=0;renderCommands(commandInput.value)});
+commandPalette.addEventListener('click',e=>{if(e.target===commandPalette)closeCommands()});
+
+/* Daily local signal */
+(function(){
+  const d=new Date(),seed=Number(''+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0'));
+  const code=((seed*9301+49297)%233280).toString(36).toUpperCase().slice(-4).padStart(4,'0');
+  const moods=['STABLE','UNUSUAL','ELEVATED','QUIET','WATCHFUL'],mood=moods[seed%moods.length];
+  const c=document.getElementById('dailySignalCode'),t=document.getElementById('dailySignalText');
+  if(c)c.textContent=code;if(t)t.textContent='Signal '+mood+' • refreshes with the next local day.';
+})();
+function setLastAction(text){
+  const e=document.getElementById('lastAction');if(e)e.textContent=text;
+  const t=document.getElementById('currentThemeStatus');
+  if(t){const a=themeNamesV8.find(x=>document.body.classList.contains('theme-'+x))||'blue';t.textContent=a.toUpperCase()+(a==='easter'?' • SESSION ONLY':' • SAVED')}
+}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(b&&!b.classList.contains('command-item'))setLastAction(b.textContent.trim().replace(/\s+/g,' ').slice(0,60))});
+
 /* session status */
 const sessionStart=Date.now();
 setInterval(()=>{
@@ -1185,7 +1243,7 @@ setInterval(()=>{
 
 /* reset button */
 function resetV8Data(){
-  ['hiV8Achievements','hiV8Favorites','hiV8Recent','hiddenInventoryTheme'].forEach(k=>localStorage.removeItem(k));
+  ['hiV8Achievements','hiV8Favorites','hiV8Recent','hiddenInventoryTheme','hiV8EasterUnlocked'].forEach(k=>localStorage.removeItem(k));
   showToast('V8 local data reset — refresh to finish');
 }
 
@@ -1218,6 +1276,25 @@ updateEffectStatus();
     })(i);
   }
 })();
+
+function showToast(m){if(typeof v9Toast==='function')v9Toast(m);else{const st=document.getElementById('v9ToastStack');if(!st)return;const e=document.createElement('div');e.className='v9-toast';e.textContent=m;st.appendChild(e);setTimeout(()=>e.remove(),3000)}}
+setInterval(()=>{const e=document.getElementById('systemClock');if(e)e.textContent=new Date().toLocaleTimeString()},1000);
+const rr=document.getElementById('readingRuler');document.addEventListener('mousemove',e=>{if(document.body.classList.contains('ruler-on')&&rr)rr.style.top=e.clientY+'px'});
+function toggleRuler(){document.body.classList.toggle('ruler-on');localStorage.setItem('hiV9Ruler',document.body.classList.contains('ruler-on')?'1':'0');showToast('Reading ruler '+(document.body.classList.contains('ruler-on')?'ON':'OFF'))}
+function toggleFocusMode(){document.body.classList.toggle('focus-mode');localStorage.setItem('hiV9Focus',document.body.classList.contains('focus-mode')?'1':'0');showToast('Focus mode '+(document.body.classList.contains('focus-mode')?'ON':'OFF'))}
+function toggleReducedMotion(){document.body.classList.toggle('reduced-motion');localStorage.setItem('hiV9Motion',document.body.classList.contains('reduced-motion')?'1':'0');showToast('Reduced motion '+(document.body.classList.contains('reduced-motion')?'ON':'OFF'))}
+if(localStorage.getItem('hiV9Ruler')==='1')document.body.classList.add('ruler-on');if(localStorage.getItem('hiV9Focus')==='1')document.body.classList.add('focus-mode');if(localStorage.getItem('hiV9Motion')==='1')document.body.classList.add('reduced-motion');
+function exportV9Data(){const d={version:'V9',theme:localStorage.getItem('hiddenInventoryTheme'),achievements:localStorage.getItem('hiV8Achievements'),favorites:localStorage.getItem('hiV8Favorites'),recent:localStorage.getItem('hiV8Recent'),easterUnlocked:localStorage.getItem('hiV8EasterUnlocked')};const b=document.getElementById('importV9Data');if(b)b.value=JSON.stringify(d);showToast('Backup generated — copy the JSON to save it.')}
+function importV9Data(){const b=document.getElementById('importV9Data');if(!b||!b.value.trim())return showToast('Paste a backup first.');try{const d=JSON.parse(b.value),k={theme:'hiddenInventoryTheme',achievements:'hiV8Achievements',favorites:'hiV8Favorites',recent:'hiV8Recent',easterUnlocked:'hiV8EasterUnlocked'};Object.keys(k).forEach(x=>{if(d[x]==null)localStorage.removeItem(k[x]);else localStorage.setItem(k[x],d[x])});if(d.theme==='easter')localStorage.removeItem('hiddenInventoryTheme');showToast('Backup restored — refresh to apply.')}catch(e){showToast('Invalid backup data.')}}
+const terminalInput=document.getElementById('terminalInput'),terminalOutput=document.getElementById('terminalOutput');function terminalPrint(x){if(terminalOutput){terminalOutput.textContent+='\\n> '+x;terminalOutput.scrollTop=terminalOutput.scrollHeight}}
+if(terminalInput)terminalInput.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const c=terminalInput.value.trim().toUpperCase();terminalInput.value='';if(c==='CLEAR')terminalOutput.textContent='';else if(c==='HELP')terminalPrint('HELP — commands\\nCLEAR — clear terminal\\nSTATUS — local status\\nTIME — current time\\nTHEME — active theme\\nRANDOM — random discovery\\nABOUT — system information');else if(c==='TIME')terminalPrint(new Date().toLocaleString());else if(c==='THEME')terminalPrint((themeNamesV8.find(x=>document.body.classList.contains('theme-'+x))||'blue').toUpperCase());else if(c==='STATUS')terminalPrint('FAVORITES: '+JSON.parse(localStorage.getItem('hiV8Favorites')||'[]').length+'\\nRECENT: '+JSON.parse(localStorage.getItem('hiV8Recent')||'[]').length);else if(c==='RANDOM')randomDiscovery();else if(c==='ABOUT')terminalPrint('HIDDEN INVENTORY V9\\nLOCAL ARCHIVE SYSTEM');else terminalPrint('UNKNOWN COMMAND — TYPE HELP')});
+const commandPalette=document.getElementById('commandPalette'),commandInput=document.getElementById('commandInput'),commandList=document.getElementById('commandList');const v9Commands=[['Go Home','home'],['Open Codes','codes'],['Open Movesets','moves'],['Open Animations','animations'],['Open News','news'],['Open Achievements','achievements'],['Open Status','status'],['Open Vault','vault'],['Open Terminal','terminal'],['Open Settings','settings'],['Random Discovery','__random'],['Random Theme','__theme'],['Scroll To Top','__top']];let commandIndex=0;
+function renderCommands(f=''){const q=f.toLowerCase(),l=v9Commands.filter(x=>x[0].toLowerCase().includes(q));commandIndex=Math.min(commandIndex,Math.max(0,l.length-1));commandList.innerHTML=l.map((x,i)=>`<button class="command-item ${i===commandIndex?'selected':''}" onclick="runV9Command('${x[1]}')"><span>${x[0]}</span><kbd>${i+1}</kbd></button>`).join('')}
+function openCommands(){commandPalette.classList.add('open');commandInput.value='';commandIndex=0;renderCommands();setTimeout(()=>commandInput.focus(),20)}function closeCommands(){commandPalette.classList.remove('open')}function runV9Command(id){if(id==='__random')randomDiscovery();else if(id==='__theme'){const n=themeNamesV8.filter(x=>x!=='easter'),t=n[Math.floor(Math.random()*n.length)];setTheme(t,document.querySelector(`[data-theme="${t}"]`))}else if(id==='__top')scrollTopPage();else{const b=[...document.querySelectorAll('.nav button')].find(x=>x.getAttribute('onclick')?.includes(`'${id}'`));showPage(id,b)}closeCommands()}
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCommands();return}if(!commandPalette.classList.contains('open'))return;if(e.key==='Escape'){closeCommands();return}const it=commandList.querySelectorAll('.command-item');if(e.key==='ArrowDown'){e.preventDefault();commandIndex=Math.min(commandIndex+1,it.length-1);renderCommands(commandInput.value)}if(e.key==='ArrowUp'){e.preventDefault();commandIndex=Math.max(commandIndex-1,0);renderCommands(commandInput.value)}if(e.key==='Enter'&&it[commandIndex])it[commandIndex].click()});
+commandInput.addEventListener('input',()=>{commandIndex=0;renderCommands(commandInput.value)});commandPalette.addEventListener('click',e=>{if(e.target===commandPalette)closeCommands()});
+(function(){const d=new Date(),seed=Number(''+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')),code=((seed*9301+49297)%233280).toString(36).toUpperCase().slice(-4).padStart(4,'0'),m=['STABLE','UNUSUAL','ELEVATED','QUIET','WATCHFUL'][seed%5];const c=document.getElementById('dailySignalCode'),t=document.getElementById('dailySignalText');if(c)c.textContent=code;if(t)t.textContent='Signal '+m+' • refreshes with the next local day.'})();
+
 </script>
 
 </body>
