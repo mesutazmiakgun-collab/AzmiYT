@@ -396,24 +396,104 @@ body.theme-easter .content,body.theme-easter .sidebar{animation:themeTwitch .12s
 @keyframes themeTwitch{50%{transform:translate(1px,-1px) skewX(.2deg)}}
 body.theme-easter .logo,body.theme-easter h1{text-shadow:4px 0 #ff00aa,-4px 0 #00ffff,0 0 28px #fff3}
 body.theme-easter .card{box-shadow:inset 0 0 0 1px #fff1,0 0 24px #00fff012}
-.judge-overlay{position:fixed;inset:0;z-index:1000000;background:#050505;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:none}
-.judge-overlay .judge-text{position:absolute;top:11%;font:900 clamp(35px,7vw,90px)/1 monospace;letter-spacing:8px;color:#fff;text-shadow:5px 0 #ff203d,-5px 0 #00ffff;z-index:5;animation:judgeFlicker .08s steps(2) infinite}
-@keyframes judgeFlicker{50%{opacity:.35;transform:translate(3px,-2px)}}
-.judge-overlay .hammer{position:absolute;width:min(170px,25vw);height:min(300px,42vw);z-index:8;transform:translate(35vw,-35vh) rotate(-35deg);animation:hammerSmash .9s cubic-bezier(.2,.8,.2,1) .35s forwards}
-.hammer-head{position:absolute;left:5%;top:0;width:90%;height:32%;background:linear-gradient(135deg,#bfc5ca,#565b61 45%,#181b1f);border:5px solid #111;border-radius:18px;box-shadow:0 0 30px #fff4}
-.hammer-handle{position:absolute;left:40%;top:27%;width:20%;height:73%;background:linear-gradient(90deg,#48250f,#c17a2b,#51290f);border:4px solid #160b03;border-radius:9px}
-@keyframes hammerSmash{0%{transform:translate(35vw,-35vh) rotate(-35deg)}70%{transform:translate(0,0) rotate(4deg)}78%{transform:translate(0,0) rotate(0deg) scale(1.06)}100%{transform:translate(0,0) rotate(0deg) scale(1)}}
-.judge-overlay .impact{position:absolute;width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 0 70px 35px #fff8;opacity:0;z-index:7;animation:impact .3s ease .95s forwards}
-@keyframes impact{to{opacity:1;transform:scale(18);}}
-.crack{position:absolute;left:50%;top:50%;width:3px;height:48vh;background:#fff;transform-origin:top;z-index:9;opacity:0;box-shadow:0 0 10px #fff;animation:crackIn .2s steps(2) 1.02s forwards}
-.crack:before,.crack:after{content:'';position:absolute;width:3px;height:27vh;background:#fff;left:0;top:8vh;transform-origin:top}
-.crack:before{transform:rotate(48deg)}.crack:after{transform:rotate(-55deg)}
-.crack.c2{transform:rotate(72deg);height:42vh}.crack.c3{transform:rotate(-72deg);height:38vh}.crack.c4{transform:rotate(160deg);height:30vh}
-@keyframes crackIn{to{opacity:.95}}
-.judge-overlay.broken .judge-content{animation:brokenScreen .16s steps(2) infinite}
-@keyframes brokenScreen{0%{transform:translate(0)}25%{transform:translate(-12px,5px) skewX(2deg)}50%{transform:translate(13px,-7px) skewX(-3deg);filter:hue-rotate(90deg) saturate(2)}75%{transform:translate(-4px,10px)}}
-.judge-overlay .break-lines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 6px,#fff1 7px 8px);mix-blend-mode:screen;z-index:10;pointer-events:none;animation:breakScan .04s steps(2) infinite}
-@keyframes breakScan{50%{transform:translateX(12px)}}
+.judge-overlay{
+  position:fixed;inset:0;z-index:1000000;background:transparent;
+  overflow:hidden;cursor:none;pointer-events:none;
+}
+.judge-overlay .judge-text{
+  position:absolute;top:10%;left:0;right:0;text-align:center;
+  font:900 clamp(35px,7vw,90px)/1 monospace;letter-spacing:6px;color:#fff;
+  text-shadow:5px 0 #ff203d,-5px 0 #00ffff;z-index:20;
+  animation:judgeFlicker .09s steps(2) infinite;
+}
+@keyframes judgeFlicker{50%{opacity:.4;transform:translate(4px,-2px)}}
+.judge-overlay .hammer{
+  position:absolute;left:50%;top:50%;
+  width:min(170px,25vw);height:min(300px,42vw);z-index:25;
+  transform:translate(-50%,-150vh) rotate(-22deg);
+  transform-origin:50% 85%;
+  animation:hammerRaiseAndSmash 1.55s cubic-bezier(.22,.8,.2,1) forwards;
+}
+.hammer-head{
+  position:absolute;left:3%;top:0;width:94%;height:32%;
+  background:linear-gradient(135deg,#c8cdd1,#777d83 45%,#24282d);
+  border:5px solid #111;border-radius:45% 45% 40% 40%;
+  box-shadow:inset -12px -8px 0 #0004,0 8px 25px #0009;
+}
+.hammer-handle{
+  position:absolute;left:39%;top:25%;width:22%;height:75%;
+  background:linear-gradient(90deg,#3b1d0a,#d08a32 48%,#4a240b);
+  border:4px solid #160b03;border-radius:10px;box-shadow:8px 0 18px #0006;
+}
+@keyframes hammerRaiseAndSmash{
+  0%{transform:translate(-50%,-150vh) rotate(-22deg)}
+  32%{transform:translate(-50%,-48vh) rotate(-22deg)}
+  48%{transform:translate(-50%,-54vh) rotate(-22deg)}
+  72%{transform:translate(-50%,4vh) rotate(3deg)}
+  78%{transform:translate(-50%,0) rotate(0deg) scale(1.08)}
+  84%{transform:translate(-50%,2vh) rotate(-1deg) scale(1.02)}
+  100%{transform:translate(-50%,0) rotate(0deg) scale(1)}
+}
+.judge-overlay .crack{
+  position:absolute;left:50%;top:50%;width:4px;height:58vh;
+  background:#fff;transform-origin:top center;z-index:30;opacity:0;
+  box-shadow:0 0 9px #fff,0 0 20px #fff6;
+  animation:crackIn .12s steps(2) 1.18s forwards;
+}
+.judge-overlay .crack:before,.judge-overlay .crack:after{
+  content:'';position:absolute;width:4px;height:30vh;background:#fff;
+  left:0;top:13vh;transform-origin:top center;box-shadow:0 0 8px #fff;
+}
+.judge-overlay .crack:before{transform:rotate(48deg)}
+.judge-overlay .crack:after{transform:rotate(-55deg)}
+.judge-overlay .crack.c2{transform:rotate(72deg);height:54vh}
+.judge-overlay .crack.c3{transform:rotate(-72deg);height:51vh}
+.judge-overlay .crack.c4{transform:rotate(160deg);height:47vh}
+.judge-overlay .crack.c5{transform:rotate(28deg);height:40vh}
+.judge-overlay .crack.c6{transform:rotate(-30deg);height:38vh}
+@keyframes crackIn{
+  0%{opacity:0;transform:scaleY(.04)}
+  100%{opacity:.98;transform:scaleY(1)}
+}
+.judge-overlay .shards{
+  position:absolute;left:50%;top:50%;width:10px;height:10px;
+  z-index:31;opacity:0;animation:shards .55s ease 1.18s forwards;
+}
+.judge-overlay .shards:before{
+  content:'';position:absolute;inset:-100px;
+  background:
+    linear-gradient(27deg,transparent 48%,#fff 49%,#fff 50%,transparent 51%),
+    linear-gradient(117deg,transparent 48%,#fff 49%,#fff 50%,transparent 51%),
+    linear-gradient(71deg,transparent 48%,#fff 49%,#fff 50%,transparent 51%),
+    linear-gradient(157deg,transparent 48%,#fff 49%,#fff 50%,transparent 51%);
+  opacity:.75;
+}
+@keyframes shards{
+  0%{opacity:0;transform:scale(.2)}
+  25%{opacity:1;transform:scale(1.3)}
+  100%{opacity:.15;transform:scale(2)}
+}
+.judge-overlay .break-lines{
+  position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(0deg,transparent 0 6px,#fff0 7px 8px),
+    linear-gradient(90deg,#ff003322,#00ffff22,#ff003322);
+  mix-blend-mode:screen;z-index:40;pointer-events:none;opacity:0;
+  animation:breakScan .055s steps(2) 1.18s infinite,breakFade .3s ease 1.35s forwards;
+}
+@keyframes breakScan{50%{transform:translateX(14px)}}
+@keyframes breakFade{to{opacity:.9}}
+body.judged-broken .content,body.judged-broken .sidebar{
+  animation:brokenScreen .08s steps(2) infinite;
+}
+body.judged-broken{overflow:hidden}
+@keyframes brokenScreen{
+  0%{transform:translate(0)}
+  20%{transform:translate(-9px,4px) skewX(1deg)}
+  40%{transform:translate(12px,-5px) skewX(-2deg)}
+  60%{transform:translate(-5px,8px)}
+  80%{transform:translate(8px,-3px) skewX(1deg)}
+}
 
 </style>
 </head>
@@ -1076,19 +1156,26 @@ function checkSecretSearch(q){
 
 /* judgement protocol */
 function triggerJudgement(){
-  document.body.classList.add('effect-heavy');
+  /* The judgement happens on the page the user is already on. */
+  document.body.classList.add('effect-heavy','effect-rgb');
+  if(document.querySelector('.judge-overlay')) return;
+
   const o=document.createElement('div');
   o.className='judge-overlay';
-  o.innerHTML=`<div class="judge-text">WE SEE. WE JUDGE.</div>
-    <div class="judge-content">
-      <div class="hammer"><div class="hammer-head"></div><div class="hammer-handle"></div></div>
-    </div>
-    <div class="impact"></div>
-    <div class="crack"></div><div class="crack c2"></div><div class="crack c3"></div><div class="crack c4"></div>
-    <div class="break-lines"></div>`;
+  o.innerHTML=`<div class="judge-text">THE JUDGE HAS SPOKEN.</div>
+    <div class="hammer"><div class="hammer-head"></div><div class="hammer-handle"></div></div>
+    <div class="crack"></div><div class="crack c2"></div><div class="crack c3"></div>
+    <div class="crack c4"></div><div class="crack c5"></div><div class="crack c6"></div>
+    <div class="shards"></div><div class="break-lines"></div>`;
   document.body.appendChild(o);
-  setTimeout(()=>o.classList.add('broken'),1200);
-  setTimeout(()=>{showToast('JUDGEMENT COMPLETE • REFRESH TO RECOVER');},1300);
+
+  /* Hammer reaches the screen, then the whole current page starts breaking. */
+  setTimeout(()=>{
+    document.body.classList.add('judged-broken');
+    o.classList.add('broken');
+  },1180);
+
+  setTimeout(()=>showToast('THE JUDGE HAS SPOKEN • REFRESH TO RECOVER'),1450);
 }
 
 /* music */
