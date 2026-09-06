@@ -396,104 +396,28 @@ body.theme-easter .content,body.theme-easter .sidebar{animation:themeTwitch .12s
 @keyframes themeTwitch{50%{transform:translate(1px,-1px) skewX(.2deg)}}
 body.theme-easter .logo,body.theme-easter h1{text-shadow:4px 0 #ff00aa,-4px 0 #00ffff,0 0 28px #fff3}
 body.theme-easter .card{box-shadow:inset 0 0 0 1px #fff1,0 0 24px #00fff012}
-.judge-overlay{
-  position:fixed;inset:0;z-index:1000000;background:transparent;
-  overflow:hidden;cursor:none;pointer-events:none;
-}
-.judge-overlay .judge-text{
-  position:absolute;top:10%;left:0;right:0;text-align:center;
-  font:900 clamp(35px,7vw,90px)/1 monospace;letter-spacing:6px;color:#fff;
-  text-shadow:5px 0 #ff203d,-5px 0 #00ffff;z-index:20;
-  animation:judgeFlicker .09s steps(2) infinite;
-}
-@keyframes judgeFlicker{50%{opacity:.4;transform:translate(4px,-2px)}}
-.judge-overlay .hammer{
-  position:absolute;left:50%;top:50%;
-  width:min(170px,25vw);height:min(300px,42vw);z-index:25;
-  transform:translate(-50%,-150vh) rotate(-22deg);
-  transform-origin:50% 85%;
-  animation:hammerRaiseAndSmash 1.55s cubic-bezier(.22,.8,.2,1) forwards;
-}
-.hammer-head{
-  position:absolute;left:3%;top:0;width:94%;height:32%;
-  background:linear-gradient(135deg,#c8cdd1,#777d83 45%,#24282d);
-  border:5px solid #111;border-radius:45% 45% 40% 40%;
-  box-shadow:inset -12px -8px 0 #0004,0 8px 25px #0009;
-}
-.hammer-handle{
-  position:absolute;left:39%;top:25%;width:22%;height:75%;
-  background:linear-gradient(90deg,#3b1d0a,#d08a32 48%,#4a240b);
-  border:4px solid #160b03;border-radius:10px;box-shadow:8px 0 18px #0006;
-}
-@keyframes hammerRaiseAndSmash{
-  0%{transform:translate(-50%,-150vh) rotate(-22deg)}
-  32%{transform:translate(-50%,-48vh) rotate(-22deg)}
-  48%{transform:translate(-50%,-54vh) rotate(-22deg)}
-  72%{transform:translate(-50%,4vh) rotate(3deg)}
-  78%{transform:translate(-50%,0) rotate(0deg) scale(1.08)}
-  84%{transform:translate(-50%,2vh) rotate(-1deg) scale(1.02)}
-  100%{transform:translate(-50%,0) rotate(0deg) scale(1)}
-}
-.judge-overlay .crack{
-  position:absolute;left:50%;top:50%;width:4px;height:58vh;
-  background:#fff;transform-origin:top center;z-index:30;opacity:0;
-  box-shadow:0 0 9px #fff,0 0 20px #fff6;
-  animation:crackIn .12s steps(2) 1.18s forwards;
-}
-.judge-overlay .crack:before,.judge-overlay .crack:after{
-  content:'';position:absolute;width:4px;height:30vh;background:#fff;
-  left:0;top:13vh;transform-origin:top center;box-shadow:0 0 8px #fff;
-}
-.judge-overlay .crack:before{transform:rotate(48deg)}
-.judge-overlay .crack:after{transform:rotate(-55deg)}
-.judge-overlay .crack.c2{transform:rotate(72deg);height:54vh}
-.judge-overlay .crack.c3{transform:rotate(-72deg);height:51vh}
-.judge-overlay .crack.c4{transform:rotate(160deg);height:47vh}
-.judge-overlay .crack.c5{transform:rotate(28deg);height:40vh}
-.judge-overlay .crack.c6{transform:rotate(-30deg);height:38vh}
-@keyframes crackIn{
-  0%{opacity:0;transform:scaleY(.04)}
-  100%{opacity:.98;transform:scaleY(1)}
-}
-.judge-overlay .shards{
-  position:absolute;left:50%;top:50%;width:10px;height:10px;
-  z-index:31;opacity:0;animation:shards .55s ease 1.18s forwards;
-}
-.judge-overlay .shards:before{
-  content:'';position:absolute;inset:-100px;
-  background:
-    linear-gradient(27deg,transparent 48%,#fff 49%,#fff 50%,transparent 51%),
-    linear-gradient(117deg,transparent 48%,#fff 49%,#fff 50%,transparent 51%),
-    linear-gradient(71deg,transparent 48%,#fff 49%,#fff 50%,transparent 51%),
-    linear-gradient(157deg,transparent 48%,#fff 49%,#fff 50%,transparent 51%);
-  opacity:.75;
-}
-@keyframes shards{
-  0%{opacity:0;transform:scale(.2)}
-  25%{opacity:1;transform:scale(1.3)}
-  100%{opacity:.15;transform:scale(2)}
-}
-.judge-overlay .break-lines{
-  position:absolute;inset:0;
-  background:
-    repeating-linear-gradient(0deg,transparent 0 6px,#fff0 7px 8px),
-    linear-gradient(90deg,#ff003322,#00ffff22,#ff003322);
-  mix-blend-mode:screen;z-index:40;pointer-events:none;opacity:0;
-  animation:breakScan .055s steps(2) 1.18s infinite,breakFade .3s ease 1.35s forwards;
-}
-@keyframes breakScan{50%{transform:translateX(14px)}}
-@keyframes breakFade{to{opacity:.9}}
-body.judged-broken .content,body.judged-broken .sidebar{
-  animation:brokenScreen .08s steps(2) infinite;
-}
+
+.judge-overlay{position:fixed;inset:0;z-index:1000000;background:rgba(0,0,0,.08);overflow:hidden;pointer-events:none;cursor:none}
+.judge-overlay .judge-text{position:absolute;z-index:50;left:0;right:0;top:16%;text-align:center;font:800 clamp(25px,4vw,54px)/1.05 Arial,sans-serif;letter-spacing:-1px;color:#fff;text-shadow:2px 3px 0 #000,0 0 18px #000;opacity:0;animation:judgeText .35s ease .45s forwards}
+@keyframes judgeText{from{opacity:0;transform:translateY(-8px) scale(.96)}to{opacity:1;transform:none}}
+.judge-overlay .hammer{position:absolute;z-index:60;left:62%;top:8%;width:min(300px,32vw);height:min(470px,52vw);transform-origin:72% 13%;transform:translate(45vw,-65vh) rotate(-42deg);animation:gavelSmash 1.55s cubic-bezier(.18,.82,.22,1) forwards;filter:drop-shadow(0 18px 16px rgba(0,0,0,.55))}
+.hammer-head{position:absolute;left:0;top:0;width:100%;height:30%;border-radius:46% 46% 42% 42%;background:radial-gradient(circle at 28% 24%,#ead29a 0 7%,transparent 8%),linear-gradient(135deg,#e5b967 0%,#b87528 48%,#704016 100%);border:7px solid #3a210d;box-shadow:inset 10px 8px 0 rgba(255,255,255,.16),inset -14px -14px 0 rgba(38,18,4,.22),0 4px 0 #1c1008}
+.hammer-head:before{content:'';position:absolute;left:14%;top:17%;width:70%;height:9%;border-radius:50%;border-top:4px solid rgba(90,47,13,.38);transform:rotate(-7deg)}
+.hammer-head:after{content:'';position:absolute;right:18%;top:42%;width:24%;height:9%;border-radius:50%;border-top:4px solid rgba(90,47,13,.3);transform:rotate(35deg)}
+.hammer-handle{position:absolute;left:40%;top:24%;width:21%;height:78%;border-radius:18px;background:linear-gradient(90deg,#5b2c0e 0%,#c9822b 30%,#e0a24c 50%,#9d5c1b 70%,#4d240b 100%);border:6px solid #3a1b08;box-shadow:inset 7px 0 7px rgba(255,255,255,.12)}
+@keyframes gavelSmash{0%{transform:translate(45vw,-65vh) rotate(-42deg)}27%{transform:translate(3vw,-14vh) rotate(-42deg)}42%{transform:translate(3vw,-20vh) rotate(-48deg)}63%{transform:translate(0,7vh) rotate(12deg)}70%{transform:translate(0,0) rotate(2deg) scale(1.06)}76%{transform:translate(0,2vh) rotate(-2deg) scale(1)}100%{transform:translate(0,0) rotate(0deg) scale(1)}}
+.judge-overlay .crack{position:absolute;left:50%;top:53%;width:3px;height:54vh;z-index:55;opacity:0;transform-origin:top center;background:linear-gradient(to bottom,#fff,#e9eef2 65%,rgba(255,255,255,.2));box-shadow:0 0 5px rgba(255,255,255,.65);animation:crackAppear .16s steps(2) 1.12s forwards}
+.judge-overlay .crack:before,.judge-overlay .crack:after{content:'';position:absolute;width:2px;height:18vh;left:0;top:13vh;transform-origin:top center;background:#fff;box-shadow:0 0 4px rgba(255,255,255,.6)}
+.judge-overlay .crack:before{transform:rotate(53deg)}.judge-overlay .crack:after{transform:rotate(-47deg)}
+.judge-overlay .crack.c2{transform:rotate(37deg);height:62vh}.judge-overlay .crack.c3{transform:rotate(-38deg);height:63vh}.judge-overlay .crack.c4{transform:rotate(77deg);height:48vh}.judge-overlay .crack.c5{transform:rotate(-76deg);height:50vh}.judge-overlay .crack.c6{transform:rotate(112deg);height:37vh}.judge-overlay .crack.c7{transform:rotate(-111deg);height:40vh}
+@keyframes crackAppear{0%{opacity:0;transform:scaleY(0)}100%{opacity:.94;transform:scaleY(1)}}
+.judge-overlay .break-lines{position:absolute;inset:0;z-index:70;background:linear-gradient(90deg,transparent 0 49%,rgba(255,255,255,.05) 50%,transparent 51%),repeating-linear-gradient(0deg,transparent 0 5px,rgba(255,255,255,.025) 6px 7px);opacity:0;animation:screenBreak .4s ease 1.15s forwards}
+@keyframes screenBreak{0%{opacity:0}25%{opacity:.9}100%{opacity:.45}}
+body.judged-broken .content,body.judged-broken .sidebar{animation:judgedJitter .11s steps(2) infinite}
+body.judged-broken .judge-overlay .judge-text{animation:judgedTextGlitch .12s steps(2) infinite}
 body.judged-broken{overflow:hidden}
-@keyframes brokenScreen{
-  0%{transform:translate(0)}
-  20%{transform:translate(-9px,4px) skewX(1deg)}
-  40%{transform:translate(12px,-5px) skewX(-2deg)}
-  60%{transform:translate(-5px,8px)}
-  80%{transform:translate(8px,-3px) skewX(1deg)}
-}
+@keyframes judgedJitter{0%{transform:translate(0)}25%{transform:translate(-3px,1px)}50%{transform:translate(4px,-2px)}75%{transform:translate(-1px,3px)}}
+@keyframes judgedTextGlitch{50%{transform:translate(3px,-1px);filter:hue-rotate(45deg)}}
 
 </style>
 </head>
@@ -1156,25 +1080,20 @@ function checkSecretSearch(q){
 
 /* judgement protocol */
 function triggerJudgement(){
-  /* The judgement happens on the page the user is already on. */
   document.body.classList.add('effect-heavy','effect-rgb');
   if(document.querySelector('.judge-overlay')) return;
-
   const o=document.createElement('div');
   o.className='judge-overlay';
   o.innerHTML=`<div class="judge-text">THE JUDGE HAS SPOKEN.</div>
     <div class="hammer"><div class="hammer-head"></div><div class="hammer-handle"></div></div>
     <div class="crack"></div><div class="crack c2"></div><div class="crack c3"></div>
     <div class="crack c4"></div><div class="crack c5"></div><div class="crack c6"></div>
-    <div class="shards"></div><div class="break-lines"></div>`;
+    <div class="crack c7"></div><div class="break-lines"></div>`;
   document.body.appendChild(o);
-
-  /* Hammer reaches the screen, then the whole current page starts breaking. */
   setTimeout(()=>{
     document.body.classList.add('judged-broken');
     o.classList.add('broken');
   },1180);
-
   setTimeout(()=>showToast('THE JUDGE HAS SPOKEN • REFRESH TO RECOVER'),1450);
 }
 
