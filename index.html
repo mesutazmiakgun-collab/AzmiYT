@@ -473,6 +473,100 @@ body.reduced-motion *,body.reduced-motion *:before,body.reduced-motion *:after{a
 .daily-signal{display:flex;align-items:center;justify-content:space-between;gap:15px;border:1px solid var(--accent-border);background:linear-gradient(110deg,var(--accent-soft),#ffffff03)}.daily-signal .signal-code{font:700 25px monospace;color:var(--accent)}
 .v9-codebox{width:100%;box-sizing:border-box;min-height:90px;margin-top:8px;padding:12px;border:1px solid #ffffff12;background:#05070a;border-radius:10px;color:#777;font:11px monospace;word-break:break-all}
 
+
+/* FINAL SIDEBAR CLEANUP */
+.sidebar{
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  scrollbar-gutter:auto;
+}
+.sidebar::-webkit-scrollbar{
+  width:0;
+  height:0;
+  display:none;
+}
+.sidebar::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-button,
+.sidebar::-webkit-scrollbar-corner{
+  display:none;
+  width:0;
+  height:0;
+  background:transparent;
+}
+
+/* Keep the sidebar navigation numbers visible and aligned. */
+.nav button{
+  position:relative;
+  padding-right:48px !important;
+}
+.nav button span{
+  position:absolute;
+  right:18px;
+  top:50%;
+  transform:translateY(-50%);
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  color:#666 !important;
+  font:14px monospace !important;
+  line-height:1 !important;
+}
+
+/* Selected button keeps its number visible too. */
+.nav button.active span,
+.nav button.selected span{
+  color:#888 !important;
+}
+
+/* Keep the V9 footer text compact and centered under the status indicator. */
+.sidebar-footer{
+  position:relative;
+  bottom:auto;
+  margin-top:12px;
+  padding:8px 8px 18px;
+  text-align:center;
+  font:12px monospace;
+  line-height:1.45;
+  color:#555;
+}
+.sidebar-footer .status-dot{
+  display:inline-block;
+  margin-right:5px;
+}
+
+
+/* FINAL SCROLLBAR CLEANUP — command palette */
+.command-list{
+  scrollbar-width:none !important;
+  -ms-overflow-style:none !important;
+  scrollbar-gutter:auto !important;
+}
+.command-list::-webkit-scrollbar{
+  width:0 !important;
+  height:0 !important;
+  display:none !important;
+}
+.command-list::-webkit-scrollbar-track,
+.command-list::-webkit-scrollbar-thumb,
+.command-list::-webkit-scrollbar-button,
+.command-list::-webkit-scrollbar-corner{
+  width:0 !important;
+  height:0 !important;
+  display:none !important;
+  background:transparent !important;
+}
+
+/* Also prevent the palette itself from accidentally gaining a page scrollbar. */
+.command-palette{
+  overflow:hidden !important;
+}
+.command-box{
+  overflow:hidden !important;
+}
+
 </style>
 </head>
 
@@ -519,10 +613,7 @@ body.reduced-motion *,body.reduced-motion *:before,body.reduced-motion *:after{a
 <button onclick="showPage('settings',this)">⚙️ Settings <span class="nav-key">9</span></button>
     </nav>
 
-    <div class="sidebar-footer">
-        <span class="status"><span class="status-dot"></span> Inventory Online</span>
-        <br>Hidden Inventory V9
-    </div>
+    <div class="sidebar-footer"><span class="status-dot"></span><span>Inventory Online</span><br><span>Hidden Inventory V9</span></div>
 </aside>
 
 <main class="content" id="content">
