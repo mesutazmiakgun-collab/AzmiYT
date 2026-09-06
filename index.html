@@ -1248,382 +1248,7 @@ No external connection required.</div>
 <div class="command-box"><input class="command-input" id="commandInput" placeholder="Type a command..." autocomplete="off">
 <div class="command-list" id="commandList"></div><div class="command-hint">CTRL + K • ESC • ↑ ↓ • ENTER</div></div></div>
 
-<div class="command-palette" id="commandPalette" aria-hidden="true"><div class="command-box"><input class="command-input" id="commandInput" placeholder="Type a command..." autocomplete="off"><div class="command-list" id="commandList"></div><div class="command-hint">CTRL + K • ESC • ↑ ↓ • ENTER</div></div></div><script>
-const content=document.getElementById('content'),search=document.getElementById('search'),toast=document.getElementById('toast'),backTop=document.getElementById('backTop');
-let toastTimer;
-function showToast(m){toast.textContent=m;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),1800)}
-function showPage(id,button){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const page=document.getElementById(id);if(page)page.classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));if(button)button.classList.add('active');content.scrollTop=0}
-function copyCode(code){navigator.clipboard.writeText(code).then(()=>showToast('Copied: '+code)).catch(()=>showToast('Could not copy code'))}
-function filterMoves(type,button){document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));button.classList.add('active');document.querySelectorAll('.move').forEach(m=>m.style.display=type==='all'||m.dataset.type===type?'':'none')}
-function resetSearch(){document.querySelectorAll('.search-hit').forEach(x=>x.classList.remove('search-hit'));document.querySelectorAll('.searchable .card').forEach(x=>x.style.display='')}
-function searchAll(q){q=q.trim().toLowerCase();resetSearch();if(!q)return;const all=[...document.querySelectorAll('.page')];const match=all.flatMap(page=>[...page.querySelectorAll('.card,.hero,.page-header,.section-title')].map(el=>({el,page}))).find(x=>x.el.innerText.toLowerCase().includes(q));if(!match){showToast('No results found');return}showPage(match.page.id,document.querySelector(`.nav button[onclick*="'${match.page.id}'"]`));setTimeout(()=>{match.el.classList.add('search-hit');match.el.scrollIntoView({behavior:'smooth',block:'center'})},60)}
-search.addEventListener('keydown',e=>{if(e.key==='Enter')searchAll(search.value)});
-search.addEventListener('input',()=>{if(!search.value)resetSearch()});
-content.addEventListener('scroll',()=>backTop.classList.toggle('show',content.scrollTop>350));function scrollTopPage(){content.scrollTo({top:0,behavior:'smooth'})}
-document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const r=document.createElement('span');r.className='ripple';const rect=b.getBoundingClientRect();r.style.left=e.clientX-rect.left+'px';r.style.top=e.clientY-rect.top+'px';b.appendChild(r);setTimeout(()=>r.remove(),600)});
-document.addEventListener('mousemove',e=>{const c=document.getElementById('cursor');c.style.left=e.clientX+'px';c.style.top=e.clientY+'px'});
-/* themes */
-const themeNames=['blue','purple','red','green','gold','cyan','orange','pink','white','easter','bloodmoon','toxic','ice','sunset'];
-function setTheme(theme,button){document.body.classList.remove(...themeNames.map(t=>'theme-'+t));document.body.classList.add('theme-'+theme);document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));if(button)button.classList.add('selected');if(theme!=='easter')localStorage.setItem('hiddenInventoryTheme',theme);showToast('Theme changed to '+theme.charAt(0).toUpperCase()+theme.slice(1))}
-const savedTheme=localStorage.getItem('hiddenInventoryTheme')||'blue';document.body.classList.add('theme-'+savedTheme);document.querySelectorAll('.theme-card').forEach(c=>{if(c.dataset.theme===savedTheme)c.classList.add('selected')});
-
-/* Easter Vault — all eggs required */
-
-const easterEggIds=['konami','logo','secretTime'];
-let secretProgress=0;
-const fill=document.getElementById('secretFill'),status=document.getElementById('secretStatus'),progressCard=document.getElementById('secretProgressCard');
-
-function updateEasterVault(){
-  const state=JSON.parse(localStorage.getItem('hiV8Achievements')||'{}');
-  const found=easterEggIds.filter(id=>!!state[id]).length;
-  secretProgress=Math.round(found/easterEggIds.length*100);
-  if(fill)fill.style.width=secretProgress+'%';
-  if(status)status.textContent=found+'/'+easterEggIds.length+' EASTER EGGS FOUND';
-  if(progressCard)progressCard.classList.toggle('found',found>0);
-
-  easterEggIds.forEach(id=>{
-    const e=document.querySelector(`[data-egg-check="${id}"]`);
-    if(e){const ok=!!state[id];e.textContent=ok?'FOUND':'LOCKED';e.classList.toggle('unlocked',ok)}
-  });
-  const unlocked=found===easterEggIds.length;
-  if(unlocked){
-    localStorage.setItem('hiV8EasterUnlocked','1');
-    const ec=document.querySelector('.theme-card[data-theme="easter"]');
-    if(ec){ec.classList.add('found');const tag=ec.querySelector('.tag');if(tag)tag.textContent='UNLOCKED'}
-  }else{
-    localStorage.removeItem('hiV8EasterUnlocked');
-    const ec=document.querySelector('.theme-card[data-theme="easter"]');
-    if(ec){ec.classList.remove('found');const tag=ec.querySelector('.tag');if(tag)tag.textContent='SECRET'}
-  }
-  return unlocked;
-}
-
-/* Kept for compatibility with older feature hooks, but progress is now
-   derived ONLY from the three actual Easter eggs above. */
-function addSecretProgress(){updateEasterVault()}
-
-/* music */
-const letItRide=document.getElementById('letItRide'),lockedIn=document.getElementById('lockedIn'),volume=document.getElementById('masterVolume'),volumeLabel=document.getElementById('volumeLabel');letItRide.volume=1;lockedIn.volume=1;
-function setMasterVolume(){const v=Number(volume.value)/100;letItRide.volume=v;lockedIn.volume=v;volumeLabel.textContent=volume.value+'%'}volume.addEventListener('input',()=>{setMasterVolume()});setMasterVolume();
-
-
-/* V8 effects */
-document.querySelectorAll('.effectBtn').forEach(btn=>btn.onclick=()=>{
-  const c='effect-'+btn.dataset.effect;
-  document.body.classList.toggle(c);
-  const on=document.body.classList.contains(c);
-  btn.textContent=btn.dataset.effect.replace(/^./,x=>x.toUpperCase())+': '+(on?'ON':'OFF');
-  updateEffectStatus(); unlock('glitch');
-});
-function updateEffectStatus(){
-  const active=['scanlines','vignette','rgb','shake','invert'].filter(x=>document.body.classList.contains('effect-'+x));
-  const el=document.getElementById('effectStatus'); if(el) el.textContent=active.length?active.join(' • ').toUpperCase():'No effects active.';
-}
-
-/* keyboard sequence */
-const secretSeq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-let seq=[];
-document.addEventListener('keydown',e=>{
-  if(e.target.tagName==='INPUT')return;
-  seq.push(e.key); if(seq.length>secretSeq.length)seq.shift();
-  if(seq.join('|').toLowerCase()===secretSeq.join('|').toLowerCase()){
-    seq=[]; unlock('konami'); showToast('🕹️ SECRET KEY SEQUENCE FOUND');
-    document.body.classList.add('effect-rgb','effect-heavy');
-    setTimeout(()=>document.body.classList.remove('effect-heavy'),3500);
-  }
-});
-
-/* glitch events + much more aggressive 404 corruption */
-let glitchEnabled=false;
-const glitchToggle=document.getElementById('glitchToggle');
-glitchToggle.onclick=()=>{
-  glitchEnabled=!glitchEnabled;
-  glitchToggle.textContent='Glitch Events: '+(glitchEnabled?'ON':'OFF');
-  showToast('Glitch Events '+(glitchEnabled?'enabled':'disabled'));
-  addSecretProgress(3);
-};
-const glitchStage=document.getElementById('glitchStage');
-function doGlitch(){
-  if(!glitchEnabled)return;
-  if(Math.random()<.5){
-    const dur=350+Math.random()*1100;
-    glitchStage.style.opacity=.45+Math.random()*.5;
-    document.body.classList.add('effect-rgb');
-    if(Math.random()<.7)document.body.classList.add('effect-heavy');
-    if(Math.random()<.35)document.body.classList.add('effect-shake');
-    setTimeout(()=>{
-      glitchStage.style.opacity=0;
-      document.body.classList.remove('effect-rgb','effect-heavy','effect-shake');
-    },dur);
-  }
-}
-setInterval(doGlitch,60000);
-
-/* 404 spam progression: each stage becomes visibly worse */
-let spam=[],spamLevel=0;
-function spamGlitch(){
-  spamLevel=Math.min(100,spamLevel+10);
-  glitchStage.style.opacity=Math.min(.95,spamLevel/100);
-  if(spamLevel>=10)document.body.classList.add('effect-rgb');
-  if(spamLevel>=25)document.body.classList.add('effect-scanlines');
-  if(spamLevel>=40)document.body.classList.add('effect-heavy');
-  if(spamLevel>=55)document.body.classList.add('effect-shake');
-  if(spamLevel>=70)document.body.classList.add('effect-invert');
-  if(spamLevel>=85){
-    document.body.style.filter='contrast(1.5) saturate(2)';
-    document.querySelectorAll('.card,.hero,.stat,.nav button').forEach((el,i)=>{
-      el.style.transform=`translate(${(i%3)-1}px,${(i%5)-2}px) skewX(${(i%2)*2-1}deg)`;
-    });
-  }
-  if(spamLevel>=100){
-    unlock('glitch');
-    document.body.innerHTML='<div class="spam404"><div class="errbox"><h1>404</h1><h2>HIDDEN INVENTORY CORRUPTED</h2><p>ARCHIVE INTEGRITY: 0%</p><p>SIGNAL LOST • UI FRAGMENTATION COMPLETE</p><p>Refresh the page to recover.</p></div></div>';
-    document.body.style.filter='none';
-  }else{
-    showToast('⚠ CORRUPTION LEVEL '+spamLevel+'%');
-  }
-}
-let lastSpamAction=0;
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{
-  const now=Date.now(); lastSpamAction=now;
-  spam.push(now); spam=spam.filter(t=>now-t<1800);
-  if(spam.length>=3){spam=[];spamGlitch()}
-}));
-setInterval(()=>{
-  if(!spamLevel || !lastSpamAction || Date.now()-lastSpamAction<=2000)return;
-  spamLevel=Math.max(0,spamLevel-5);
-  glitchStage.style.opacity=Math.min(.95,spamLevel/100);
-  if(spamLevel<70)document.body.classList.remove('effect-invert');
-  if(spamLevel<55)document.body.classList.remove('effect-shake');
-  if(spamLevel<40)document.body.classList.remove('effect-heavy');
-  if(spamLevel<25)document.body.classList.remove('effect-scanlines');
-  if(spamLevel<10)document.body.classList.remove('effect-rgb');
-  if(spamLevel<85){
-    document.body.style.filter='';
-    document.querySelectorAll('.card,.hero,.stat,.nav button').forEach(el=>el.style.transform='');
-  }
-  if(spamLevel===0){spam=[];glitchStage.style.opacity=0;lastSpamAction=0;showToast('✓ SYSTEM GLITCHES STABILIZED')}
-},250);
-
-/* achievements */
-const achState=JSON.parse(localStorage.getItem('hiV8Achievements')||'{}');
-/* Easter Vault is derived from actual Easter-egg achievements. */
-function unlock(id){
-  if(achState[id])return;
-  achState[id]=true; localStorage.setItem('hiV8Achievements',JSON.stringify(achState));
-  const card=document.querySelector(`.achievement[data-ach="${id;if(window.updateV10AchievementProgress)window.updateV10AchievementProgress();}"]`);
-  if(card){card.classList.add('unlocked');const tag=card.querySelector('.tag');if(tag)tag.textContent='UNLOCKED'}
-  updateAchievementCount();
-  updateEasterVault();
-}
-function updateAchievementCount(){
-  const cards=[...document.querySelectorAll('.achievement')];
-  const n=cards.filter(c=>achState[c.dataset.ach]).length;
-  const label=document.getElementById('achievementCount'); if(label)label.textContent=n+' / '+cards.length;
-  cards.forEach(c=>{if(achState[c.dataset.ach]){c.classList.add('unlocked');const t=c.querySelector('.tag');if(t)t.textContent='UNLOCKED'}});
-}
-updateAchievementCount();
-
-/* favorites + recent items */
-let favorites=JSON.parse(localStorage.getItem('hiV8Favorites')||'[]');
-let recent=JSON.parse(localStorage.getItem('hiV8Recent')||'[]');
-function saveLists(){localStorage.setItem('hiV8Favorites',JSON.stringify(favorites));localStorage.setItem('hiV8Recent',JSON.stringify(recent));}
-function favoriteItem(name){
-  if(favorites.includes(name)) favorites=favorites.filter(x=>x!==name);
-  else {favorites.push(name);unlock('favorites')}
-  saveLists(); renderRecent(); updateFavoriteCount();
-}
-function updateFavoriteCount(){const e=document.getElementById('favoriteCount');if(e)e.textContent=favorites.length}
-function rememberRecent(name,page){
-  recent=[{name,page},...recent.filter(x=>x.name!==name)].slice(0,6);
-  saveLists(); renderRecent();
-}
-function renderRecent(){
-  const grid=document.getElementById('recentGrid'); if(!grid)return;
-  if(!recent.length){grid.innerHTML='<div class="notice">Nothing viewed yet. Explore the archive.</div>';return}
-  grid.innerHTML=recent.map(x=>`<button class="card recent-card" onclick="showPage('${x.page}',document.querySelector('.nav button[onclick*=\"\\'${x.page}\\'\"]'))"><h3>${htmlEscape(x.name)}</h3><p>Recently viewed inventory entry.</p><span class="tag">OPEN</span></button>`).join('');
-}
-function htmlEscape(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function decorateFavorites(){
-  document.querySelectorAll('.favoriteable').forEach(card=>{
-    if(card.querySelector('.favorite-btn'))return;
-    const name=card.dataset.item||card.querySelector('h3,.code-name')?.textContent.trim()||'Inventory item';
-    const b=document.createElement('button');b.className='favorite-btn';b.type='button';b.textContent=favorites.includes(name)?'★':'☆';b.title='Favorite';
-    if(favorites.includes(name))b.classList.add('active');
-    b.onclick=e=>{e.stopPropagation();favoriteItem(name);b.textContent=favorites.includes(name)?'★':'☆';b.classList.toggle('active',favorites.includes(name))};
-    card.appendChild(b);
-  });
-}
-decorateFavorites();updateFavoriteCount();renderRecent();
-
-/* random discovery */
-const discovery=[
-  ['Codes','codes','WELCOME'],['Codes','codes','UPDATE1'],['Codes','codes','INVENTORY'],
-  ['Moveset: Move 1','moves','Move 1'],['Moveset: Move 2','moves','Move 2'],['Moveset: Move 3','moves','Move 3'],
-  ['Moveset: Ultimate','moves','Ultimate'],['Animation: Idle','animations','Idle'],['Animation: Attack','animations','Attack'],
-  ['Animation: Ultimate','animations','Ultimate'],['News','news','News'],['Achievements','achievements','Achievements']
-];
-function randomDiscovery(){
-  const x=discovery[Math.floor(Math.random()*discovery.length)];
-  const btn=[...document.querySelectorAll('.nav button')].find(b=>b.getAttribute('onclick')?.includes(`'${x[1]}'`));
-  showPage(x[1],btn); unlock('random'); rememberRecent(x[2],x[1]); showToast('🎲 Discovered: '+x[2]);
-}
-
-/* page tracking */
-const visited=new Set(['home']);
-function trackPage(id){
-  visited.add(id);
-  const e=document.getElementById('visitedCount');if(e)e.textContent=visited.size;
-  if(id==='news')unlock('news');
-  if(id==='status')unlock('status');
-}
-const baseShowPage=showPage;
-showPage=function(id,button){
-  baseShowPage(id,button); trackPage(id);
-};
-trackPage('home');
-
-/* copy + search achievements */
-const baseCopyCode=copyCode;
-copyCode=function(code){baseCopyCode(code);unlock('copy')};
-const baseSearchAll=searchAll;
-searchAll=function(q){
-  if(checkSecretSearch(q))return;
-  if(q.trim())unlock('search');
-  baseSearchAll(q);
-};
-
-/* theme upgrades */
-const themeNamesV8=['blue','purple','red','green','gold','cyan','orange','pink','white','easter','bloodmoon','toxic','ice','sunset']; window.themeNamesV8=themeNamesV8;
-function setThemeV8(theme,button){
-if(theme==='easter'&&localStorage.getItem('hiV8EasterUnlocked')!=='1'){showToast('🔒 EASTER VAULT IS LOCKED');return}
-document.body.classList.remove(...themeNamesV8.map(t=>'theme-'+t));document.body.classList.add('theme-'+theme);
-document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));if(button)button.classList.add('selected');
-localStorage.setItem('hiddenInventoryTheme',theme);
-showToast('Theme changed to '+theme.charAt(0).toUpperCase()+theme.slice(1));unlock('theme');updateEffectStatus();}
-setTheme=setThemeV8;let savedThemeV8=localStorage.getItem('hiddenInventoryTheme')||'blue';if(savedThemeV8==='easter'&&localStorage.getItem('hiV8EasterUnlocked')!=='1'){localStorage.removeItem('hiddenInventoryTheme');savedThemeV8='blue'}document.body.classList.remove(...themeNamesV8.map(t=>'theme-'+t));document.body.classList.add('theme-'+savedThemeV8);document.querySelectorAll('.theme-card').forEach(c=>c.classList.toggle('selected',c.dataset.theme===savedThemeV8));
-if(localStorage.getItem('hiV8EasterUnlocked')==='1'){
-  const ec=document.querySelector('.theme-card[data-theme="easter"]');
-  if(ec){ec.classList.add('found');ec.querySelector('.tag').textContent='UNLOCKED'}
-}
-
-function applyPreset(type){
-  const map={
-    cinematic:['blue',['vignette','scanlines']],
-    terminal:['green',['scanlines','rgb']],
-    unstable:['bloodmoon',['scanlines','rgb','shake']],
-    clean:['white',[]]
-  };
-  const [theme,effects]=map[type];setTheme(theme,document.querySelector(`[data-theme="${theme}"]`));
-  ['scanlines','vignette','rgb','shake','invert'].forEach(x=>document.body.classList.remove('effect-'+x));
-  effects.forEach(x=>document.body.classList.add('effect-'+x));
-  document.querySelectorAll('.effectBtn').forEach(btn=>{
-    const on=effects.includes(btn.dataset.effect);
-    btn.textContent=btn.dataset.effect.replace(/^./,x=>x.toUpperCase())+': '+(on?'ON':'OFF');
-  });
-  updateEffectStatus();showToast('Preset loaded: '+type.toUpperCase());
-}
-
-/* logo */
-const logoV8=document.getElementById('logoHome');let logoClicksV8=0,logoTimerV8;
-logoV8.addEventListener('click',()=>{
-  showPage('home',document.querySelector('.nav button'));
-  logoClicksV8++;
-  clearTimeout(logoTimerV8);
-  logoTimerV8=setTimeout(()=>logoClicksV8=0,2200);
-  if(logoClicksV8>=7){
-    logoClicksV8=0;
-    showToast('👁️ 7-CLICK LOGO EASTER EGG FOUND');
-    unlock('logo');
-  }
-});
-
-/* secret search */
-function checkSecretSearch(q){
-  const v=q.trim().toLowerCase();
-  if(v==='secret time'){unlock('secretTime');showPage('settings',document.querySelectorAll('.nav button')[8]);showToast('⏱️ SECRET TIME DETECTED');return true}
-return false;
-}
-
-/* judgement protocol */
-/* music */
-document.getElementById('playLetItRide').onclick=()=>{if(letItRide.paused){lockedIn.pause();letItRide.play();showToast('Playing Let It Ride')}else letItRide.pause();unlock('music')};
-document.getElementById('playLockedIn').onclick=()=>{if(lockedIn.paused){letItRide.pause();lockedIn.play();showToast('Playing Locked In')}else lockedIn.pause();unlock('music')};
-
-/* keyboard nav */
-document.addEventListener('keydown',e=>{
-  if(e.target.tagName==='INPUT')return;
-  const b=document.querySelectorAll('.nav button');
-  if(e.key>='1'&&e.key<='9'&&b[Number(e.key)-1])b[Number(e.key)-1].click();
-  if(e.key==='Escape'){search.value='';resetSearch()}
-});
-
-
-/* V8.1 command palette */
-const commandPalette=document.getElementById('commandPalette'),commandInput=document.getElementById('commandInput'),commandList=document.getElementById('commandList');
-const commands=[['Go Home','home'],['Open Codes','codes'],['Open Movesets','moves'],['Open Animations','animations'],['Open News','news'],['Open Achievements','achievements'],['Open Status','status'],['Open Contact','contact'],['Open Settings','settings'],['Random Discovery','__random'],['Random Theme','__theme'],['Scroll To Top','__top']];
-let commandIndex=0;
-function renderCommands(filter=''){const q=filter.toLowerCase(),list=commands.filter(c=>c[0].toLowerCase().includes(q));commandIndex=Math.min(commandIndex,Math.max(0,list.length-1));commandList.innerHTML=list.map((c,i)=>`<button class="command-item ${i===commandIndex?'selected':''}" onclick="runCommand('${c[1]}')"><span>${c[0]}</span><kbd>${i+1}</kbd></button>`).join('')}
-function openCommands(){commandPalette.classList.add('open');commandInput.value='';commandIndex=0;renderCommands();setTimeout(()=>commandInput.focus(),20)}
-function closeCommands(){commandPalette.classList.remove('open');commandPalette.setAttribute('aria-hidden','true')}
-function runCommand(id){
-  if(id==='__random')randomDiscovery();
-  else if(id==='__theme'){const n=themeNamesV8.filter(x=>x!=='easter'),t=n[Math.floor(Math.random()*n.length)];setTheme(t,document.querySelector(`[data-theme="${t}"]`))}
-  else if(id==='__top')scrollTopPage();
-  else{const b=[...document.querySelectorAll('.nav button')].find(b=>b.getAttribute('onclick')?.includes(`'${id}'`));showPage(id,b)}
-  setLastAction('Command: '+id);closeCommands();
-}
-document.addEventListener('keydown',e=>{
-  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCommands();return}
-  if(!commandPalette.classList.contains('open'))return;
-  if(e.key==='Escape'){closeCommands();return}
-  const items=commandList.querySelectorAll('.command-item');
-  if(e.key==='ArrowDown'){e.preventDefault();commandIndex=Math.min(commandIndex+1,items.length-1);renderCommands(commandInput.value)}
-  if(e.key==='ArrowUp'){e.preventDefault();commandIndex=Math.max(commandIndex-1,0);renderCommands(commandInput.value)}
-  if(e.key==='Enter'&&items[commandIndex])items[commandIndex].click();
-});
-commandInput.addEventListener('input',()=>{commandIndex=0;renderCommands(commandInput.value)});
-commandPalette.addEventListener('click',e=>{if(e.target===commandPalette)closeCommands()});
-
-/* Daily local signal */
-(function(){
-  const d=new Date(),seed=Number(''+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0'));
-  const code=((seed*9301+49297)%233280).toString(36).toUpperCase().slice(-4).padStart(4,'0');
-  const moods=['STABLE','UNUSUAL','ELEVATED','QUIET','WATCHFUL'],mood=moods[seed%moods.length];
-  const c=document.getElementById('dailySignalCode'),t=document.getElementById('dailySignalText');
-  if(c)c.textContent=code;if(t)t.textContent='Signal '+mood+' • refreshes with the next local day.';
-})();
-function setLastAction(text){
-  const e=document.getElementById('lastAction');if(e)e.textContent=text;
-  const t=document.getElementById('currentThemeStatus');
-  if(t){const a=themeNamesV8.find(x=>document.body.classList.contains('theme-'+x))||'blue';t.textContent=a.toUpperCase()+(a==='easter'?' • SESSION ONLY':' • SAVED')}
-}
-document.addEventListener('click',e=>{const b=e.target.closest('button');if(b&&!b.classList.contains('command-item'))setLastAction(b.textContent.trim().replace(/\s+/g,' ').slice(0,60))});
-
-/* session status */
-const sessionStart=Date.now();
-setInterval(()=>{
-  const sec=Math.floor((Date.now()-sessionStart)/1000),m=Math.floor(sec/60),r=sec%60;
-  const st=document.getElementById('sessionTime');if(st)st.textContent=m+'m '+r+'s';
-  const cl=document.getElementById('clockStatus');if(cl)cl.textContent=new Date().toLocaleTimeString();
-},1000);
-
-/* reset button */
-function resetV8Data(){
-  ['hiV8Achievements','hiV8Favorites','hiV8Recent','hiddenInventoryTheme','hiV8EasterUnlocked'].forEach(k=>localStorage.removeItem(k));document.body.classList.remove('theme-easter');document.body.classList.add('theme-blue');
-  showToast('V10 local data reset — refresh to finish');
-}
-
-/* decorate after dynamic sections exist */
-document.querySelectorAll('.card').forEach(card=>{
-  if(card.matches('.code,.entry') && !card.classList.contains('favoriteable'))card.classList.add('favoriteable');
-});
-decorateFavorites();updateFavoriteCount();renderRecent();
-
-/* initial progress reveal */
-updateEasterVault();
-updateEffectStatus();
-</script>
+<div class="command-palette" id="commandPalette" aria-hidden="true"><div class="command-box"><input class="command-input" id="commandInput" placeholder="Type a command..." autocomplete="off"><div class="command-list" id="commandList"></div><div class="command-hint">CTRL + K • ESC • ↑ ↓ • ENTER</div></div></div>
 
 
 <script>
@@ -1859,17 +1484,7 @@ window.updateV10AchievementProgress=function(){
 };
 </script>
 
-<script>
-(function(){
- function dedupeSignals(){
-  const h=document.getElementById('home');if(!h)return;
-  const a=[...h.querySelectorAll('.card')].filter(x=>/ARCHIVE SIGNAL/i.test(x.textContent||''));
-  a.slice(1).forEach(x=>x.remove());
-  if(window.updateV10AchievementProgress)window.updateV10AchievementProgress();
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',dedupeSignals);else dedupeSignals();
-})();
-</script>
+
 
 <style>
 #backendVoid{position:fixed;inset:0;z-index:2147483647;background:#000;display:grid;place-items:center;opacity:0;transition:opacity .7s}
@@ -1922,5 +1537,146 @@ body.backend-collapse #content,body.backend-collapse .sidebar,body.backend-colla
  window.updateV10AchievementProgress&&window.updateV10AchievementProgress();
 })();
 </script>
+
+<script>
+/* V10 FINAL PATCH — deliberately non-blocking */
+(function(){
+  window.updateV10AchievementProgress=function(){
+    var s={};
+    try{s=JSON.parse(localStorage.getItem('hiV8Achievements')||'{}')||{}}catch(e){}
+    var total=12, found=0;
+    Object.keys(s).forEach(function(k){if(s[k])found++});
+    found=Math.min(total,found);
+    var c=document.getElementById('v9AchievementCount');
+    var m=document.getElementById('v9AchievementMeter');
+    if(c)c.textContent=found+' / '+total+' unlocked';
+    if(m)m.style.width=(found/total*100)+'%';
+  };
+
+  /* Keep exactly one Archive Signal card. */
+  function dedupeSignals(){
+    var h=document.getElementById('home');
+    if(!h)return;
+    var cards=[].slice.call(h.querySelectorAll('.card')).filter(function(x){
+      return /ARCHIVE SIGNAL/i.test(x.textContent||'');
+    });
+    cards.slice(1).forEach(function(x){x.remove()});
+  }
+
+  /* Temporary admin rank lives only in sessionStorage. */
+  var ADMIN='hiV10AdminTemp';
+  function adminActive(){return sessionStorage.getItem(ADMIN)==='1'}
+  function tprint(x){
+    if(typeof window.terminalPrint==='function')window.terminalPrint(x);
+    else{
+      var o=document.getElementById('terminalOutput');
+      if(o){o.textContent+='\\n> '+x;o.scrollTop=o.scrollHeight}
+    }
+  }
+
+  window.runAdminTerminalCommand=function(raw){
+    var c=String(raw||'').trim(),u=c.toUpperCase();
+    if(u==='RANK SET ADMIN TEMP'){
+      sessionStorage.setItem(ADMIN,'1');
+      tprint('RANK SET: ADMIN');
+      tprint('Temporary admin rank enabled. It will be removed after refreshing.');
+      return true;
+    }
+    if(u==='RANK'){
+      tprint('CURRENT RANK: '+(adminActive()?'ADMIN (TEMP)':'USER'));
+      return true;
+    }
+    if(!adminActive())return false;
+    if(u==='ADMIN HELP'){
+      tprint('ADMIN COMMANDS\\nRANK\\nSET THEME <name>\\nUNLOCK ALL\\nCLEAR ACHIEVEMENTS\\nCLEAR FAVORITES\\nCLEAR RECENT\\nGLITCH\\nAMBIENT\\nHOME');
+      return true;
+    }
+    if(u==='UNLOCK ALL'){
+      var s={};try{s=JSON.parse(localStorage.getItem('hiV8Achievements')||'{}')||{}}catch(e){}
+      ['search','copy','theme','music','glitch','random','logo','konami','status','news','favorites','secretTime'].forEach(function(k){s[k]=true});
+      localStorage.setItem('hiV8Achievements',JSON.stringify(s));
+      window.updateV10AchievementProgress();
+      if(typeof window.updateEasterVault==='function')window.updateEasterVault();
+      tprint('ALL 12 ACHIEVEMENTS UNLOCKED.');
+      return true;
+    }
+    if(u==='CLEAR ACHIEVEMENTS'){
+      localStorage.removeItem('hiV8Achievements');
+      window.updateV10AchievementProgress();
+      if(typeof window.updateEasterVault==='function')window.updateEasterVault();
+      tprint('ACHIEVEMENTS CLEARED.');
+      return true;
+    }
+    if(u==='CLEAR FAVORITES'){localStorage.removeItem('hiV8Favorites');tprint('FAVORITES CLEARED.');return true}
+    if(u==='CLEAR RECENT'){localStorage.removeItem('hiV8Recent');tprint('RECENT ITEMS CLEARED.');return true}
+    if(u==='GLITCH'){
+      document.body.classList.toggle('effect-heavy');
+      tprint('HEAVY GLITCH: '+(document.body.classList.contains('effect-heavy')?'ON':'OFF'));
+      return true;
+    }
+    if(u==='AMBIENT'){if(typeof window.toggleAmbientMode==='function')window.toggleAmbientMode();return true}
+    if(u==='HOME'){if(typeof window.showPage==='function')window.showPage('home',document.querySelector('.nav button'));return true}
+    if(u.indexOf('SET THEME ')===0){
+      var theme=c.slice(10).trim().toLowerCase();
+      if(typeof window.setTheme==='function')window.setTheme(theme,document.querySelector('.theme-card[data-theme="'+theme+'"]'));
+      tprint('THEME: '+theme);
+      return true;
+    }
+    return false;
+  };
+
+  /* OPEN BACKEND: intentionally dramatic but only activates when typed in terminal. */
+  window.runBackendVoid=function(){
+    var o=document.createElement('div');
+    o.id='backendVoid';
+    o.innerHTML='<div class="core">OPENING BACKEND...<br><small>ACCESS GRANTED</small></div>';
+    document.body.appendChild(o);
+    requestAnimationFrame(function(){o.classList.add('active')});
+    setTimeout(function(){
+      try{localStorage.clear();sessionStorage.clear()}catch(e){}
+      document.body.classList.add('backend-collapse');
+    },1500);
+    setTimeout(function(){
+      var c=o.querySelector('.core');if(c)c.textContent='SYSTEM PURGED';
+    },2400);
+    setTimeout(function(){location.reload()},3800);
+  };
+
+  function wireTerminal(){
+    var input=document.getElementById('terminalInput');
+    if(!input || input.dataset.v10Wired)return;
+    input.dataset.v10Wired='1';
+    input.addEventListener('keydown',function(e){
+      if(e.key!=='Enter')return;
+      var raw=input.value.trim(),u=raw.toUpperCase();
+      if(u==='OPEN BACKEND'){
+        e.preventDefault();e.stopImmediatePropagation();
+        input.value='';window.runBackendVoid();return;
+      }
+      if(window.runAdminTerminalCommand(raw)){
+        e.preventDefault();e.stopImmediatePropagation();input.value='';
+      }
+    },true);
+  }
+
+  /* Do NOT clear admin rank on load here; sessionStorage already disappears
+     naturally when the browser tab/session is refreshed as requested. */
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){
+      dedupeSignals();wireTerminal();window.updateV10AchievementProgress();
+    });
+  }else{
+    dedupeSignals();wireTerminal();window.updateV10AchievementProgress();
+  }
+})();
+</script>
+<style>
+#backendVoid{position:fixed;inset:0;z-index:2147483647;background:#000;display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .7s}
+#backendVoid.active{opacity:1;pointer-events:auto}
+#backendVoid .core{color:#fff;text-align:center;font:700 18px monospace;letter-spacing:3px}
+body.backend-collapse #content,body.backend-collapse .sidebar,body.backend-collapse #particles,body.backend-collapse .cursor{transform:scale(.02);opacity:0;transition:transform 2.1s,opacity 1.5s}
+</style>
+
 </body>
 </html>
